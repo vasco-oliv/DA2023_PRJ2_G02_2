@@ -127,6 +127,7 @@ void Controller::mainMenu() {
     std::cout << "1. Brute Force/Backtracking\n";
     std::cout << "2. Triangular Approximation Heuristic\n";
     std::cout << "3. Other Heuristic\n";
+    std::cout << "4. Change Graph\n";
     std::cout << "0. Exit\n";
     std::cout << "Option: ";
     int option;
@@ -141,6 +142,10 @@ void Controller::mainMenu() {
             break;
         case 3:
             //algoritmo_dos_deuses();
+            break;
+        case 4:
+            //data.clear();
+            startMenu();
             break;
         case 0:
             break;
