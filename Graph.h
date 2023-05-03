@@ -1,0 +1,22 @@
+#ifndef DA2023_PRJ2_G02_2_GRAPH_H
+#define DA2023_PRJ2_G02_2_GRAPH_H
+
+#include <vector>
+#include <memory>
+#include "VertexEdge.h"
+
+
+class Graph {
+private:
+    std::vector<std::unique_ptr<Vertex>> vertexSet;
+
+public:
+    const std::vector<std::unique_ptr<Vertex>>& getVertexSet() const;
+    std::vector<std::unique_ptr<Vertex>>::const_iterator findVertex(unsigned int id) const;
+    bool addVertex(unsigned int id);
+    bool removeVertex(unsigned int id);
+    bool addEdge(unsigned int idOrig, unsigned int idDest, double weight);
+};
+
+
+#endif //DA2023_PRJ2_G02_2_GRAPH_H
