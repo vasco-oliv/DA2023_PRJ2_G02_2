@@ -1,6 +1,8 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include "Controller.h"
 
 void Controller::clearScreen() {
@@ -12,9 +14,100 @@ void Controller::clearScreen() {
 #endif
 }
 
+void Controller::dataReset() {
+    //rip data
+}
+
+void Controller::readRealWorldGraph(const std::string& nodes, const std::string& edges) {
+    std::ifstream ifsN(nodes);
+    if(!ifsN.is_open()){
+        std::cout << "ERROR: File not found\n";
+        exit(1);
+    }
+
+    std::string line;
+    std::getline(ifsN,line);
+    while(std::getline(ifsN,line)){
+        std::istringstream iss(line);
+        std::string id,lat,lon;
+        std::getline(iss,id,',');
+        std::getline(iss,lat,',');
+        std::getline(iss,lon);
+        if(id.empty() || lat.empty() || lon.empty()){
+            continue;
+        }
+
+        if(vertices.find(std::stoi(id))==vertices.end()){
+            vertices.insert(std::make_pair(std::stoi(id),std::make_unique<Vertex>(std::stoi(id),std::stod(lat),std::stod(lon))));
+        }
+
+        graph.addVertex(std::stoi(id),std::stod(lat),std::stod(lon));
+    }
+    ifsN.close();
+
+    std::ifstream ifsE(edges);
+    if(!ifsE.is_open()){
+        std::cout << "ERROR: File not found\n";
+        exit(1);
+    }
+
+    std::getline(ifsE,line);
+    while(std::getline(ifsE,line)){
+        std::istringstream iss(line);
+        std::string idOrig,idDest,weight;
+        std::getline(iss,idOrig,',');
+        std::getline(iss,idDest,',');
+        std::getline(iss,weight);
+        if(idOrig.empty() || idDest.empty() || weight.empty()){
+            continue;
+        }
+        if(vertices.find(std::stoi(idOrig))==vertices.end() || vertices.find(std::stoi(idDest))==vertices.end()){
+            continue;
+        }
+        graph.addEdge(std::stoi(idOrig),std::stoi(idDest),std::stod(weight));
+    }
+
+}
+
+void Controller::readToyGraph(std::string edges) {
+    std::ifstream ifs(edges);
+    if(!ifs.is_open()){
+        std::cout << "ERROR: File not found\n";
+        exit(1);
+    }
+    std::string line;
+    getline(ifs,line);
+    while(std::getline(ifs,line)){
+        std::istringstream iss(line);
+        std::string idOrig,idDest,weight;
+        std::getline(iss,idOrig,',');
+        std::getline(iss,idDest,',');
+        std::getline(iss,weight);
+        if(idOrig.empty() || idDest.empty() || weight.empty()){
+            continue;
+        }
+        if(vertices.find(std::stoi(idOrig))==vertices.end()){
+            graph.addVertex(std::stoi(idOrig));
+            vertices.insert(std::make_pair(std::stoi(idOrig),std::make_unique<Vertex>(std::stoi(idOrig))));
+        }
+        if(vertices.find(std::stoi(idDest))==vertices.end()){
+            graph.addVertex(std::stoi(idDest));
+            vertices.insert(std::make_pair(std::stoi(idDest),std::make_unique<Vertex>(std::stoi(idDest))));
+        }
+        graph.addEdge(std::stoi(idOrig),std::stoi(idDest),std::stod(weight));
+
+    }
+}
+
+void Controller::readOtherGraph(std::string edges) {
+    readToyGraph(edges);
+}
+
+
 void Controller::run() {
     startMenu();
 }
+
 void Controller::startMenu() {
     clearScreen();
     std::cout << "\t**Start Menu**\n\n";
@@ -42,19 +135,19 @@ void Controller::startMenu() {
                 case 1:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    //readGraph();
+                    readRealWorldGraph("../Project2Graphs/Real-World-Graphs/graph1/nodes.csv","../Project2Graphs/Real-World-Graphs/graph1/edges.csv");
                     mainMenu();
                     break;
                 case 2:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    //readGraph();
+                    readRealWorldGraph("../Project2Graphs/Real-World-Graphs/graph2/nodes.csv","../Project2Graphs/Real-World-Graphs/graph2/edges.csv");
                     mainMenu();
                     break;
                 case 3:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    //readGraph();
+                    readRealWorldGraph("../Project2Graphs/Real-World-Graphs/graph3/nodes.csv","../Project2Graphs/Real-World-Graphs/graph3/edges.csv");
                     mainMenu();
                     break;
                 case 0:
@@ -82,19 +175,19 @@ void Controller::startMenu() {
                 case 1:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    //readGraph();
+                    readToyGraph("../Project2Graphs/Toy-Graphs/shipping.csv");
                     mainMenu();
                     break;
                 case 2:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    //readGraph();
+                    readToyGraph("../Project2Graphs/Toy-Graphs/stadiums.csv");
                     mainMenu();
                     break;
                 case 3:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    //readGraph();
+                    readToyGraph("../Project2Graphs/Toy-Graphs/tourism.csv");
                     mainMenu();
                     break;
                 case 0:
@@ -124,7 +217,7 @@ void Controller::mainMenu() {
     clearScreen();
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
     std::cout << "How would you like to calculate the best solution to the TSP in the graph you selected?\n";
-    std::cout << "1. Brute Force/Backtracking\n";
+    std::cout << "1. Backtracking\n";
     std::cout << "2. Triangular Approximation Heuristic\n";
     std::cout << "3. Other Heuristic\n";
     std::cout << "4. Change Graph\n";
@@ -135,7 +228,7 @@ void Controller::mainMenu() {
     std::cin >> option;
     switch (option) {
         case 1:
-            //brute_force();
+            //backtracking();
             break;
         case 2:
             //triangular();
@@ -158,4 +251,25 @@ void Controller::mainMenu() {
     }
 
 }
+
+void Controller::backtracking(unsigned int startNode) {
+    std::vector<unsigned int> path;
+    std::vector<unsigned int> visited;
+    int cost = backtrackingAux(startNode, path, visited);
+    std::cout << "Path: ";
+    for (unsigned int i = 0; i < path.size(); i++) {
+        std::cout << path[i] << " ";
+    }
+    std::cout << "\nCost: " << cost << "\n";
+    std::cout << "(Press any key to continue)";
+    std::string aux;
+    std::cin >> aux;
+    mainMenu();
+}
+
+
+int Controller::backtrackingAux(unsigned int startNode, std::vector<unsigned int> &path, std::vector<unsigned int> &visited) {
+    return 0;
+}
+
 

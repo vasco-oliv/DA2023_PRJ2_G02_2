@@ -37,3 +37,11 @@ bool Graph::addEdge(unsigned int idOrig, unsigned int idDest, double weight) {
     return ( (*orig)->addEdge((*dest).get(), weight) && (*dest)->addEdge((*orig).get(), weight) );
 
 }
+
+bool Graph::addVertex(unsigned int id, double latitude, double longitude) {
+    if(findVertex(id) != vertexSet.end()){
+        return false;
+    }
+    vertexSet.push_back(std::make_unique<Vertex>(id, latitude, longitude));
+    return true;
+}
