@@ -4,6 +4,12 @@
 
 Vertex::Vertex(unsigned int id) : id(id) {}
 
+Vertex::Vertex(unsigned int id, double latitude, double longitude) {
+    this->id=id;
+    this->latitude=latitude;
+    this->longitude=longitude;
+
+}
 bool Vertex::addEdge(Vertex *dest, double weight) {
     for(auto &edge : adj){
         if(edge->getDest() == dest){
@@ -48,6 +54,7 @@ double Vertex::getDist() const {
 const std::vector<std::unique_ptr<Edge>>& Vertex::getAdj() const {
     return adj;
 }
+
 
 // **EDGE**
 

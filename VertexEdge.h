@@ -13,9 +13,12 @@ private:
     std::vector<std::unique_ptr<Edge>> adj;
     bool visited = false;
     double dist = 0;
+    double latitude;
+    double longitude;
 
 public:
     explicit Vertex(unsigned int id);
+    Vertex(unsigned int id, double latitude, double longitude);
     bool addEdge(Vertex *dest, double weight);
     bool removeEdge(Vertex *dest);
     void setVisited(bool visited);

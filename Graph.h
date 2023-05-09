@@ -14,6 +14,7 @@ public:
     const std::vector<std::unique_ptr<Vertex>>& getVertexSet() const;
     std::vector<std::unique_ptr<Vertex>>::const_iterator findVertex(unsigned int id) const;
     bool addVertex(unsigned int id);
+    bool addVertex(unsigned int id, double latitude, double longitude);
     bool removeVertex(unsigned int id);
     bool addEdge(unsigned int idOrig, unsigned int idDest, double weight);
 };
