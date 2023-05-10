@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <limits>
+#include <unordered_set>
 #include "Controller.h"
 
 void Controller::clearScreen() {
@@ -83,6 +85,36 @@ void Controller::readToyGraph(std::string edges) {
         std::getline(iss,idOrig,',');
         std::getline(iss,idDest,',');
         std::getline(iss,weight);
+        if(idOrig.empty() || idDest.empty() || weight.empty()){
+            continue;
+        }
+        if(vertices.find(std::stoi(idOrig))==vertices.end()){
+            graph.addVertex(std::stoi(idOrig));
+            vertices.insert(std::make_pair(std::stoi(idOrig),std::make_unique<Vertex>(std::stoi(idOrig))));
+        }
+        if(vertices.find(std::stoi(idDest))==vertices.end()){
+            graph.addVertex(std::stoi(idDest));
+            vertices.insert(std::make_pair(std::stoi(idDest),std::make_unique<Vertex>(std::stoi(idDest))));
+        }
+        graph.addEdge(std::stoi(idOrig),std::stoi(idDest),std::stod(weight));
+
+    }
+}
+
+void Controller::readTourismGraph(std::string edges) {
+    std::ifstream ifs(edges);
+    if(!ifs.is_open()){
+        std::cout << "ERROR: File not found\n";
+        exit(1);
+    }
+    std::string line;
+    getline(ifs,line);
+    while(std::getline(ifs,line)){
+        std::istringstream iss(line);
+        std::string idOrig,idDest,weight;
+        std::getline(iss,idOrig,',');
+        std::getline(iss,idDest,',');
+        std::getline(iss,weight,',');
         if(idOrig.empty() || idDest.empty() || weight.empty()){
             continue;
         }
@@ -228,7 +260,7 @@ void Controller::mainMenu() {
     std::cin >> option;
     switch (option) {
         case 1:
-            //backtracking();
+            backtracking();
             break;
         case 2:
             //triangular();
@@ -252,24 +284,58 @@ void Controller::mainMenu() {
 
 }
 
-void Controller::backtracking(unsigned int startNode) {
-    std::vector<unsigned int> path;
-    std::vector<unsigned int> visited;
-    int cost = backtrackingAux(startNode, path, visited);
-    std::cout << "Path: ";
-    for (unsigned int i = 0; i < path.size(); i++) {
-        std::cout << path[i] << " ";
+void Controller::backtrackingAux(Vertex *current, std::unordered_set<Vertex*>& unvisited, std::vector<Vertex*>& path, double& distance, double& bestDistance, std::vector<Vertex*>& bestPath) {
+    current->setVisited(true);
+    path.push_back(current);
+    for (const auto& edge : current->getAdj()) {
+        Vertex *dest = edge->getDest();
+        if (!dest->isVisited()) {
+            double weight = edge->getWeight();
+            distance += weight;
+            unvisited.erase(dest);
+            backtrackingAux(dest, unvisited, path, distance, bestDistance, bestPath);
+            unvisited.insert(dest);
+            distance -= weight;
+        }
     }
-    std::cout << "\nCost: " << cost << "\n";
-    std::cout << "(Press any key to continue)";
+    if (unvisited.empty()) {
+        for (const auto& edge : current->getAdj()) {
+            if (edge->getDest() == graph.getVertexSet()[0].get()) {
+                distance += edge->getWeight();
+                path.push_back(graph.getVertexSet()[0].get());
+                break;
+            }
+        }
+        if (path.size() == graph.getVertexSet().size()+1  && distance < bestDistance) {
+            bestDistance = distance;
+            bestPath = std::vector<Vertex*>(path);
+        }
+    }
+
+    path.pop_back();
+    current->setVisited(false);
+}
+
+void Controller::backtracking() {
+    std::unordered_set<Vertex*> unvisited;
+    std::vector<Vertex*> path, bestPath;
+    double distance = 0, bestDistance = std::numeric_limits<double>::max();
+    for (const auto& vertex : graph.getVertexSet()) {
+        unvisited.insert(vertex.get());
+    }
+    unvisited.erase(graph.getVertexSet()[0].get());
+    backtrackingAux(graph.getVertexSet()[0].get(), unvisited, path, distance, bestDistance, bestPath);
+    unvisited.insert(graph.getVertexSet()[0].get());
+
+    std::cout << "Best Path: ";
+    std::cout << bestPath[0]->getId();
+    for (int i = 1; i < bestPath.size(); ++i) {
+        std::cout << " -> " << bestPath[i]->getId();
+    }
+    std::cout << "\nBest Distance: " << bestDistance << "\n";
+    std::cout << "(Press any key to continue)\n";
     std::string aux;
     std::cin >> aux;
     mainMenu();
 }
-
-
-int Controller::backtrackingAux(unsigned int startNode, std::vector<unsigned int> &path, std::vector<unsigned int> &visited) {
-    return 0;
-}
-
 

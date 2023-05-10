@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include "Graph.h"
+#include <unordered_set>
 
 class Controller {
 private:
@@ -13,9 +14,10 @@ private:
     void dataReset();
     void readRealWorldGraph(const std::string& nodes, const std::string& edges);
     void readToyGraph(std::string edges);
+    void readTourismGraph(std::string edges);
     void readOtherGraph(std::string edges);
 
-    int backtrackingAux(unsigned int startNode, std::vector<unsigned int> &path, std::vector<unsigned int> &visited);
+    void backtrackingAux(Vertex *current, std::unordered_set<Vertex*>& unvisited, std::vector<Vertex*>& path, double& distance, double& bestDistance, std::vector<Vertex*>& bestPath);
 public:
     //Others
     void run();
@@ -25,7 +27,7 @@ public:
     void mainMenu();
 
     //Algorithms
-    void backtracking(unsigned int startNode=0);
+    void backtracking();
 
 
 
