@@ -17,7 +17,8 @@ private:
     void readTourismGraph(std::string edges);
     void readFullyConGraph(std::string edges);
 
-    void backtrackingAux(Vertex *current, std::vector<Vertex*>& path, double& distance, double& bestDistance, std::vector<Vertex*>& bestPath);
+    void backtrackingAux(std::shared_ptr<Vertex> current, std::vector<std::shared_ptr<Vertex>>& path, double& distance, double& bestDistance, std::vector<std::shared_ptr<Vertex>>& bestPath);
+    void nearestNeighborGreedy(std::vector<std::shared_ptr<Vertex>>& path, double& distance);
 public:
     //Others
     void run();

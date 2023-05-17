@@ -4,7 +4,7 @@ const std::vector<std::shared_ptr<Vertex>> &Graph::getVertexSet() const {
     return vertexSet;
 }
 std::vector<std::shared_ptr<Vertex>>::const_iterator Graph::findVertex(unsigned int id) const {
-    for(auto it=vertexSet.begin(); it != vertexSet.end(); it++){
+    for(auto it= vertexSet.begin(); it != vertexSet.end(); it++){
         if((*it)->getId() == id){
             return it;
         }
@@ -35,7 +35,7 @@ bool Graph::addEdge(unsigned int idOrig, unsigned int idDest, double weight) {
     if(orig == vertexSet.end() || dest == vertexSet.end()){
         return false;
     }
-    return ( (*orig)->addEdge((*dest).get(), weight) && (*dest)->addEdge((*orig).get(), weight) );
+    return ( (*orig)->addEdge((*dest), weight) && (*dest)->addEdge((*orig), weight) );
 
 }
 

@@ -19,8 +19,8 @@ private:
 public:
     explicit Vertex(unsigned int id);
     Vertex(unsigned int id, double latitude, double longitude);
-    bool addEdge(Vertex *dest, double weight);
-    bool removeEdge(Vertex *dest);
+    bool addEdge(std::shared_ptr<Vertex> dest, double weight);
+    bool removeEdge(std::shared_ptr<Vertex> dest);
     void setVisited(bool visited);
     void setDist(double dist);
     unsigned int getId() const;
@@ -31,14 +31,14 @@ public:
 
 class Edge{
 private:
-    Vertex *orig;
-    Vertex *dest;
+    std::shared_ptr<Vertex> orig;
+    std::shared_ptr<Vertex> dest;
     double weight;
 
 public:
-    Edge(Vertex *orig, Vertex *dest, double weight);
-    Vertex *getOrig() const;
-    Vertex *getDest() const;
+    Edge(std::shared_ptr<Vertex>orig, std::shared_ptr<Vertex>dest, double weight);
+    std::shared_ptr<Vertex> getOrig() const;
+    std::shared_ptr<Vertex> getDest() const;
     double getWeight() const;
 };
 

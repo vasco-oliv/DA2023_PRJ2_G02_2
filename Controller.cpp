@@ -262,11 +262,10 @@ void Controller::startMenu() {
             }
             break;
         case 3:
-            readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/Extra_Fully_Connected_Graphs/edges_25.csv");
+            readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_25.csv");
             mainMenu();
             break;
         case 4:
-
             break;
         case 0:
             std::cout << "Exit\n";
@@ -318,7 +317,7 @@ void Controller::mainMenu() {
 
 }
 
-void Controller::backtrackingAux(Vertex *current, std::vector<Vertex*>& path, double& distance, double& bestDistance, std::vector<Vertex*>& bestPath) {
+void Controller::backtrackingAux(std::shared_ptr<Vertex> current, std::vector<std::shared_ptr<Vertex>>& path, double& distance, double& bestDistance, std::vector<std::shared_ptr<Vertex>>& bestPath) {
     if(distance >= bestDistance){
         return;
     }
@@ -326,12 +325,12 @@ void Controller::backtrackingAux(Vertex *current, std::vector<Vertex*>& path, do
     path.push_back(current);
     if (path.size() == graph.getVertexSet().size()) {
         for(const auto& edge : current->getAdj()){
-            if (edge->getDest() == graph.getVertexSet()[0].get()) {
+            if (edge->getDest().get() == graph.getVertexSet()[0].get()) {
                 distance += edge->getWeight();
-                path.push_back(graph.getVertexSet()[0].get());
+                path.push_back(graph.getVertexSet()[0]);
                 if(distance < bestDistance){
                     bestDistance = distance;
-                    bestPath = std::vector<Vertex*>(path);
+                    bestPath = std::vector<std::shared_ptr<Vertex>>(path);
                     std::cout << path[1]->getId() << ' ' << bestDistance << std::endl;
                 }
                 distance -= edge->getWeight();
@@ -348,7 +347,7 @@ void Controller::backtrackingAux(Vertex *current, std::vector<Vertex*>& path, do
     while(!pq.empty()){
         auto edge = pq.top();
         pq.pop();
-        Vertex *dest = edge->getDest();
+        std::shared_ptr<Vertex> dest = edge->getDest();
         double weight = edge->getWeight();
         if(distance+weight >= bestDistance) break;
         if (!dest->isVisited()) {
@@ -365,12 +364,12 @@ void Controller::backtrackingAux(Vertex *current, std::vector<Vertex*>& path, do
 }
 
 void Controller::backtracking() {
-    std::vector<Vertex*> path, bestPath;
+    std::vector<std::shared_ptr<Vertex>> path, bestPath;
     double distance = 0, bestDistance = std::numeric_limits<double>::max();
     for (const auto& vertex : graph.getVertexSet()) {
         vertex->setVisited(false);
     }
-    backtrackingAux(graph.getVertexSet()[0].get(),  path, distance, bestDistance, bestPath);
+    backtrackingAux(graph.getVertexSet()[0], path, distance, bestDistance, bestPath);
 
     clearScreen();
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
