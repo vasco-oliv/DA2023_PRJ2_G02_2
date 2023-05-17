@@ -5,6 +5,7 @@
 #include <sstream>
 #include <limits>
 #include <unordered_set>
+#include <queue>
 #include "Controller.h"
 
 void Controller::clearScreen() {
@@ -26,24 +27,23 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
         std::cout << "ERROR: File not found\n";
         exit(1);
     }
-
     std::string line;
+    int id;
+    double lat,lon;
     std::getline(ifsN,line);
     while(std::getline(ifsN,line)){
         std::istringstream iss(line);
-        std::string id,lat,lon;
-        std::getline(iss,id,',');
-        std::getline(iss,lat,',');
-        std::getline(iss,lon);
-        if(id.empty() || lat.empty() || lon.empty()){
-            continue;
+        iss >> id;
+        iss.ignore(1);
+        iss >> lat;
+        iss.ignore(1);
+        iss >> lon;
+
+        if(vertices.find(id)==vertices.end()){
+            vertices.insert(std::make_pair(id,std::make_shared<Vertex>(id,lat,lon)));
         }
 
-        if(vertices.find(std::stoi(id))==vertices.end()){
-            vertices.insert(std::make_pair(std::stoi(id),std::make_unique<Vertex>(std::stoi(id),std::stod(lat),std::stod(lon))));
-        }
-
-        graph.addVertex(std::stoi(id),std::stod(lat),std::stod(lon));
+        graph.addVertex(id,lat,lon);
     }
     ifsN.close();
 
@@ -54,19 +54,20 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
     }
 
     std::getline(ifsE,line);
+    int idOrig,idDest;
+    double weight;
     while(std::getline(ifsE,line)){
         std::istringstream iss(line);
-        std::string idOrig,idDest,weight;
-        std::getline(iss,idOrig,',');
-        std::getline(iss,idDest,',');
-        std::getline(iss,weight);
-        if(idOrig.empty() || idDest.empty() || weight.empty()){
+        iss >> idOrig;
+        iss.ignore(1);
+        iss >> idDest;
+        iss.ignore(1);
+        iss >> weight;
+
+        if(vertices.find(idOrig)==vertices.end() || vertices.find(idDest)==vertices.end()){
             continue;
         }
-        if(vertices.find(std::stoi(idOrig))==vertices.end() || vertices.find(std::stoi(idDest))==vertices.end()){
-            continue;
-        }
-        graph.addEdge(std::stoi(idOrig),std::stoi(idDest),std::stod(weight));
+        graph.addEdge(idOrig,idDest,weight);
     }
 
 }
@@ -90,11 +91,11 @@ void Controller::readToyGraph(std::string edges) {
         }
         if(vertices.find(std::stoi(idOrig))==vertices.end()){
             graph.addVertex(std::stoi(idOrig));
-            vertices.insert(std::make_pair(std::stoi(idOrig),std::make_unique<Vertex>(std::stoi(idOrig))));
+            vertices.insert(std::make_pair(std::stoi(idOrig),std::make_shared<Vertex>(std::stoi(idOrig))));
         }
         if(vertices.find(std::stoi(idDest))==vertices.end()){
             graph.addVertex(std::stoi(idDest));
-            vertices.insert(std::make_pair(std::stoi(idDest),std::make_unique<Vertex>(std::stoi(idDest))));
+            vertices.insert(std::make_pair(std::stoi(idDest),std::make_shared<Vertex>(std::stoi(idDest))));
         }
         graph.addEdge(std::stoi(idOrig),std::stoi(idDest),std::stod(weight));
 
@@ -120,19 +121,45 @@ void Controller::readTourismGraph(std::string edges) {
         }
         if(vertices.find(std::stoi(idOrig))==vertices.end()){
             graph.addVertex(std::stoi(idOrig));
-            vertices.insert(std::make_pair(std::stoi(idOrig),std::make_unique<Vertex>(std::stoi(idOrig))));
+            vertices.insert(std::make_pair(std::stoi(idOrig),std::make_shared<Vertex>(std::stoi(idOrig))));
         }
         if(vertices.find(std::stoi(idDest))==vertices.end()){
             graph.addVertex(std::stoi(idDest));
-            vertices.insert(std::make_pair(std::stoi(idDest),std::make_unique<Vertex>(std::stoi(idDest))));
+            vertices.insert(std::make_pair(std::stoi(idDest),std::make_shared<Vertex>(std::stoi(idDest))));
         }
         graph.addEdge(std::stoi(idOrig),std::stoi(idDest),std::stod(weight));
 
     }
 }
 
-void Controller::readOtherGraph(std::string edges) {
-    readToyGraph(edges);
+void Controller::readFullyConGraph(std::string edges) {
+    std::ifstream ifs(edges);
+    if(!ifs.is_open()){
+        std::cout << "ERROR: File not found\n";
+        exit(1);
+    }
+    std::string line;
+    int idOrig, idDest;
+    double weight;
+    while(std::getline(ifs,line)){
+        std::istringstream iss(line);
+        iss >> idOrig;
+        iss.ignore(1);
+        iss >> idDest;
+        iss.ignore(1);
+        iss >> weight;
+
+        if(vertices.find(idOrig)==vertices.end()){
+            graph.addVertex(idOrig);
+            vertices.insert(std::make_pair(idOrig,std::make_shared<Vertex>(idOrig)));
+        }
+        if(vertices.find(idDest)==vertices.end()){
+            graph.addVertex(idDest);
+            vertices.insert(std::make_pair(idDest,std::make_shared<Vertex>(idDest)));
+        }
+        graph.addEdge(idOrig,idDest,weight);
+
+    }
 }
 
 
@@ -146,7 +173,8 @@ void Controller::startMenu() {
     std::cout << "Select a Network Graph:\n";
     std::cout << "1. Real World Graphs\n";
     std::cout << "2. Toy Graphs\n";
-    std::cout << "3. Other Graph\n";
+    std::cout << "3. Extra Fully Connected Graphs\n";
+    std::cout << "4. Other Graph\n";
     std::cout << "0. Exit\n";
     std::cout << "Option: ";
     int option,option2;
@@ -234,7 +262,11 @@ void Controller::startMenu() {
             }
             break;
         case 3:
-            std::cout << "Other Graph\n";
+            readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/Extra_Fully_Connected_Graphs/edges_25.csv");
+            mainMenu();
+            break;
+        case 4:
+
             break;
         case 0:
             std::cout << "Exit\n";
@@ -260,6 +292,8 @@ void Controller::mainMenu() {
     std::cin >> option;
     switch (option) {
         case 1:
+            clearScreen();
+            std::cout << "Calculating best solution using Backtracking...\n";
             backtracking();
             break;
         case 2:
@@ -284,31 +318,45 @@ void Controller::mainMenu() {
 
 }
 
-void Controller::backtrackingAux(Vertex *current, std::unordered_set<Vertex*>& unvisited, std::vector<Vertex*>& path, double& distance, double& bestDistance, std::vector<Vertex*>& bestPath) {
+void Controller::backtrackingAux(Vertex *current, std::vector<Vertex*>& path, double& distance, double& bestDistance, std::vector<Vertex*>& bestPath) {
+    if(distance >= bestDistance){
+        return;
+    }
     current->setVisited(true);
     path.push_back(current);
-    for (const auto& edge : current->getAdj()) {
-        Vertex *dest = edge->getDest();
-        if (!dest->isVisited()) {
-            double weight = edge->getWeight();
-            distance += weight;
-            unvisited.erase(dest);
-            backtrackingAux(dest, unvisited, path, distance, bestDistance, bestPath);
-            unvisited.insert(dest);
-            distance -= weight;
-        }
-    }
-    if (unvisited.empty()) {
-        for (const auto& edge : current->getAdj()) {
+    if (path.size() == graph.getVertexSet().size()) {
+        for(const auto& edge : current->getAdj()){
             if (edge->getDest() == graph.getVertexSet()[0].get()) {
                 distance += edge->getWeight();
                 path.push_back(graph.getVertexSet()[0].get());
+                if(distance < bestDistance){
+                    bestDistance = distance;
+                    bestPath = std::vector<Vertex*>(path);
+                    std::cout << path[1]->getId() << ' ' << bestDistance << std::endl;
+                }
+                distance -= edge->getWeight();
+                path.pop_back();
                 break;
             }
         }
-        if (path.size() == graph.getVertexSet().size()+1  && distance < bestDistance) {
-            bestDistance = distance;
-            bestPath = std::vector<Vertex*>(path);
+        path.pop_back();
+        current->setVisited(false);
+        return;
+    }
+
+    std::priority_queue<std::shared_ptr<Edge>, std::vector<std::shared_ptr<Edge>>, EdgeComparator> pq(current -> getAdj().begin(), current -> getAdj().end());
+    while(!pq.empty()){
+        auto edge = pq.top();
+        pq.pop();
+        Vertex *dest = edge->getDest();
+        double weight = edge->getWeight();
+        if(distance+weight >= bestDistance) break;
+        if (!dest->isVisited()) {
+            distance += weight;
+            dest->setVisited(true);
+            backtrackingAux(dest,path,distance,bestDistance,bestPath);
+            dest->setVisited(false);
+            distance -= weight;
         }
     }
 
@@ -317,16 +365,15 @@ void Controller::backtrackingAux(Vertex *current, std::unordered_set<Vertex*>& u
 }
 
 void Controller::backtracking() {
-    std::unordered_set<Vertex*> unvisited;
     std::vector<Vertex*> path, bestPath;
     double distance = 0, bestDistance = std::numeric_limits<double>::max();
     for (const auto& vertex : graph.getVertexSet()) {
-        unvisited.insert(vertex.get());
+        vertex->setVisited(false);
     }
-    unvisited.erase(graph.getVertexSet()[0].get());
-    backtrackingAux(graph.getVertexSet()[0].get(), unvisited, path, distance, bestDistance, bestPath);
-    unvisited.insert(graph.getVertexSet()[0].get());
+    backtrackingAux(graph.getVertexSet()[0].get(),  path, distance, bestDistance, bestPath);
 
+    clearScreen();
+    std::cout << "\t**Traveling Salesperson Problem**\n\n";
     std::cout << "Best Path: ";
     std::cout << bestPath[0]->getId();
     for (int i = 1; i < bestPath.size(); ++i) {

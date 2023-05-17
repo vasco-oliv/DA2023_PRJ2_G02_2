@@ -16,7 +16,7 @@ bool Vertex::addEdge(Vertex *dest, double weight) {
             return false;
         }
     }
-    adj.push_back(std::make_unique<Edge>(this, dest, weight));
+    adj.push_back(std::make_shared<Edge>(this, dest, weight));
     return true;
 }
 
@@ -51,7 +51,7 @@ double Vertex::getDist() const {
     return dist;
 }
 
-const std::vector<std::unique_ptr<Edge>>& Vertex::getAdj() const {
+const std::vector<std::shared_ptr<Edge>>& Vertex::getAdj() const {
     return adj;
 }
 
@@ -75,3 +75,5 @@ Vertex *Edge::getDest() const {
 double Edge::getWeight() const {
     return weight;
 }
+
+
