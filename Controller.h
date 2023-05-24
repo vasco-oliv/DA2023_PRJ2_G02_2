@@ -8,7 +8,7 @@
 class Controller {
 private:
     Graph graph;
-    std::map<unsigned int,std::shared_ptr<Vertex>> vertices;
+    std::map<unsigned int, std::shared_ptr<Vertex>> vertices;
 
     void clearScreen();
     void dataReset();
@@ -19,6 +19,8 @@ private:
 
     void backtrackingAux(std::shared_ptr<Vertex> current, std::vector<std::shared_ptr<Vertex>>& path, double& distance, double& bestDistance, std::vector<std::shared_ptr<Vertex>>& bestPath);
     void nearestNeighborGreedy(std::vector<std::shared_ptr<Vertex>>& path, double& distance);
+    std::shared_ptr<Vertex> findNearestNeighbor(std::shared_ptr<Vertex> current);
+
 public:
     //Others
     void run();

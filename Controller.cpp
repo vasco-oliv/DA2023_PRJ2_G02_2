@@ -385,3 +385,23 @@ void Controller::backtracking() {
     mainMenu();
 }
 
+std::shared_ptr<Vertex> Controller::findNearestNeighbor(std::shared_ptr<Vertex> current) {
+    for (const auto& edge : current->getAdj()) {
+        if (!edge->getDest()->isVisited()) {
+            return edge->getDest();
+        }
+    }
+    return nullptr;
+}
+
+void Controller::nearestNeighborGreedy(std::vector<std::shared_ptr<Vertex>> &path, double &distance) {
+    std::shared_ptr<Vertex> current = graph.getVertexSet()[0];
+
+    while (true) {
+      if (findNearestNeighbor(current) == nullptr) {
+        distance += current->getAdj()[0]->getWeight();
+        path.push_back(current);
+        break;
+      }
+    }
+}

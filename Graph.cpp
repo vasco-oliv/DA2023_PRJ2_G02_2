@@ -22,7 +22,7 @@ bool Graph::addVertex(unsigned int id) {
 
 bool Graph::removeVertex(unsigned int id) {
     auto v= findVertex(id);
-    if(v == vertexSet.end()){
+    if(v == vertexSet.end()) {
         return false;
     }
     vertexSet.erase(v);
