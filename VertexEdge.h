@@ -26,6 +26,8 @@ public:
     unsigned int getId() const;
     bool isVisited() const;
     double getDist() const;
+    double getLatitude() const;
+    double getLongitude() const;
     const std::vector<std::shared_ptr<Edge>>& getAdj() const;
 };
 

@@ -17,8 +17,10 @@ private:
     void readTourismGraph(std::string edges);
     void readFullyConGraph(std::string edges);
 
-    void backtrackingAux(std::shared_ptr<Vertex> current, std::vector<std::shared_ptr<Vertex>>& path, double& distance, double& bestDistance, std::vector<std::shared_ptr<Vertex>>& bestPath);
+    void backtrackingAux(const std::shared_ptr<Vertex>& current, std::vector<std::shared_ptr<Vertex>>& path, double& distance, double& bestDistance, std::vector<std::shared_ptr<Vertex>>& bestPath);
     void nearestNeighborGreedy(std::vector<std::shared_ptr<Vertex>>& path, double& distance);
+    void primMST(std::vector<std::shared_ptr<Vertex>>& path);
+    double calculateDistance(std::vector<std::shared_ptr<Vertex>>& path);
 public:
     //Others
     void run();
@@ -29,6 +31,7 @@ public:
 
     //Algorithms
     void backtracking();
+    void triangular();
 
 
 

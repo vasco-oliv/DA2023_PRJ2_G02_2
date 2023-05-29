@@ -40,10 +40,11 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
         iss >> lon;
 
         if(vertices.find(id)==vertices.end()){
-            vertices.insert(std::make_pair(id,std::make_shared<Vertex>(id,lat,lon)));
+            auto v = std::make_shared<Vertex>(id,lat,lon);
+            vertices.insert(std::make_pair(id,v));
+            graph.addVertex(v);
         }
 
-        graph.addVertex(id,lat,lon);
     }
     ifsN.close();
 
@@ -80,24 +81,27 @@ void Controller::readToyGraph(std::string edges) {
     }
     std::string line;
     getline(ifs,line);
+    int idOrig,idDest;
+    double weight;
     while(std::getline(ifs,line)){
         std::istringstream iss(line);
-        std::string idOrig,idDest,weight;
-        std::getline(iss,idOrig,',');
-        std::getline(iss,idDest,',');
-        std::getline(iss,weight);
-        if(idOrig.empty() || idDest.empty() || weight.empty()){
-            continue;
+        iss >> idOrig;
+        iss.ignore(1);
+        iss >> idDest;
+        iss.ignore(1);
+        iss >> weight;
+
+        if(vertices.find(idOrig)==vertices.end()){
+            auto v = std::make_shared<Vertex>(idOrig);
+            vertices.insert(std::make_pair(idOrig,v));
+            graph.addVertex(v);
         }
-        if(vertices.find(std::stoi(idOrig))==vertices.end()){
-            graph.addVertex(std::stoi(idOrig));
-            vertices.insert(std::make_pair(std::stoi(idOrig),std::make_shared<Vertex>(std::stoi(idOrig))));
+        if(vertices.find(idDest)==vertices.end()){
+            auto v = std::make_shared<Vertex>(idDest);
+            vertices.insert(std::make_pair(idDest,v));
+            graph.addVertex(v);
         }
-        if(vertices.find(std::stoi(idDest))==vertices.end()){
-            graph.addVertex(std::stoi(idDest));
-            vertices.insert(std::make_pair(std::stoi(idDest),std::make_shared<Vertex>(std::stoi(idDest))));
-        }
-        graph.addEdge(std::stoi(idOrig),std::stoi(idDest),std::stod(weight));
+        graph.addEdge(idOrig,idDest,weight);
 
     }
 }
@@ -109,25 +113,28 @@ void Controller::readTourismGraph(std::string edges) {
         exit(1);
     }
     std::string line;
+    int idOrig, idDest;
+    double weight;
     getline(ifs,line);
     while(std::getline(ifs,line)){
         std::istringstream iss(line);
-        std::string idOrig,idDest,weight;
-        std::getline(iss,idOrig,',');
-        std::getline(iss,idDest,',');
-        std::getline(iss,weight,',');
-        if(idOrig.empty() || idDest.empty() || weight.empty()){
-            continue;
+        iss >> idOrig;
+        iss.ignore(1);
+        iss >> idDest;
+        iss.ignore(1);
+        iss >> weight;
+        iss.ignore(1);
+        if(vertices.find(idOrig)==vertices.end()){
+            auto v = std::make_shared<Vertex>(idOrig);
+            vertices.insert(std::make_pair(idOrig,v));
+            graph.addVertex(v);
         }
-        if(vertices.find(std::stoi(idOrig))==vertices.end()){
-            graph.addVertex(std::stoi(idOrig));
-            vertices.insert(std::make_pair(std::stoi(idOrig),std::make_shared<Vertex>(std::stoi(idOrig))));
+        if(vertices.find(idDest)==vertices.end()){
+            auto v = std::make_shared<Vertex>(idDest);
+            vertices.insert(std::make_pair(idDest,v));
+            graph.addVertex(v);
         }
-        if(vertices.find(std::stoi(idDest))==vertices.end()){
-            graph.addVertex(std::stoi(idDest));
-            vertices.insert(std::make_pair(std::stoi(idDest),std::make_shared<Vertex>(std::stoi(idDest))));
-        }
-        graph.addEdge(std::stoi(idOrig),std::stoi(idDest),std::stod(weight));
+        graph.addEdge(idOrig,idDest,weight);
 
     }
 }
@@ -150,12 +157,14 @@ void Controller::readFullyConGraph(std::string edges) {
         iss >> weight;
 
         if(vertices.find(idOrig)==vertices.end()){
-            graph.addVertex(idOrig);
-            vertices.insert(std::make_pair(idOrig,std::make_shared<Vertex>(idOrig)));
+            auto v = std::make_shared<Vertex>(idOrig);
+            vertices.insert(std::make_pair(idOrig,v));
+            graph.addVertex(v);
         }
         if(vertices.find(idDest)==vertices.end()){
-            graph.addVertex(idDest);
-            vertices.insert(std::make_pair(idDest,std::make_shared<Vertex>(idDest)));
+            auto v = std::make_shared<Vertex>(idDest);
+            vertices.insert(std::make_pair(idDest,v));
+            graph.addVertex(v);
         }
         graph.addEdge(idOrig,idDest,weight);
 
@@ -224,7 +233,7 @@ void Controller::startMenu() {
         case 2:
             clearScreen();
             std::cout << "\t**Start Menu**\n\n";
-            std::cout << "Select a Real World Graph:\n";
+            std::cout << "Select a Toy Graph:\n";
             std::cout << "1. Shipping\n";
             std::cout << "2. Stadiums\n";
             std::cout << "3. Tourism\n";
@@ -262,7 +271,7 @@ void Controller::startMenu() {
             }
             break;
         case 3:
-            readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_25.csv");
+            readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/Extra_Fully_Connected_Graphs/edges_300.csv");
             mainMenu();
             break;
         case 4:
@@ -296,7 +305,7 @@ void Controller::mainMenu() {
             backtracking();
             break;
         case 2:
-            //triangular();
+            triangular();
             break;
         case 3:
             //algoritmo_dos_deuses();
@@ -317,7 +326,7 @@ void Controller::mainMenu() {
 
 }
 
-void Controller::backtrackingAux(std::shared_ptr<Vertex> current, std::vector<std::shared_ptr<Vertex>>& path, double& distance, double& bestDistance, std::vector<std::shared_ptr<Vertex>>& bestPath) {
+void Controller::backtrackingAux(const std::shared_ptr<Vertex>& current, std::vector<std::shared_ptr<Vertex>>& path, double& distance, double& bestDistance, std::vector<std::shared_ptr<Vertex>>& bestPath) {
     if(distance >= bestDistance){
         return;
     }
@@ -328,10 +337,10 @@ void Controller::backtrackingAux(std::shared_ptr<Vertex> current, std::vector<st
             if (edge->getDest().get() == graph.getVertexSet()[0].get()) {
                 distance += edge->getWeight();
                 path.push_back(graph.getVertexSet()[0]);
-                if(distance < bestDistance){
+                if(distance < bestDistance - std::numeric_limits<float>::epsilon()){
                     bestDistance = distance;
                     bestPath = std::vector<std::shared_ptr<Vertex>>(path);
-                    std::cout << path[1]->getId() << ' ' << bestDistance << std::endl;
+                    std::cout << path[1]->getId() << " " << bestDistance << std::endl;
                 }
                 distance -= edge->getWeight();
                 path.pop_back();
@@ -364,13 +373,14 @@ void Controller::backtrackingAux(std::shared_ptr<Vertex> current, std::vector<st
 }
 
 void Controller::backtracking() {
+    clock_t start = clock();
     std::vector<std::shared_ptr<Vertex>> path, bestPath;
     double distance = 0, bestDistance = std::numeric_limits<double>::max();
     for (const auto& vertex : graph.getVertexSet()) {
         vertex->setVisited(false);
     }
     backtrackingAux(graph.getVertexSet()[0], path, distance, bestDistance, bestPath);
-
+    clock_t end = clock();
     clearScreen();
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
     std::cout << "Best Path: ";
@@ -379,9 +389,99 @@ void Controller::backtracking() {
         std::cout << " -> " << bestPath[i]->getId();
     }
     std::cout << "\nBest Distance: " << bestDistance << "\n";
+    std::cout << "Time: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds\n";
     std::cout << "(Press any key to continue)\n";
     std::string aux;
     std::cin >> aux;
     mainMenu();
 }
+
+void Controller::nearestNeighborGreedy(std::vector<std::shared_ptr<Vertex>> &path, double &distance) {
+    std::shared_ptr<Vertex> current = graph.getVertexSet()[0];
+    current->setVisited(true);
+    path.push_back(current);
+    while(path.size() < graph.getVertexSet().size()){
+        std::priority_queue<std::shared_ptr<Edge>, std::vector<std::shared_ptr<Edge>>, EdgeComparator> pq(current -> getAdj().begin(), current -> getAdj().end());
+        while(!pq.empty()){
+            auto edge = pq.top();
+            pq.pop();
+            std::shared_ptr<Vertex> dest = edge->getDest();
+            double weight = edge->getWeight();
+            if (!dest->isVisited()) {
+                distance += weight;
+                dest->setVisited(true);
+                path.push_back(dest);
+                current = dest;
+                break;
+            }
+        }
+    }
+}
+
+void Controller::triangular() {
+    clock_t start = clock();
+    std::vector<std::shared_ptr<Vertex>> path;
+    for (const auto& vertex : graph.getVertexSet()) {
+        vertex->setVisited(false);
+    }
+    primMST(path);
+    clock_t end = clock();
+    clearScreen();
+    std::cout << "\t**Traveling Salesperson Problem**\n\n";
+    std::cout << "Best Path: ";
+    std::cout << path[0]->getId();
+    for (int i = 1; i < path.size(); ++i) {
+        std::cout << " -> " << path[i]->getId();
+    }
+    std::cout << "\nBest Distance: " << calculateDistance(path) << "\n";
+    std::cout << "Time: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds\n";
+    std::cout << "(Press any key to continue)\n";
+    std::string aux;
+    std::cin >> aux;
+    mainMenu();
+}
+
+void Controller::primMST(std::vector<std::shared_ptr<Vertex>> &path) {
+    std::shared_ptr<Vertex> current = graph.getVertexSet()[0];
+    current->setVisited(true);
+    path.push_back(current);
+    std::priority_queue<std::shared_ptr<Edge>, std::vector<std::shared_ptr<Edge>>, EdgeComparator> pq(current -> getAdj().begin(), current -> getAdj().end());
+    while(path.size() < graph.getVertexSet().size()){
+        while(!pq.empty()){
+            auto edge = pq.top();
+            pq.pop();
+            std::shared_ptr<Vertex> dest = edge->getDest();
+            if (!dest->isVisited()) {
+                dest->setVisited(true);
+                path.push_back(dest);
+                current = dest;
+                for(const auto& edge2 : current->getAdj()){
+                    if(!edge2->getDest()->isVisited()){
+                        pq.push(edge2);
+                    }
+                }
+                break;
+            }
+        }
+    }
+    path.push_back(graph.getVertexSet()[0]);
+}
+
+double Controller::calculateDistance(std::vector<std::shared_ptr<Vertex>> &path) {
+    double distance=0;
+    for(int i = 0; i < path.size()-1; i++){
+        double w=graph.getDist(path[i]->getId(),path[i+1]->getId());
+        if(w==-1){
+            if(path[i]->getLatitude()==200 || path[i]->getLongitude()==200 || path[i+1]->getLatitude()==200 || path[i+1]->getLongitude()==200){
+                return -1;
+            }
+            else{
+                w=graph.calculateDist(path[i]->getLatitude(),path[i]->getLongitude(),path[i+1]->getLatitude(),path[i+1]->getLongitude());
+            }
+        }
+        distance+=w;
+    }
+    return distance;
+}
+
 

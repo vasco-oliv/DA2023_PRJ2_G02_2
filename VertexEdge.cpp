@@ -4,7 +4,10 @@
 
 // **VERTEX**
 
-Vertex::Vertex(unsigned int id) : id(id) {}
+Vertex::Vertex(unsigned int id) : id(id) {
+    this->latitude=200;
+    this->longitude=200;
+}
 
 Vertex::Vertex(unsigned int id, double latitude, double longitude) {
     this->id=id;
@@ -55,6 +58,14 @@ double Vertex::getDist() const {
 
 const std::vector<std::shared_ptr<Edge>>& Vertex::getAdj() const {
     return adj;
+}
+
+double Vertex::getLatitude() const {
+    return latitude;
+}
+
+double Vertex::getLongitude() const {
+    return longitude;
 }
 
 

@@ -15,8 +15,11 @@ public:
     std::vector<std::shared_ptr<Vertex>>::const_iterator findVertex(unsigned int id) const;
     bool addVertex(unsigned int id);
     bool addVertex(unsigned int id, double latitude, double longitude);
+    bool addVertex(const std::shared_ptr<Vertex>& vertex);
     bool removeVertex(unsigned int id);
     bool addEdge(unsigned int idOrig, unsigned int idDest, double weight);
+    double getDist(unsigned int idOrig, unsigned int idDest) const;
+    double calculateDist(double lat1, double long1, double lat2, double long2) const;
 };
 
 
