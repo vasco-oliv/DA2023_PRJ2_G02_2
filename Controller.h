@@ -3,14 +3,14 @@
 
 #include "Graph.h"
 #include <unordered_set>
-#include <map>
+#include <unordered_map>
 
 class Controller {
 private:
     Graph graph;
-    std::map<unsigned int, std::shared_ptr<Vertex>> vertices;
+    std::unordered_map<unsigned int, std::shared_ptr<Vertex>> vertices;
 
-    void clearScreen();
+    static void clearScreen();
     void dataReset();
     void readRealWorldGraph(const std::string& nodes, const std::string& edges);
     void readToyGraph(std::string edges);
@@ -20,9 +20,9 @@ private:
     void backtrackingAux(const std::shared_ptr<Vertex>& current, std::vector<std::shared_ptr<Vertex>>& path, double& distance, double& bestDistance, std::vector<std::shared_ptr<Vertex>>& bestPath);
     void nearestNeighborGreedy(std::vector<std::shared_ptr<Vertex>>& path, double& distance);
 
-    void primMST(std::vector<std::shared_ptr<Vertex>>& path);
+    std::vector<std::vector<unsigned int>> primMST();
     double calculateDistance(std::vector<std::shared_ptr<Vertex>>& path);
-
+    void preorder(std::vector<std::shared_ptr<Vertex>>& path, const std::shared_ptr<Vertex>& current, std::vector<std::vector<unsigned int>>& degrees);
 public:
     //Others
     void run();

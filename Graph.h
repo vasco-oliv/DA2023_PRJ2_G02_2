@@ -11,6 +11,7 @@ private:
     std::vector<std::shared_ptr<Vertex>> vertexSet;
 
 public:
+    bool hasCoords = false;
     const std::vector<std::shared_ptr<Vertex>>& getVertexSet() const;
     std::vector<std::shared_ptr<Vertex>>::const_iterator findVertex(unsigned int id) const;
     bool addVertex(unsigned int id);
@@ -20,6 +21,8 @@ public:
     bool addEdge(unsigned int idOrig, unsigned int idDest, double weight);
     double getDist(unsigned int idOrig, unsigned int idDest) const;
     double calculateDist(double lat1, double long1, double lat2, double long2) const;
+    void clear();
+
 };
 
 

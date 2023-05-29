@@ -12,9 +12,10 @@ private:
     unsigned int id;
     std::vector<std::shared_ptr<Edge>> adj;
     bool visited = false;
-    double dist = 0;
+    int dist = 0;
     double latitude;
     double longitude;
+    unsigned int previous;
 
 public:
     explicit Vertex(unsigned int id);
@@ -22,12 +23,14 @@ public:
     bool addEdge(std::shared_ptr<Vertex> dest, double weight);
     bool removeEdge(std::shared_ptr<Vertex> dest);
     void setVisited(bool visited);
-    void setDist(double dist);
+    void setDist(int dist);
     unsigned int getId() const;
     bool isVisited() const;
-    double getDist() const;
+    int getDist() const;
     double getLatitude() const;
     double getLongitude() const;
+    void setPrevious(unsigned int previous);
+    unsigned int getPrevious() const;
     const std::vector<std::shared_ptr<Edge>>& getAdj() const;
 };
 
@@ -51,4 +54,4 @@ struct EdgeComparator {
     }
 };
 
-#endif //DA2023_PRJ2_G02_2_VERTEXEDGE_H
+#endif

@@ -75,3 +75,7 @@ double Graph::calculateDist(double lat1, double long1, double lat2, double long2
     double y = (lat2 - lat1);
     return sqrt(x * x + y * y) * 6371;
 }
+
+void Graph::clear() {
+    vertexSet.clear();
+}

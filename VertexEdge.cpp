@@ -4,10 +4,7 @@
 
 // **VERTEX**
 
-Vertex::Vertex(unsigned int id) : id(id) {
-    this->latitude=200;
-    this->longitude=200;
-}
+Vertex::Vertex(unsigned int id) : id(id) {}
 
 Vertex::Vertex(unsigned int id, double latitude, double longitude) {
     this->id=id;
@@ -39,7 +36,7 @@ void Vertex::setVisited(bool visited) {
     this->visited=visited;
 }
 
-void Vertex::setDist(double dist) {
+void Vertex::setDist(int dist) {
     this->dist=dist;
 }
 
@@ -52,7 +49,7 @@ bool Vertex::isVisited() const {
     return visited;
 }
 
-double Vertex::getDist() const {
+int Vertex::getDist() const {
     return dist;
 }
 
@@ -68,6 +65,13 @@ double Vertex::getLongitude() const {
     return longitude;
 }
 
+void Vertex::setPrevious(unsigned int previous) {
+    this->previous=previous;
+}
+
+unsigned int Vertex::getPrevious() const {
+    return previous;
+}
 
 // **EDGE**
 

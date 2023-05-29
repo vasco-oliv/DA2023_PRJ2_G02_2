@@ -19,6 +19,11 @@ void Controller::clearScreen() {
 
 void Controller::dataReset() {
     //rip data
+    clearScreen();
+    std::cout << "Clearing data...\n";
+    vertices.clear();
+    graph.clear();
+    graph = Graph();
 }
 
 void Controller::readRealWorldGraph(const std::string& nodes, const std::string& edges) {
@@ -70,7 +75,7 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
         }
         graph.addEdge(idOrig,idDest,weight);
     }
-
+    graph.hasCoords = true;
 }
 
 void Controller::readToyGraph(std::string edges) {
@@ -173,6 +178,7 @@ void Controller::readFullyConGraph(std::string edges) {
 
 
 void Controller::run() {
+    dataReset();
     startMenu();
 }
 
@@ -311,7 +317,7 @@ void Controller::mainMenu() {
             //algoritmo_dos_deuses();
             break;
         case 4:
-            //data.clear();
+            dataReset();
             startMenu();
             break;
         case 0:
@@ -424,7 +430,12 @@ void Controller::triangular() {
     for (const auto& vertex : graph.getVertexSet()) {
         vertex->setVisited(false);
     }
-    primMST(path);
+    auto degrees=primMST();
+    for (const auto& vertex : graph.getVertexSet()) {
+        vertex->setVisited(false);
+    }
+    preorder(path, graph.getVertexSet()[0],degrees);
+    path.push_back(graph.getVertexSet()[0]);
     clock_t end = clock();
     clearScreen();
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
@@ -441,30 +452,31 @@ void Controller::triangular() {
     mainMenu();
 }
 
-void Controller::primMST(std::vector<std::shared_ptr<Vertex>> &path) {
-    std::shared_ptr<Vertex> current = graph.getVertexSet()[0];
+std::vector<std::vector<unsigned int>> Controller::primMST() {
+    auto current = graph.getVertexSet()[0];
+    current->setDist(0);
+    std::vector<std::vector<unsigned int>> degrees(graph.getVertexSet().size());
     current->setVisited(true);
-    path.push_back(current);
+    degrees[0].push_back(current->getId());
     std::priority_queue<std::shared_ptr<Edge>, std::vector<std::shared_ptr<Edge>>, EdgeComparator> pq(current -> getAdj().begin(), current -> getAdj().end());
-    while(path.size() < graph.getVertexSet().size()){
-        while(!pq.empty()){
-            auto edge = pq.top();
-            pq.pop();
-            std::shared_ptr<Vertex> dest = edge->getDest();
-            if (!dest->isVisited()) {
-                dest->setVisited(true);
-                path.push_back(dest);
-                current = dest;
-                for(const auto& edge2 : current->getAdj()){
-                    if(!edge2->getDest()->isVisited()){
-                        pq.push(edge2);
-                    }
+    while(!pq.empty()){
+        auto edge = pq.top();
+        pq.pop();
+        std::shared_ptr<Vertex> dest = edge->getDest();
+        if (!dest->isVisited()) {
+            dest->setVisited(true);
+            dest->setPrevious(current->getId());
+            dest->setDist(current->getDist()+1);
+            degrees[dest->getDist()].push_back(dest->getId());
+            current = dest;
+            for(const auto& edge2 : current->getAdj()){
+                if(!edge2->getDest()->isVisited()){
+                    pq.push(edge2);
                 }
-                break;
             }
         }
     }
-    path.push_back(graph.getVertexSet()[0]);
+    return degrees;
 }
 
 double Controller::calculateDistance(std::vector<std::shared_ptr<Vertex>> &path) {
@@ -472,7 +484,7 @@ double Controller::calculateDistance(std::vector<std::shared_ptr<Vertex>> &path)
     for(int i = 0; i < path.size()-1; i++){
         double w=graph.getDist(path[i]->getId(),path[i+1]->getId());
         if(w==-1){
-            if(path[i]->getLatitude()==200 || path[i]->getLongitude()==200 || path[i+1]->getLatitude()==200 || path[i+1]->getLongitude()==200){
+            if(!graph.hasCoords){
                 return -1;
             }
             else{
@@ -482,4 +494,20 @@ double Controller::calculateDistance(std::vector<std::shared_ptr<Vertex>> &path)
         distance+=w;
     }
     return distance;
+}
+
+void Controller::preorder(std::vector<std::shared_ptr<Vertex>>& path,const std::shared_ptr<Vertex>& current, std::vector<std::vector<unsigned int>>& degrees) {
+    path.push_back(current);
+    current->setVisited(true);
+    if(degrees.size()<=current->getDist()+1){
+        return;
+    }
+    for(auto v: degrees[current->getDist()+1]){
+        if(vertices.find(v)==vertices.end()){
+            continue;
+        }
+        if(!vertices[v]->isVisited() && vertices[v]->getPrevious()==current->getId()){
+            preorder(path, vertices[v], degrees);
+        }
+    }
 }
