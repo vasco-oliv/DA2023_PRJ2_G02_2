@@ -483,5 +483,3 @@ double Controller::calculateDistance(std::vector<std::shared_ptr<Vertex>> &path)
     }
     return distance;
 }
-
-
