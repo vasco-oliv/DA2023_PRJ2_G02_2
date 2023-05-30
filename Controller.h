@@ -14,7 +14,6 @@ private:
     void dataReset();
     void readRealWorldGraph(const std::string& nodes, const std::string& edges);
     void readToyGraph(std::string edges);
-    void readTourismGraph(std::string edges);
     void readFullyConGraph(std::string edges);
 
     void backtrackingAux(const std::shared_ptr<Vertex>& current, std::vector<std::shared_ptr<Vertex>>& path, double& distance, double& bestDistance, std::vector<std::shared_ptr<Vertex>>& bestPath);
@@ -29,6 +28,7 @@ private:
 
     void backtracking();
     void triangular();
+    void godsAlgorithm();
 public:
     void run();
 

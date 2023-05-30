@@ -109,38 +109,6 @@ void Controller::readToyGraph(std::string edges) {
     }
 }
 
-void Controller::readTourismGraph(std::string edges) {
-    std::ifstream ifs(edges);
-    if(!ifs.is_open()){
-        std::cout << "ERROR: File not found\n";
-        exit(1);
-    }
-    std::string line;
-    int idOrig, idDest;
-    double weight;
-    getline(ifs,line);
-    while(std::getline(ifs,line)){
-        std::istringstream iss(line);
-        iss >> idOrig;
-        iss.ignore(1);
-        iss >> idDest;
-        iss.ignore(1);
-        iss >> weight;
-        iss.ignore(1);
-        if(vertices.find(idOrig)==vertices.end()){
-            auto v = std::make_shared<Vertex>(idOrig);
-            vertices.insert(std::make_pair(idOrig,v));
-            graph.addVertex(v);
-        }
-        if(vertices.find(idDest)==vertices.end()){
-            auto v = std::make_shared<Vertex>(idDest);
-            vertices.insert(std::make_pair(idDest,v));
-            graph.addVertex(v);
-        }
-        graph.addEdge(idOrig,idDest,weight);
-
-    }
-}
 
 void Controller::readFullyConGraph(std::string edges) {
     std::ifstream ifs(edges);
@@ -274,7 +242,7 @@ void Controller::startMenu() {
             }
             break;
         case 3:
-            readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/Extra_Fully_Connected_Graphs/edges_300.csv");
+            readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_900.csv");
             mainMenu();
             break;
         case 4:
@@ -308,10 +276,14 @@ void Controller::mainMenu() {
             backtracking();
             break;
         case 2:
+            clearScreen();
+            std::cout << "Calculating best solution using a Triangular Approximation Heuristic...\n";
             triangular();
             break;
         case 3:
-            //algoritmo_dos_deuses();
+            clearScreen();
+            std::cout << "Calculating best solution using God's Algorithm...\n";
+            godsAlgorithm();
             break;
         case 4:
             dataReset();
@@ -419,6 +391,8 @@ void Controller::nearestNeighborGreedy(std::vector<std::shared_ptr<Vertex>> &pat
             }
         }
     }
+    path.push_back(graph.getVertexSet()[0]);
+    distance += graph.getDist(path[path.size()-2]->getId(),path[path.size()-1]->getId());
 }
 
 void Controller::triangular() {
@@ -507,4 +481,24 @@ void Controller::preorder(std::vector<std::shared_ptr<Vertex>>& path,const std::
             preorder(path, vertices[v], degrees);
         }
     }
+}
+
+void Controller::godsAlgorithm() {
+    clearScreen();
+    std::cout << "\t**Traveling Salesperson Problem**\n\n";
+    clock_t start = clock();
+    std::vector<std::shared_ptr<Vertex>> path;
+    for (const auto& vertex : graph.getVertexSet()) {
+        vertex->setVisited(false);
+    }
+    double distance = 0;
+    nearestNeighborGreedy(path, distance);
+
+    std::cout << "Path Size: " << path.size() << "\n";
+    std::cout << "Greedy: " << distance << "\n";
+    std::cout << "Time: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds\n";
+    std::cout << "(Press any key to continue)\n";
+    std::string aux;
+    std::cin >> aux;
+    mainMenu();
 }
