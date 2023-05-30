@@ -1,5 +1,4 @@
 #include "VertexEdge.h"
-
 #include <utility>
 
 // **VERTEX**
@@ -12,12 +11,12 @@ Vertex::Vertex(unsigned int id, double latitude, double longitude) {
     this->longitude=longitude;
 
 }
+
 bool Vertex::addEdge(std::shared_ptr<Vertex> dest, double weight) {
     for(auto &edge : adj){
-        if(edge->getDest() == dest){
-            return false;
-        }
+        if(edge->getDest() == dest) return false;
     }
+
     adj.push_back(std::make_shared<Edge>(std::make_shared<Vertex>(this -> id, this -> longitude, this -> latitude), dest, weight));
     return true;
 }
@@ -32,15 +31,6 @@ bool Vertex::removeEdge(std::shared_ptr<Vertex> dest) {
     return false;
 }
 
-void Vertex::setVisited(bool visited) {
-    this->visited=visited;
-}
-
-void Vertex::setDist(int dist) {
-    this->dist=dist;
-}
-
-
 unsigned int Vertex::getId() const {
     return id;
 }
@@ -49,12 +39,16 @@ bool Vertex::isVisited() const {
     return visited;
 }
 
+void Vertex::setVisited(bool visited) {
+    this->visited=visited;
+}
+
 int Vertex::getDist() const {
     return dist;
 }
 
-const std::vector<std::shared_ptr<Edge>>& Vertex::getAdj() const {
-    return adj;
+void Vertex::setDist(int dist) {
+    this->dist=dist;
 }
 
 double Vertex::getLatitude() const {
@@ -66,11 +60,15 @@ double Vertex::getLongitude() const {
 }
 
 void Vertex::setPrevious(unsigned int previous) {
-    this->previous=previous;
+    this->previous = previous;
 }
 
 unsigned int Vertex::getPrevious() const {
     return previous;
+}
+
+const std::vector<std::shared_ptr<Edge>>& Vertex::getAdj() const {
+    return adj;
 }
 
 void Vertex::clear() {
