@@ -77,5 +77,9 @@ double Graph::calculateDist(double lat1, double long1, double lat2, double long2
 }
 
 void Graph::clear() {
+    for (auto &v : vertexSet) {
+        v->clear();
+        v.reset();
+    }
     vertexSet.clear();
 }

@@ -73,6 +73,12 @@ unsigned int Vertex::getPrevious() const {
     return previous;
 }
 
+void Vertex::clear() {
+    for (auto &edge: adj)
+        edge.reset();
+    adj.clear();
+}
+
 // **EDGE**
 
 Edge::Edge(std::shared_ptr<Vertex>orig, std::shared_ptr<Vertex>dest, double weight) {

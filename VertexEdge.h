@@ -32,6 +32,7 @@ public:
     void setPrevious(unsigned int previous);
     unsigned int getPrevious() const;
     const std::vector<std::shared_ptr<Edge>>& getAdj() const;
+    void clear();
 };
 
 class Edge{

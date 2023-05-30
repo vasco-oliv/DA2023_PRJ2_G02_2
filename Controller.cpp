@@ -1,10 +1,8 @@
-
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <limits>
-#include <unordered_set>
 #include <queue>
 #include "Controller.h"
 
@@ -178,7 +176,6 @@ void Controller::readFullyConGraph(std::string edges) {
 
 
 void Controller::run() {
-    dataReset();
     startMenu();
 }
 
@@ -192,7 +189,7 @@ void Controller::startMenu() {
     std::cout << "4. Other Graph\n";
     std::cout << "0. Exit\n";
     std::cout << "Option: ";
-    int option,option2;
+    int option, option2;
     std::string aux;
     std::cin >> option;
     switch (option) {

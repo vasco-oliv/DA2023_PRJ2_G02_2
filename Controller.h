@@ -23,19 +23,14 @@ private:
     std::vector<std::vector<unsigned int>> primMST();
     double calculateDistance(std::vector<std::shared_ptr<Vertex>>& path);
     void preorder(std::vector<std::shared_ptr<Vertex>>& path, const std::shared_ptr<Vertex>& current, std::vector<std::vector<unsigned int>>& degrees);
-public:
-    //Others
-    void run();
 
-    //Menus
     void startMenu();
     void mainMenu();
 
-    //Algorithms
     void backtracking();
     void triangular();
-
-
+public:
+    void run();
 
 };
 
