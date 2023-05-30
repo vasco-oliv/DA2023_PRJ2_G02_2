@@ -12,7 +12,7 @@ Vertex::Vertex(unsigned int id, double latitude, double longitude) {
 
 }
 
-bool Vertex::addEdge(std::shared_ptr<Vertex> dest, double weight) {
+bool Vertex::addEdge(const std::shared_ptr<Vertex>& dest, double weight) {
     for(auto &edge : adj){
         if(edge->getDest() == dest) return false;
     }
@@ -21,7 +21,7 @@ bool Vertex::addEdge(std::shared_ptr<Vertex> dest, double weight) {
     return true;
 }
 
-bool Vertex::removeEdge(std::shared_ptr<Vertex> dest) {
+bool Vertex::removeEdge(const std::shared_ptr<Vertex>& dest) {
     for(auto it = adj.begin(); it != adj.end(); it++){
         if((*it)->getDest() == dest){
             adj.erase(it);

@@ -71,7 +71,7 @@ public:
     /// @param long2 The longitude of the destination vertex
     /// @return The distance between the two vertices in kilometers
     /// @note Time Complexity: O(1)
-    double calculateDist(double lat1, double long1, double lat2, double long2) const;
+    static double calculateDist(double lat1, double long1, double lat2, double long2) ;
 
     /// @brief Clears the graph by removing all vertices and their associated edges.
     /// @note Time Complexity: O(V), where V is the number of vertices in the graph

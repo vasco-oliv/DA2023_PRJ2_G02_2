@@ -28,12 +28,12 @@ private:
     /// @brief Reads the toy graph's CSV file and populates the graph.
     /// @param edges The name of the CSV file with the edges
     /// @note Time Complexity: O(E), where E is the number of edges in the graph
-    void readToyGraph(std::string edges);
+    void readToyGraph(const std::string& edges);
 
     /// @brief Reads the extra fully connected graph's CSV file and populates the graph.
     /// @param edges The name of the CSV file with the edges
     /// @note Time Complexity: O(E), where E is the number of edges in the graph
-    void readFullyConGraph(std::string edges);
+    void readFullyConGraph(const std::string& edges);
 
 
     ///@brief Displays the start menu and allows the user to select the network graph to use (either a real world graph, a toy graph, an extra fully connected graph or another one of their choosing).
@@ -85,6 +85,7 @@ private:
 
 
     void nearestNeighborGreedy(std::vector<std::shared_ptr<Vertex>>& path, double& distance);
+    void godsAlgorithm();
 
 public:
     /// @brief Runs the program's start menu.

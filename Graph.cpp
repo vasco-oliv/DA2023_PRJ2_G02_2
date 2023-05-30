@@ -57,7 +57,7 @@ double Graph::getDist(unsigned int idOrig, unsigned int idDest) const {
     auto dest = findVertex(idDest);
     if(orig == vertexSet.end() || dest == vertexSet.end()) return 0;
 
-    for(std::shared_ptr<Edge> e:orig->get()->getAdj()){
+    for(const std::shared_ptr<Edge>& e:orig->get()->getAdj()){
         if(e->getDest()->getId() == idDest){
             return e->getWeight();
         }
@@ -65,7 +65,7 @@ double Graph::getDist(unsigned int idOrig, unsigned int idDest) const {
     return -1;
 }
 
-double Graph::calculateDist(double lat1, double long1, double lat2, double long2) const {
+double Graph::calculateDist(double lat1, double long1, double lat2, double long2) {
     double x = (long2 - long1) * cos((lat1 + lat2) / 2);
     double y = (lat2 - lat1);
     return sqrt(x * x + y * y) * 6371;

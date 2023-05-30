@@ -81,7 +81,7 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
     graph.hasCoords = true;
 }
 
-void Controller::readToyGraph(std::string edges) {
+void Controller::readToyGraph(const std::string& edges) {
     std::ifstream ifs(edges);
 
     if(!ifs.is_open()){
@@ -95,7 +95,7 @@ void Controller::readToyGraph(std::string edges) {
     int idOrig, idDest;
     double weight;
 
-    while(std::getline(ifs, line)){
+    while(std::getline(ifs,line)){
         std::istringstream iss(line);
         iss >> idOrig;
         iss.ignore(1);
@@ -113,11 +113,11 @@ void Controller::readToyGraph(std::string edges) {
             vertices.insert(std::make_pair(idDest, v));
             graph.addVertex(v);
         }
-        graph.addEdge(idOrig, idDest, weight);
+        graph.addEdge(idOrig,idDest,weight);
     }
 }
 
-void Controller::readFullyConGraph(std::string edges) {
+void Controller::readFullyConGraph(const std::string& edges) {
     std::ifstream ifs(edges);
 
     if(!ifs.is_open()){
@@ -290,10 +290,14 @@ void Controller::mainMenu() {
             backtracking();
             break;
         case 2:
+            clearScreen();
+            std::cout << "Calculating best solution using a Triangular Approximation Heuristic...\n";
             triangular();
             break;
         case 3:
-            //algoritmo_dos_deuses();
+            clearScreen();
+            std::cout << "Calculating best solution using God's Algorithm...\n";
+            godsAlgorithm();
             break;
         case 4:
             dataReset();
@@ -507,6 +511,7 @@ void Controller::triangular() {
     mainMenu();
 }
 
+
 void Controller::nearestNeighborGreedy(std::vector<std::shared_ptr<Vertex>> &path, double &distance) {
     std::shared_ptr<Vertex> current = graph.getVertexSet()[0];
     current->setVisited(true);
@@ -534,3 +539,22 @@ void Controller::nearestNeighborGreedy(std::vector<std::shared_ptr<Vertex>> &pat
     distance += graph.getDist(path[path.size()-2]->getId(),path[path.size()-1]->getId());
 }
 
+void Controller::godsAlgorithm() {
+    clearScreen();
+    std::cout << "\t**Traveling Salesperson Problem**\n\n";
+    clock_t start = clock();
+    std::vector<std::shared_ptr<Vertex>> path;
+    for (const auto& vertex : graph.getVertexSet()) {
+        vertex->setVisited(false);
+    }
+    double distance = 0;
+    nearestNeighborGreedy(path, distance);
+
+    std::cout << "Path Size: " << path.size() << "\n";
+    std::cout << "Greedy: " << distance << "\n";
+    std::cout << "Time: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds\n";
+    std::cout << "(Press any key to continue)\n";
+    std::string aux;
+    std::cin >> aux;
+    mainMenu();
+}
