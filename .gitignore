@@ -3,6 +3,7 @@ Project2Graphs
 .idea
 __MACOSX
 .DS_Store
+.vscode
 
 # Prerequisites
 *.d
