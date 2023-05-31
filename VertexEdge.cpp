@@ -12,18 +12,18 @@ Vertex::Vertex(unsigned int id, double latitude, double longitude) {
 
 }
 
-bool Vertex::addEdge(const std::shared_ptr<Vertex>& dest, double weight) {
+bool Vertex::addEdge(Vertex*& dest, double weight) {
     /*for(auto &edge : adj){
         if(edge->getDest() == dest) return false;
     }*/
 
-    adj.push_back(std::make_shared<Edge>(std::make_shared<Vertex>(this -> id, this -> longitude, this -> latitude), dest, weight));
+    adj.push_back(Edge(new Vertex(this -> id, this -> longitude, this -> latitude), dest, weight));
     return true;
 }
 
-bool Vertex::removeEdge(const std::shared_ptr<Vertex>& dest) {
+bool Vertex::removeEdge(Vertex*& dest) {
     for(auto it = adj.begin(); it != adj.end(); it++){
-        if((*it)->getDest() == dest){
+        if(it->getDest() == dest){
             adj.erase(it);
             return true;
         }
@@ -67,29 +67,30 @@ unsigned int Vertex::getPrevious() const {
     return previous;
 }
 
-const std::vector<std::shared_ptr<Edge>>& Vertex::getAdj() const {
+const std::vector<Edge>& Vertex::getAdj() const {
     return adj;
 }
 
 void Vertex::clear() {
-    for (auto &edge: adj)
-        edge.reset();
+    for (auto &edge: adj) {
+        delete &edge;
+    }
     adj.clear();
 }
 
 // **EDGE**
 
-Edge::Edge(std::shared_ptr<Vertex>orig, std::shared_ptr<Vertex>dest, double weight) {
-    this->orig=std::move(orig);
-    this->dest=std::move(dest);
+Edge::Edge(Vertex* orig, Vertex* dest, double weight) {
+    this->orig=orig;
+    this->dest=dest;
     this->weight=weight;
 }
 
-std::shared_ptr<Vertex>Edge::getOrig() const {
+Vertex* Edge::getOrig() const {
     return orig;
 }
 
-std::shared_ptr<Vertex>Edge::getDest() const {
+Vertex* Edge::getDest() const {
     return dest;
 }
 

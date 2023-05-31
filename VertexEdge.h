@@ -10,7 +10,7 @@ class Edge;
 class Vertex {
 private:
     unsigned int id;
-    std::vector<std::shared_ptr<Edge>> adj;
+    std::vector<Edge> adj;
     bool visited = false;
     int dist = 0;
     double latitude;
@@ -18,6 +18,7 @@ private:
     unsigned int previous;
 
 public:
+    std::vector<Vertex*> sons;
 
     /// @brief Creates a vertex with the given id.
     /// @param id The id of the vertex to create
@@ -36,13 +37,13 @@ public:
     /// @param weight The weight of the edge to add
     /// @return True if the edge was added, false otherwise
     /// @note Time Complexity: O(E), where E is the number of edges in the graph
-    bool addEdge(const std::shared_ptr<Vertex>& dest, double weight);
+    bool addEdge(Vertex*& dest, double weight);
 
     /// @brief Removes the edge from this vertex to the specified destination vertex.
     /// @param dest The destination vertex of the edge to remove
     /// @return True if the edge was removed, false otherwise
     /// @note Time Complexity: O(E), where E is the number of edges in the graph
-    bool removeEdge(const std::shared_ptr<Vertex>& dest);
+    bool removeEdge(Vertex*& dest);
 
     /// @brief Gets the id of this vertex.
     /// @return The id of this vertex
@@ -92,7 +93,7 @@ public:
     /// @brief Gets the adjacent edges of the vertex.
     /// @return A vector with the adjacent edges of the vertex
     /// @note Time Complexity: O(1)
-    const std::vector<std::shared_ptr<Edge>>& getAdj() const;
+    const std::vector<Edge>& getAdj() const;
 
     /// @brief Deletes all the adjacent edges of the vertex.
     /// @note Time Complexity: O(1)
@@ -101,8 +102,8 @@ public:
 
 class Edge{
 private:
-    std::shared_ptr<Vertex> orig;
-    std::shared_ptr<Vertex> dest;
+    Vertex* orig;
+    Vertex* dest;
     double weight;
 
 public:
@@ -112,17 +113,17 @@ public:
     /// @param dest The destination vertex of the edge to create
     /// @param weight The weight of the edge to create
     /// @note Time Complexity: O(1)
-    Edge(std::shared_ptr<Vertex>orig, std::shared_ptr<Vertex>dest, double weight);
+    Edge(Vertex* orig, Vertex* dest, double weight);
 
     /// @brief Gets the origin vertex of this edge.
     /// @return The origin vertex of this edge
     /// @note Time Complexity: O(1)
-    std::shared_ptr<Vertex> getOrig() const;
+    Vertex* getOrig() const;
 
     /// @brief Gets the destination vertex of this edge.
     /// @return The destination vertex of this edge
     /// @note Time Complexity: O(1)
-    std::shared_ptr<Vertex> getDest() const;
+    Vertex* getDest() const;
 
     /// @brief Gets the weight of this edge.
     /// @return The weight of this edge
@@ -137,9 +138,9 @@ struct EdgeComparator {
     /// @param e2 The second edge to compare
     /// @return True if the first edge is less than the second, false otherwise
     /// @note Time Complexity: O(1)
-    bool operator()(const std::shared_ptr<Edge> &e1, const std::shared_ptr<Edge> &e2) const {
-        if(e1->getWeight() == e2->getWeight()) return e1->getDest()->getId() > e2->getDest()->getId();
-        return e1->getWeight() > e2->getWeight();
+    bool operator()(const Edge &e1, const Edge &e2) const {
+        if(e1.getWeight() == e2.getWeight()) return e1.getDest()->getId() > e2.getDest()->getId();
+        return e1.getWeight() > e2.getWeight();
     }
 };
 

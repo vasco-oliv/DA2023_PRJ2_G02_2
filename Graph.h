@@ -7,7 +7,7 @@
 
 class Graph {
 private:
-    std::vector<std::shared_ptr<Vertex>> vertexSet;
+    std::vector<Vertex*> vertexSet;
 
 public:
     bool hasCoords = false;
@@ -15,13 +15,13 @@ public:
     /// @brief Gets all the vertices in the graph.
     /// @return A vector with all the vertices in the graph
     /// @note Time Complexity: O(1)
-    const std::vector<std::shared_ptr<Vertex>>& getVertexSet() const;
+    const std::vector<Vertex *> & getVertexSet() const;
 
     /// @brief Finds a vertex in the graph, given its id.
     /// @param id The id of the vertex to find
     /// @return An iterator to the vertex if found, otherwise returns the end of the vertex set
     /// @note Time Complexity: O(V), where V is the number of vertices in the graph
-    std::vector<std::shared_ptr<Vertex>>::const_iterator findVertex(unsigned int id) const;
+    Vertex* findVertex(unsigned int id) const;
 
     /// @brief Adds a vertex to the graph, given its id.
     /// @param id The id of the vertex to add
@@ -41,13 +41,13 @@ public:
     /// @param vertex The vertex to add
     /// @return True if the vertex was added, false otherwise
     /// @note Time Complexity: O(V), where V is the number of vertices in the graph
-    bool addVertex(const std::shared_ptr<Vertex>& vertex);
+    bool addVertex(Vertex* vertex);
 
     /// @brief Removes a vertex from the graph, given its id.
     /// @param id The id of the vertex to remove
     /// @return True if the vertex was removed, false otherwise
     /// @note Time Complexity: O(V), where V is the number of vertices in the graph
-    bool removeVertex(unsigned int id);
+    //bool removeVertex(unsigned int id);
 
     /// @brief Adds an edge to the graph, given the ids of its origin and destination vertices and its weight.
     /// @param idOrig The id of the origin vertex of the edge to add
@@ -83,6 +83,7 @@ public:
     /// @brief Clears the graph by removing all vertices and their associated edges.
     /// @note Time Complexity: O(V), where V is the number of vertices in the graph
     void clear();
+
 };
 
 #endif //DA2023_PRJ2_G02_2_GRAPH_H

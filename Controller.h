@@ -8,7 +8,7 @@
 class Controller {
 private:
     Graph graph;
-    std::unordered_map<unsigned int, std::shared_ptr<Vertex>> vertices;
+    std::unordered_map<unsigned int, Vertex*> vertices;
 
     /// @brief Clears the console screen.
     /// @note Time Complexity: O(1)
@@ -26,7 +26,7 @@ private:
     void readRealWorldGraph(const std::string& nodes, const std::string& edges);
 
 
-    void linKernighan(std::vector<std::shared_ptr<Vertex>>& path, double& distance);
+    void linKernighan(std::vector<Vertex*>& path, double& distance);
 
     /// @brief Reads the toy graph's CSV file and populates the graph.
     /// @param edges The name of the CSV file with the edges
@@ -53,7 +53,7 @@ private:
     /// @param bestDistance The best distance found so far
     /// @param bestPath The best path found so far
     /// @note Time Complexity: O(V!), where V is the number of vertices in the graph
-    void backtrackingAux(const std::shared_ptr<Vertex>& current, std::vector<std::shared_ptr<Vertex>>& path, double& distance, double& bestDistance, std::vector<std::shared_ptr<Vertex>>& bestPath);
+    void backtrackingAux(Vertex*& current, std::vector<Vertex*>& path, double& distance, double& bestDistance, std::vector<Vertex*>& bestPath);
     
     /// @brief Executes the backtracking algorithm to solve the TSP problem.
     /// This function finds the best path and its distance and displays the results.
@@ -66,19 +66,19 @@ private:
     /// @param path The path to calculate the distance of
     /// @return The total distance of the path
     /// @note Time Complexity: O(n), where n is the number of vertices in the path
-    double calculateDistance(std::vector<std::shared_ptr<Vertex>>& path);
+    double calculateDistance(std::vector<Vertex*>& path);
 
     /// @brief Performs a preorder traversal to generate a path based on degrees of vertices.
     /// @param path The generated path
     /// @param current The current vertex being visited
     /// @param degrees The degrees of each vertex
     /// @note Time Complexity: O(V), where V is the number of vertices in the graph
-    void preorder(std::vector<std::shared_ptr<Vertex>>& path, const std::shared_ptr<Vertex>& current, std::vector<std::vector<unsigned int>>& degrees);
+    void preorder(std::vector<Vertex*>& path, Vertex* &current);
     
     /// @brief Prim's algorithm to generate a minimum spanning tree and generate the degrees of each vertex.
     /// @return The degrees of each vertex
     /// @note Time Complexity: O(E * log(V)), where V is the number of vertices and E is the number of edges in the graph
-    std::vector<std::vector<unsigned int>> primMST();
+   void primMST();
 
     /// @brief Executes the triangular aproximation heuristic to solve the TSP problem.
     /// This function finds the best path and its distance and displays the results.
@@ -87,7 +87,7 @@ private:
     void triangular();
 
 
-    void nearestNeighborGreedy(std::vector<std::shared_ptr<Vertex>>& path, double& distance);
+    void nearestNeighborGreedy(std::vector<Vertex*>& path, double& distance);
     void godsAlgorithm();
 
 public:

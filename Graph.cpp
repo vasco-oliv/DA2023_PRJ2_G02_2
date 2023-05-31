@@ -1,69 +1,67 @@
 #include "Graph.h"
 #include <cmath>
 
-const std::vector<std::shared_ptr<Vertex>> &Graph::getVertexSet() const {
+const std::vector<Vertex*> & Graph::getVertexSet() const{
     return vertexSet;
 }
 
-std::vector<std::shared_ptr<Vertex>>::const_iterator Graph::findVertex(unsigned int id) const {
+Vertex* Graph::findVertex(unsigned int id) const {
     for(auto it= vertexSet.begin(); it != vertexSet.end(); it++){
         if((*it)->getId() == id){
-            return it;
+            return *it;
         }
     }
-    return vertexSet.end();
+    return nullptr;
 }
 
-[[maybe_unused]] bool Graph::addVertex(unsigned int id) {
-    if(findVertex(id) != vertexSet.end()) return false;
-
-    vertexSet.push_back(std::make_shared<Vertex>(id));
+bool Graph::addVertex(unsigned int id) {
+    if(findVertex(id) != nullptr) return false;
+    vertexSet.push_back(new Vertex(id));
     return true;
 }
 
 bool Graph::addVertex(unsigned int id, double latitude, double longitude) {
-    if(findVertex(id) != vertexSet.end()) return false;
-
-    vertexSet.push_back(std::make_shared<Vertex>(id, latitude, longitude));
+    if(findVertex(id) != nullptr) return false;
+    vertexSet.push_back(new Vertex(id, latitude, longitude));
     return true;
 }
 
-bool Graph::addVertex(const std::shared_ptr<Vertex>& vertex) {
-    if(findVertex(vertex->getId()) != vertexSet.end()) return false;
-
+bool Graph::addVertex(Vertex* vertex) {
+    if(findVertex(vertex->getId()) != nullptr) return false;
     vertexSet.push_back(vertex);
     return true;
 }
 
+/*
 bool Graph::removeVertex(unsigned int id) {
     auto v= findVertex(id);
     if(v == vertexSet.end()) return false;
 
     vertexSet.erase(v);
     return true;
-}
+} */
 
 bool Graph::addEdge(unsigned int idOrig, unsigned int idDest, double weight) {
     auto orig = findVertex(idOrig);
     auto dest = findVertex(idDest);
 
-    if(orig == vertexSet.end() || dest == vertexSet.end()) return false;
+    if(orig == nullptr || dest == nullptr) return false;
 
-    return ((*orig)->addEdge((*dest), weight) && (*dest)->addEdge((*orig), weight));
+    return ((*orig).addEdge(dest, weight) && (*dest).addEdge(orig, weight));
 }
 
 double Graph::getDist(unsigned int idOrig, unsigned int idDest) const {
     auto orig = findVertex(idOrig);
     auto dest = findVertex(idDest);
-    if(orig == vertexSet.end() || dest == vertexSet.end()) return -1;
+    if(orig == nullptr || dest == nullptr) return -1;
 
-    for(const std::shared_ptr<Edge>& e:orig->get()->getAdj()){
-        if(e->getDest()->getId() == idDest){
-            return e->getWeight();
+    for(const Edge& e: (*orig).getAdj()){
+        if(e.getDest()->getId() == idDest){
+            return e.getWeight();
         }
     }
     if(this->hasCoords){
-        return calculateDist((*orig)->getLatitude(), (*orig)->getLongitude(), (*dest)->getLatitude(), (*dest)->getLongitude());
+        return calculateDist((*orig).getLatitude(), (*orig).getLongitude(), (*dest).getLatitude(), (*dest).getLongitude());
     }
     return -1;
 }
@@ -71,9 +69,9 @@ double Graph::getDist(unsigned int idOrig, unsigned int idDest) const {
 double Graph::getDist(Vertex *v1, Vertex *v2) const {
     if(v1 == nullptr || v2 == nullptr) return -1;
 
-    for(const std::shared_ptr<Edge>& e:v1->getAdj()){
-        if(e->getDest()->getId() == v2->getId()){
-            return e->getWeight();
+    for(const Edge& e:v1->getAdj()){
+        if(e.getDest()->getId() == v2->getId()){
+            return e.getWeight();
         }
     }
     if(this->hasCoords){
@@ -100,7 +98,7 @@ double Graph::calculateDist(double lat1, double long1, double lat2, double long2
 void Graph::clear() {
     for (auto &v : vertexSet) {
         v->clear();
-        v.reset();
+        delete v;
     }
     vertexSet.clear();
 }
