@@ -13,9 +13,9 @@ Vertex::Vertex(unsigned int id, double latitude, double longitude) {
 }
 
 bool Vertex::addEdge(const std::shared_ptr<Vertex>& dest, double weight) {
-    for(auto &edge : adj){
+    /*for(auto &edge : adj){
         if(edge->getDest() == dest) return false;
-    }
+    }*/
 
     adj.push_back(std::make_shared<Edge>(std::make_shared<Vertex>(this -> id, this -> longitude, this -> latitude), dest, weight));
     return true;

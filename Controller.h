@@ -15,7 +15,7 @@ private:
     static void clearScreen();
 
     /// @brief Resets the data by clearing the vertices and graph.
-    /// @note Time Complexity: O(1)
+    /// @note Time Complexity: O(V+E), where V is the number of vertices and E is the number of edges in the graph
     void dataReset();
 
 
@@ -80,7 +80,7 @@ private:
     /// @brief Executes the triangular aproximation heuristic to solve the TSP problem.
     /// This function finds the best path and its distance and displays the results.
     /// If no path is found, it displays an error message.
-    /// @note Time Complexity: O(E * log(V)), where V is the number of vertices and E is the number of edges in the graph
+    /// @note Time Complexity: O(V + E * log(V)), where V is the number of vertices and E is the number of edges in the graph
     void triangular();
 
 

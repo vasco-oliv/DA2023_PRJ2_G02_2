@@ -253,7 +253,9 @@ void Controller::startMenu() {
             }
             break;
         case 3:
-            readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_900.csv");
+            clearScreen();
+            std::cout << "\nLoading Data...\n";
+            readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_300.csv");
             mainMenu();
             break;
         case 4:
@@ -381,7 +383,7 @@ void Controller::backtracking() {
     clearScreen();
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
 
-    if(bestPath.size() == 1){
+    if(bestPath.size() != (graph.getVertexSet().size()+1)){
         std::cout << "No path found!\n";
         std::cout << "Time: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds\n";
         std::cout << "(Press any key to continue)\n";
@@ -389,7 +391,6 @@ void Controller::backtracking() {
         std::cin >> aux;
         mainMenu();
     }
-
     std::cout << "Best Path: ";
     std::cout << bestPath[0]->getId();
 
@@ -457,9 +458,20 @@ std::vector<std::vector<unsigned int>> Controller::primMST() {
             
             current = dest;
 
-            for(const auto& edge2 : current->getAdj()){
-                if(!edge2->getDest()->isVisited()){
-                    pq.push(edge2);
+            if(graph.hasCoords) {
+                for (const auto &node2: vertices) {
+                    auto n = node2.second;
+                    if (!n->isVisited()) {
+                        std::shared_ptr<Edge> e = std::make_shared<Edge>(Edge(current, n, graph.getDist(current.get(), n.get())));
+                        pq.push(e);
+                    }
+                }
+            }
+            else{
+                for(const auto& e: current->getAdj()){
+                    if(!e->getDest()->isVisited()){
+                        pq.push(e);
+                    }
                 }
             }
         }
@@ -496,13 +508,13 @@ void Controller::triangular() {
     }
 
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
-    std::cout << "Best Path: ";
+    /*std::cout << "Best Path: ";
     std::cout << path[0]->getId();
 
     for (int i = 1; i < path.size(); ++i) {
         std::cout << " -> " << path[i]->getId();
-    }
-
+    } */
+    std::cout << "Path size: " << path.size() << "\n";
     std::cout << "\nBest Distance: " << calculateDistance(path) << "\n";
     std::cout << "Time: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds\n";
     std::cout << "(Press any key to continue)\n";

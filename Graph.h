@@ -61,8 +61,15 @@ public:
     /// @param idOrig The id of the origin vertex
     /// @param idDest The id of the destination vertex
     /// @return The distance between the vertices if found, 0 if either the origin or destination vertex was not found, or -1 if the edge between the vertices does not exist.
-    /// @note Time Complexity: O(V), where V is the number of vertices in the graph
+    /// @note Time Complexity: O(E), where E is the number of edges leaving the origin vertex
     double getDist(unsigned int idOrig, unsigned int idDest) const;
+
+    /// @brief Gets the distance between two vertices.
+    /// @param v1 The origin vertex
+    /// @param v2 The destination vertex
+    /// @return The distance between the vertices if found, 0 if either the origin or destination vertex was not found, or -1 if the edge between the vertices does not exist.
+    /// @note Time Complexity: O(E), where E is the number of edges leaving v1
+    double getDist(Vertex *v1, Vertex *v2) const;
 
     /// @brief Calculates the distance between two geographical coordinates using the Haversine formula.
     /// @param lat1 The latitude of the origin vertex
