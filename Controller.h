@@ -18,6 +18,7 @@ private:
 
     void backtrackingAux(const std::shared_ptr<Vertex>& current, std::vector<std::shared_ptr<Vertex>>& path, double& distance, double& bestDistance, std::vector<std::shared_ptr<Vertex>>& bestPath);
     void nearestNeighborGreedy(std::vector<std::shared_ptr<Vertex>>& path, double& distance);
+    void linKernighan(std::vector<std::shared_ptr<Vertex>>& path, double& distance);
 
     std::vector<std::vector<unsigned int>> primMST();
     double calculateDistance(std::vector<std::shared_ptr<Vertex>>& path);
