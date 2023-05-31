@@ -25,6 +25,9 @@ private:
     /// @note Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the graph
     void readRealWorldGraph(const std::string& nodes, const std::string& edges);
 
+
+    void linKernighan(std::vector<std::shared_ptr<Vertex>>& path, double& distance);
+
     /// @brief Reads the toy graph's CSV file and populates the graph.
     /// @param edges The name of the CSV file with the edges
     /// @note Time Complexity: O(E), where E is the number of edges in the graph

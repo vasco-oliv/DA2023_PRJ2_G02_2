@@ -561,12 +561,71 @@ void Controller::godsAlgorithm() {
     }
     double distance = 0;
     nearestNeighborGreedy(path, distance);
-
     std::cout << "Path Size: " << path.size() << "\n";
     std::cout << "Greedy: " << distance << "\n";
     std::cout << "Time: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds\n";
+    linKernighan(path, distance);
+    clock_t start1 = clock();
+    std::cout << "Path Size: " << path.size() << "\n";
+    std::cout << "Lin-Kernighan: " << distance << "\n";
+    std::cout << "Time: " << (double)(clock()-start1)/CLOCKS_PER_SEC << " seconds\n";
     std::cout << "(Press any key to continue)\n";
     std::string aux;
     std::cin >> aux;
     mainMenu();
 }
+
+void Controller::linKernighan(std::vector<std::shared_ptr<Vertex>> &path, double &distance) {
+    std::vector<std::shared_ptr<Vertex>> bestPath;
+    double bestDistance = 0;
+    for (int i = 0; i < path.size()-1; ++i) {
+        bestPath.push_back(path[i]);
+        bestDistance += graph.getDist(path[i]->getId(),path[i+1]->getId());
+    }
+    bestPath.push_back(path[path.size()-1]);
+    bestDistance += graph.getDist(path[path.size()-1]->getId(),path[0]->getId());
+    bool improved = true;
+    while(improved){
+        improved = false;
+        for (int i = 0; i < bestPath.size()-1; ++i) {
+            for (int j = i+1; j < bestPath.size()-1; ++j) {
+                std::vector<std::shared_ptr<Vertex>> newPath;
+                double newDistance = 0;
+                for (int k = 0; k < i; ++k) {
+                    newPath.push_back(bestPath[k]);
+                    newDistance += graph.getDist(bestPath[k]->getId(),bestPath[k+1]->getId());
+                }
+                newPath.push_back(bestPath[j]);
+                newDistance += graph.getDist(bestPath[j]->getId(),bestPath[j+1]->getId());
+                for (int k = i+1; k < j; ++k) {
+                    newPath.push_back(bestPath[k]);
+                    newDistance += graph.getDist(bestPath[k]->getId(),bestPath[k+1]->getId());
+                }
+                newPath.push_back(bestPath[i]);
+                newDistance += graph.getDist(bestPath[i]->getId(),bestPath[i+1]->getId());
+                for (int k = j+1; k < bestPath.size()-1; ++k) {
+                    newPath.push_back(bestPath[k]);
+                    newDistance += graph.getDist(bestPath[k]->getId(),bestPath[k+1]->getId());
+                }
+                newPath.push_back(bestPath[0]);
+                newDistance += graph.getDist(bestPath[bestPath.size()-1]->getId(),bestPath[0]->getId());
+                if(newDistance < bestDistance){
+                    std::cout << "Improved from: " << bestDistance << " to: " << newDistance << "\n";
+                    std::cout << "Difference: " << bestDistance - newDistance << "\n";
+                    if (newDistance / bestDistance < 0.95) {
+                        improved = true;
+                    }
+                    else{
+                        improved = false;
+                    }
+                    bestPath = newPath;
+                    bestDistance = newDistance;
+
+                }
+            }
+        }
+    }
+    path = bestPath;
+    distance = bestDistance;
+}
+
