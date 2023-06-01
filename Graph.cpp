@@ -111,3 +111,18 @@ Edge *Graph::getEdge(Vertex *v1, Vertex *v2) const {
     return nullptr;
 }
 
+void Graph::setFullyConnected(bool isFullyConnected) {
+    this->isFullyConnected = isFullyConnected;
+}
+
+void Graph::setHasCoords(bool hasCoords) {
+    this->hasCoords = hasCoords;
+}
+
+bool Graph::usesCoords() const {
+    return hasCoords;
+}
+
+bool Graph::fullyConnected() const {
+    return isFullyConnected;
+}

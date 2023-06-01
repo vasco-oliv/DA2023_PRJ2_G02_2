@@ -11,7 +11,7 @@ void Controller::clearScreen() {
         std::system("cls");
     #else
         // Assume POSIX
-            std::system("clear");
+        std::system("clear");
     #endif
 }
 
@@ -78,7 +78,7 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
         }
         graph.addEdge(idOrig,idDest,weight);
     }
-    graph.hasCoords = true;
+    graph.setHasCoords(true);
 }
 
 void Controller::readToyGraph(const std::string& edges) {
@@ -415,7 +415,7 @@ double Controller::calculateDistance(std::vector<Vertex*> &path) {
     for(int i = 0; i < path.size()-1; i++){
         double w = graph.getDist(path[i]->getId(),path[i+1]->getId());
         if(w == -1){
-            if(!graph.hasCoords) return -1;
+            if(!graph.usesCoords()) return -1;
             else {
                 w = graph.calculateDist(path[i]->getLatitude(),path[i]->getLongitude(),path[i+1]->getLatitude(),path[i+1]->getLongitude());
             }
@@ -457,7 +457,7 @@ void Controller::primMST() {
                 if(n2->isVisited())continue;
                 Edge *e=graph.getEdge(dest,n2);
                 if (e == nullptr) {
-                    if(graph.hasCoords){
+                    if(graph.usesCoords()){
                         double w = graph.calculateDist(dest->getLatitude(),dest->getLongitude(),n2->getLatitude(),n2->getLongitude());
                         e = new Edge(dest, n2, w);
                         }
