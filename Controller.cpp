@@ -443,7 +443,7 @@ void Controller::backtracking() {
 
 double Controller::calculateDistance(std::vector<Vertex*> &path) {
     double distance=0;
-    if (distances.empty()) {
+    if (!graph.fullyConnected()) {
         for(int i = 0; i < path.size()-1; i++){
             double w = graph.getDist(path[i]->getId(),path[i+1]->getId());
             if(w == -1){
