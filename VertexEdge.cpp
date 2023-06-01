@@ -17,13 +17,13 @@ bool Vertex::addEdge(Vertex*& dest, double weight) {
         if(edge->getDest() == dest) return false;
     }*/
 
-    adj.push_back(Edge(new Vertex(this -> id, this -> longitude, this -> latitude), dest, weight));
+    adj.push_back(new Edge(new Vertex(this -> id, this -> longitude, this -> latitude), dest, weight));
     return true;
 }
 
 bool Vertex::removeEdge(Vertex*& dest) {
     for(auto it = adj.begin(); it != adj.end(); it++){
-        if(it->getDest() == dest){
+        if((*it)->getDest() == dest){
             adj.erase(it);
             return true;
         }
@@ -67,7 +67,7 @@ unsigned int Vertex::getPrevious() const {
     return previous;
 }
 
-const std::vector<Edge>& Vertex::getAdj() const {
+const std::vector<Edge*>& Vertex::getAdj() const {
     return adj;
 }
 

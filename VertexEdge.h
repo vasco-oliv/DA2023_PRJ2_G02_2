@@ -10,7 +10,7 @@ class Edge;
 class Vertex {
 private:
     unsigned int id;
-    std::vector<Edge> adj;
+    std::vector<Edge*> adj;
     bool visited = false;
     int dist = 0;
     double latitude;
@@ -93,7 +93,7 @@ public:
     /// @brief Gets the adjacent edges of the vertex.
     /// @return A vector with the adjacent edges of the vertex
     /// @note Time Complexity: O(1)
-    const std::vector<Edge>& getAdj() const;
+    const std::vector<Edge*>& getAdj() const;
 
     /// @brief Deletes all the adjacent edges of the vertex.
     /// @note Time Complexity: O(1)
@@ -138,9 +138,9 @@ struct EdgeComparator {
     /// @param e2 The second edge to compare
     /// @return True if the first edge is less than the second, false otherwise
     /// @note Time Complexity: O(1)
-    bool operator()(const Edge &e1, const Edge &e2) const {
-        if(e1.getWeight() == e2.getWeight()) return e1.getDest()->getId() > e2.getDest()->getId();
-        return e1.getWeight() > e2.getWeight();
+    bool operator()(Edge *e1, Edge *e2) const {
+        if(e1->getWeight() == e2->getWeight()) return e1->getDest()->getId() > e2->getDest()->getId();
+        return e1->getWeight() > e2->getWeight();
     }
 };
 

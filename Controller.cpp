@@ -256,7 +256,7 @@ void Controller::startMenu() {
         case 3:
             clearScreen();
             std::cout << "\nLoading Data...\n";
-            readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_300.csv");
+            readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_25.csv");
             mainMenu();
             break;
         case 4:
@@ -333,8 +333,8 @@ void Controller::backtrackingAux(Vertex* &current, std::vector<Vertex*>& path, d
 
     if (path.size() == graph.getVertexSet().size()) {
         for(const auto& edge : current->getAdj()){
-            if (edge.getDest() == graph.getVertexSet()[0]) {
-                distance += edge.getWeight();
+            if (edge->getDest() == graph.getVertexSet()[0]) {
+                distance += edge->getWeight();
                 path.push_back(graph.getVertexSet()[0]);
 
                 if(distance < bestDistance - std::numeric_limits<float>::epsilon()){
@@ -343,7 +343,7 @@ void Controller::backtrackingAux(Vertex* &current, std::vector<Vertex*>& path, d
                     std::cout << path[1]->getId() << " " << bestDistance << std::endl;
                 }
 
-                distance -= edge.getWeight();
+                distance -= edge->getWeight();
                 path.pop_back();
                 break;
             }
@@ -353,13 +353,13 @@ void Controller::backtrackingAux(Vertex* &current, std::vector<Vertex*>& path, d
         return;
     }
 
-    std::priority_queue<Edge, std::vector<Edge>, EdgeComparator> pq(current -> getAdj().begin(), current -> getAdj().end());
+    std::priority_queue<Edge*, std::vector<Edge*>, EdgeComparator> pq(current -> getAdj().begin(), current -> getAdj().end());
     while(!pq.empty()){
         auto edge = pq.top();
         pq.pop();
 
-        Vertex* dest = edge.getDest();
-        double weight = edge.getWeight();
+        Vertex* dest = edge->getDest();
+        double weight = edge->getWeight();
 
         if(distance+weight >= bestDistance) break;
 
@@ -425,7 +425,6 @@ double Controller::calculateDistance(std::vector<Vertex*> &path) {
             }
         }
         distance += w;
-        std::cout << w << std::endl;
     }
     return distance;
 }
@@ -442,37 +441,36 @@ void Controller::preorder(std::vector<Vertex*>& path, Vertex*& current) {
 }
 
 void Controller::primMST() {
+    for (const auto& vertex : graph.getVertexSet()) {
+        vertex->setVisited(false);
+        vertex->sons.clear();
+    }
     auto current = graph.getVertexSet()[0];
-    current->setDist(0);
     current->setVisited(true);
-    std::priority_queue<Edge, std::vector<Edge>, EdgeComparator> pq(current -> getAdj().begin(), current -> getAdj().end());
+    std::priority_queue<Edge*, std::vector<Edge*>, EdgeComparator> pq(current -> getAdj().begin(), current -> getAdj().end());
 
     while(!pq.empty()){
         auto edge = pq.top();
         pq.pop();
-        Vertex* dest = edge.getDest();
-
+        Vertex* dest = edge->getDest();
         if (!dest->isVisited()) {
             dest->setVisited(true);
             current->sons.push_back(dest);
             
             current = dest;
-
-            if(graph.hasCoords) {
-                for (const auto &node2: vertices) {
-                    auto n = node2.second;
-                    if (!n->isVisited()) {
-                        Edge e = Edge(current, n, graph.getDist(current, n));
-                        pq.push(e);
+            for(auto n2: graph.getVertexSet()){
+                if(n2->isVisited())continue;
+                Edge *e=graph.getEdge(current,n2);
+                if (e == nullptr) {
+                    if(graph.hasCoords){
+                        double w = graph.calculateDist(current->getLatitude(),current->getLongitude(),n2->getLatitude(),n2->getLongitude());
+                        e = new Edge(current, n2, w);
+                        }
+                    else {
+                        continue;
                     }
                 }
-            }
-            else{
-                for(const auto& e: current->getAdj()){
-                    if(!e.getDest()->isVisited()){
-                        pq.push(e);
-                    }
-                }
+                pq.push(e);
             }
         }
     }
@@ -481,10 +479,6 @@ void Controller::primMST() {
 void Controller::triangular() {
     clock_t start = clock();
     std::vector<Vertex *> path;
-
-    for (const auto& vertex : graph.getVertexSet()) {
-        vertex->setVisited(false);
-    }
 
     primMST();
 
@@ -497,7 +491,7 @@ void Controller::triangular() {
     clock_t end = clock();
     clearScreen();
 
-    if(path.size() == 1){
+    if(path.size() != 1+vertices.size()){
         std::cout << "No path found!\n";
         std::cout << "Time: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds\n";
         std::cout << "(Press any key to continue)\n";
@@ -507,12 +501,12 @@ void Controller::triangular() {
     }
 
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
-    std::cout << "Best Path: ";
+    /*std::cout << "Best Path: ";
     std::cout << path[0]->getId();
 
     for (int i = 1; i < path.size(); ++i) {
         std::cout << " -> " << path[i]->getId();
-    }
+    }*/
     std::cout << "Path size: " << path.size() << "\n";
     std::cout << "\nBest Distance: " << calculateDistance(path) << "\n";
     std::cout << "Time: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds\n";
@@ -522,20 +516,19 @@ void Controller::triangular() {
     mainMenu();
 }
 
-
 void Controller::nearestNeighborGreedy(std::vector<Vertex*> &path, double &distance) {
     Vertex* current = graph.getVertexSet()[0];
     current->setVisited(true);
     path.push_back(current);
 
     while(path.size() < graph.getVertexSet().size()){
-        std::priority_queue<Edge, std::vector<Edge>, EdgeComparator> pq(current -> getAdj().begin(), current -> getAdj().end());
+        std::priority_queue<Edge*, std::vector<Edge*>, EdgeComparator> pq(current -> getAdj().begin(), current -> getAdj().end());
         while(!pq.empty()){
             auto edge = pq.top();
             pq.pop();
 
-            Vertex* dest = edge.getDest();
-            double weight = edge.getWeight();
+            Vertex* dest = edge->getDest();
+            double weight = edge->getWeight();
 
             if (!dest->isVisited()) {
                 distance += weight;
