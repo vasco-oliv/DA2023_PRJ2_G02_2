@@ -10,6 +10,7 @@
 class Controller {
 private:
     Graph graph;
+    std::vector<std::vector<double> > distances;
     std::unordered_map<unsigned int, Vertex*> vertices;
 
     /// @brief Clears the console screen.
@@ -81,6 +82,8 @@ private:
     /// @return The degrees of each vertex
     /// @note Time Complexity: O(E * log(V)), where V is the number of vertices and E is the number of edges in the graph
     void primMST();
+
+    std::vector<std::vector<double>> createDistanceMatrix();
 
     void reverseSubpath(std::vector<Vertex*>& path, int start, int end);
 
