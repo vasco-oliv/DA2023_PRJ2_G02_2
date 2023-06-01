@@ -57,6 +57,8 @@ public:
     /// @note Time Complexity: O(V), where V is the number of vertices in the graph
     void addEdge(unsigned int idOrig, unsigned int idDest, double weight);
 
+    void addEdge(Vertex* v1, Vertex* v2, double weight);
+
     /// @brief Gets the distance between two vertices, given their ids.
     /// @param idOrig The id of the origin vertex
     /// @param idDest The id of the destination vertex
