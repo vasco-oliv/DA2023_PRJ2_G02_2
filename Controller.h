@@ -100,6 +100,12 @@ private:
     void nearestNeighborGreedy(std::vector<Vertex*>& path, double& distance);
     void godsAlgorithm();
 
+    void christofides();
+    void primsChristofides();
+    void greedyMakePerfect(std::vector<Vertex*>& oddDegrees);
+    std::vector<Vertex*> eulerianPath();
+    static void removeDuplicates(std::vector<Vertex*>& path);
+
 public:
     /// @brief Runs the program's start menu.
     /// @note Time Complexity: O(1)

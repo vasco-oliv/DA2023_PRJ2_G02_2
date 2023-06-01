@@ -4,6 +4,9 @@
 #include <sstream>
 #include <limits>
 #include <queue>
+#include <stack>
+#include <algorithm>
+
 #include "Controller.h"
 
 void Controller::clearScreen() {
@@ -112,7 +115,6 @@ std::vector<std::vector<double>> Controller::createDistanceMatrix() {
 
     return distanceMatrix;
 }
-
 
 void Controller::readToyGraph(const std::string& edges) {
     std::ifstream ifs(edges);
@@ -318,8 +320,9 @@ void Controller::mainMenu() {
     std::cout << "How would you like to calculate the best solution to the TSP in the graph you selected?\n";
     std::cout << "1. Backtracking\n";
     std::cout << "2. Triangular Approximation Heuristic\n";
-    std::cout << "3. Other Heuristic\n";
-    std::cout << "4. Change Graph\n";
+    std::cout << "3. Lin Kernighan Heuristic\n";
+    std::cout << "4. Christofides Algorithm\n";
+    std::cout << "5. Change Graph\n";
     std::cout << "0. Exit\n";
     std::cout << "Option: ";
 
@@ -340,13 +343,18 @@ void Controller::mainMenu() {
             break;
         case 3:
             clearScreen();
-            std::cout << "Calculating best solution using God's Algorithm...\n";
+            std::cout << "Calculating best solution using Lin Kernighan's Algorithm...\n";
             godsAlgorithm();
             break;
         case 4:
-            dataReset();
-            startMenu();
+            clearScreen();
+            std::cout << "Calculating best solution using Christofides Algorithm...\n";
+            christofides();
             break;
+        case 5:
+        dataReset();
+        startMenu();
+        break;
         case 0:
             break;
         default:
@@ -643,4 +651,132 @@ void Controller::reverseSubpath(std::vector<Vertex*>& path, int start, int end) 
         start++;
         end--;
     }
+}
+
+void Controller::christofides() {
+    clock_t start = clock();
+    std::vector<Vertex*> path;
+    std::vector<Vertex*> oddDegreeVertices;
+    primsChristofides();
+    for(auto vertex: graph.getVertexSet()){
+        if(vertex->chrisAdj.size()==0){
+            std::cout << "No path found!\n";
+            std::cout << "Time: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds\n";
+            std::cout << "(Press any key to continue)\n";
+            std::string aux;
+            std::cin >> aux;
+        }
+        if(vertex->chrisAdj.size()%2==1){
+            oddDegreeVertices.push_back(vertex);
+        }
+    }
+    greedyMakePerfect(oddDegreeVertices);
+    path=eulerianPath();
+    removeDuplicates(path);
+    path.push_back(path[0]);
+    std::cout << "Path Size: " << path.size() << "\n";
+    std::cout << "Path:" << path[0]->getId();
+    for (int i = 1; i < path.size(); ++i) {
+        std::cout << " -> " << path[i]->getId();
+    }
+    std::cout << std::endl;
+    std::cout << "Distance: " << calculateDistance(path) << "\n";
+    std::cout << "Time: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds\n";
+    std::cout << "(Press any key to continue)\n";
+    std::string aux;
+    std::cin >> aux;
+    mainMenu();
+}
+
+void Controller::primsChristofides() {
+    for (const auto& vertex : graph.getVertexSet()) {
+        vertex->setVisited(false);
+        vertex->sons.clear();
+    }
+    auto root = graph.getVertexSet()[0];
+    root->setVisited(true);
+    std::priority_queue<Edge*, std::vector<Edge*>, EdgeComparator> pq(root -> getAdj().begin(), root -> getAdj().end());
+    while(!pq.empty()){
+        auto edge = pq.top();
+        pq.pop();
+        Vertex* dest = edge->getDest();
+        if (!dest->isVisited()) {
+            dest->setVisited(true);
+            edge->getOrig()->chrisAdj.push_back(edge);
+            dest->chrisAdj.push_back(graph.getEdge(dest,edge->getOrig()));
+            for(auto n2: graph.getVertexSet()){
+                if(n2->isVisited())continue;
+                Edge *e=graph.getEdge(dest,n2);
+                if (e == nullptr) {
+                    if(graph.usesCoords()){
+                        double w = graph.calculateDist(dest->getLatitude(),dest->getLongitude(),n2->getLatitude(),n2->getLongitude());
+                        e = new Edge(dest, n2, w);
+                    }
+                    else {
+                        continue;
+                    }
+                }
+                pq.push(e);
+            }
+        }
+    }
+}
+
+void Controller::greedyMakePerfect(std::vector<Vertex *> &oddDegrees) {
+    for(auto v: oddDegrees){
+        v->setVisited(false);
+    }
+    for(auto v: oddDegrees){
+        if(!v->isVisited()){
+            Vertex* closest= nullptr;
+            double minDist=std::numeric_limits<double>::max();
+            v->setVisited(true);
+
+            for(auto v2: oddDegrees){
+                if(v2->isVisited())continue;
+                double dist=graph.getDist(v->getId(),v2->getId());
+                if(dist < minDist){
+                    minDist=dist;
+                    closest=v2;
+                }
+            }
+            closest->setVisited(true);
+            v->chrisAdj.push_back(graph.getEdge(v,closest));
+            closest->chrisAdj.push_back(graph.getEdge(closest,v));
+        }
+    }
+}
+
+std::vector<Vertex *> Controller::eulerianPath() {
+    std::vector<Vertex*> path;
+    std::stack<Vertex*> stack;
+    Vertex* current=graph.getVertexSet()[0];
+    path.push_back(current);
+    while(!stack.empty() || current->chrisAdj.size()>0){
+        if(current->chrisAdj.size()==0){
+            path.push_back(current);
+            current=stack.top();
+            stack.pop();
+        }
+        else{
+            auto nv=current->chrisAdj.back()->getDest();
+            current->chrisAdj.pop_back();
+            auto valueToDelete = graph.getEdge(nv, current);
+            nv->chrisAdj.erase(std::remove(nv->chrisAdj.begin(), nv->chrisAdj.end(), valueToDelete), nv->chrisAdj.end());
+            stack.push(current);
+            current=nv;
+        }
+    }
+    path.push_back(current);
+    return path;
+}
+
+void Controller::removeDuplicates(std::vector<Vertex *> &path) {
+    std::vector<Vertex*> newPath;
+    for(auto v: path){
+        if(std::find(newPath.begin(),newPath.end(),v)==newPath.end()){
+            newPath.push_back(v);
+        }
+    }
+    path=newPath;
 }

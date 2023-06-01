@@ -19,6 +19,7 @@ private:
 
 public:
     std::vector<Vertex*> sons;
+    std::vector<Edge*> chrisAdj;
 
     /// @brief Creates a vertex with the given id.
     /// @param id The id of the vertex to create
