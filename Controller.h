@@ -5,6 +5,8 @@
 #include <unordered_set>
 #include <unordered_map>
 
+#define MAX_ITERATIONS 100
+
 class Controller {
 private:
     Graph graph;
@@ -78,7 +80,9 @@ private:
     /// @brief Prim's algorithm to generate a minimum spanning tree and generate the degrees of each vertex.
     /// @return The degrees of each vertex
     /// @note Time Complexity: O(E * log(V)), where V is the number of vertices and E is the number of edges in the graph
-   void primMST();
+    void primMST();
+
+    void reverseSubpath(std::vector<Vertex*>& path, int start, int end);
 
     /// @brief Executes the triangular aproximation heuristic to solve the TSP problem.
     /// This function finds the best path and its distance and displays the results.
