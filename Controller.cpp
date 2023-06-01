@@ -11,7 +11,7 @@ void Controller::clearScreen() {
         std::system("cls");
     #else
         // Assume POSIX
-            std::system("clear");
+        std::system("clear");
     #endif
 }
 
@@ -34,6 +34,7 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
     std::string line;
     int id;
     double lat,lon;
+    int vertexCounter = 0;
 
     std::getline(ifsN, line);
 
@@ -49,6 +50,7 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
             auto v = new Vertex(id,lat,lon);
             vertices.insert(std::make_pair(id,v));
             graph.addVertex(v);
+            vertexCounter++;
         }
 
     }
@@ -64,6 +66,7 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
 
     int idOrig,idDest;
     double weight;
+    int edgeCounter = 0;
 
     while(std::getline(ifsE, line)){
         std::istringstream iss(line);
@@ -79,9 +82,37 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
         auto orig = vertices.find(idOrig)->second;
         auto dest = vertices.find(idDest)->second;
         graph.addEdge(orig,dest,weight);
+        edgeCounter++;
     }
-    graph.hasCoords = true;
+    ifsE.close();
+    graph.setHasCoords(true);
+    if (edgeCounter == vertexCounter * (vertexCounter - 1) / 2) {
+        graph.setFullyConnected(true);
+        distances = createDistanceMatrix();
+    }
 }
+
+std::vector<std::vector<double>> Controller::createDistanceMatrix() {
+    const std::vector<Vertex*>& vertexSet = graph.getVertexSet();
+    auto numVertices = vertexSet.size();
+
+    std::vector<std::vector<double>> distanceMatrix(numVertices, std::vector<double>(numVertices, 0.0));
+
+    for (int i = 0; i < numVertices; ++i) {
+        for (int j = i + 1; j < numVertices; ++j) {
+            unsigned int id1 = vertexSet[i]->getId();
+            unsigned int id2 = vertexSet[j]->getId();
+
+            double distance = graph.getDist(id1, id2);
+
+            distanceMatrix[i][j] = distance;
+            distanceMatrix[j][i] = distance;
+        }
+    }
+
+    return distanceMatrix;
+}
+
 
 void Controller::readToyGraph(const std::string& edges) {
     std::ifstream ifs(edges);
@@ -419,15 +450,22 @@ void Controller::backtracking() {
 
 double Controller::calculateDistance(std::vector<Vertex*> &path) {
     double distance=0;
-    for(int i = 0; i < path.size()-1; i++){
-        double w = graph.getDist(path[i]->getId(),path[i+1]->getId());
-        if(w == -1){
-            if(!graph.hasCoords) return -1;
-            else {
-                w = graph.calculateDist(path[i]->getLatitude(),path[i]->getLongitude(),path[i+1]->getLatitude(),path[i+1]->getLongitude());
+    if (distances.empty()) {
+        for(int i = 0; i < path.size()-1; i++){
+            double w = graph.getDist(path[i]->getId(),path[i+1]->getId());
+            if(w == -1){
+                if(!graph.usesCoords()) return -1;
+                else {
+                    w = graph.calculateDist(path[i]->getLatitude(),path[i]->getLongitude(),path[i+1]->getLatitude(),path[i+1]->getLongitude());
+                }
             }
+            distance += w;
         }
-        distance += w;
+    }
+    else {
+        for(int i = 0; i < path.size()-1; i++) {
+            distance += distances[path[i]->getId()][path[i+1]->getId()];
+        }
     }
     return distance;
 }
@@ -464,7 +502,7 @@ void Controller::primMST() {
                 if(n2->isVisited())continue;
                 Edge *e=graph.getEdge(dest,n2);
                 if (e == nullptr) {
-                    if(graph.hasCoords){
+                    if(graph.usesCoords()){
                         double w = graph.calculateDist(dest->getLatitude(),dest->getLongitude(),n2->getLatitude(),n2->getLongitude());
                         e = new Edge(dest, n2, w);
                         }

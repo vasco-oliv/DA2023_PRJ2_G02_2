@@ -126,3 +126,18 @@ void Graph::addEdge(Vertex *v1, Vertex *v2, double weight) {
     v2->addEdge(v1, weight);
 }
 
+void Graph::setFullyConnected(bool isFullyConnected) {
+    this->isFullyConnected = isFullyConnected;
+}
+
+void Graph::setHasCoords(bool hasCoords) {
+    this->hasCoords = hasCoords;
+}
+
+bool Graph::usesCoords() const {
+    return hasCoords;
+}
+
+bool Graph::fullyConnected() const {
+    return isFullyConnected;
+}

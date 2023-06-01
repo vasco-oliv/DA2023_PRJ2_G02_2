@@ -8,9 +8,10 @@
 class Graph {
 private:
     std::vector<Vertex*> vertexSet;
-
-public:
+    bool isFullyConnected = false;
     bool hasCoords = false;
+public:
+
 
     /// @brief Gets all the vertices in the graph.
     /// @return A vector with all the vertices in the graph
@@ -91,6 +92,24 @@ public:
     /// @brief Clears the graph by removing all vertices and their associated edges.
     /// @note Time Complexity: O(V), where V is the number of vertices in the graph
     void clear();
+
+    /// @brief Sets the graph as fully connected.
+    /// @param isFullyConnected Value to set the graph's fully connected property to
+    /// @note Time Complexity: O(1)
+    void setFullyConnected(bool isFullyConnected);
+
+    /// @brief Sets the graph as having coordinates.
+    /// @param hasCoords Value to set the graph's hasCoords property to
+    /// @note Time Complexity: O(1)
+    void setHasCoords(bool hasCoords);
+
+    /// @brief Gets the graph's fully connected property.
+    /// @return True if the graph uses coordinates, false otherwise
+    bool usesCoords() const;
+
+    /// @brief Gets the graph's hasCoords property.
+    /// @return True if the graph is fully connected, false otherwise
+    bool fullyConnected() const;
 
 };
 
