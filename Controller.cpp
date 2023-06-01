@@ -79,7 +79,9 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
         if(vertices.find(idOrig)==vertices.end() || vertices.find(idDest)==vertices.end()){
             continue;
         }
-        graph.addEdge(idOrig,idDest,weight);
+        auto orig = vertices.find(idOrig)->second;
+        auto dest = vertices.find(idDest)->second;
+        graph.addEdge(orig,dest,weight);
         edgeCounter++;
     }
     ifsE.close();
@@ -144,7 +146,9 @@ void Controller::readToyGraph(const std::string& edges) {
             vertices.insert(std::make_pair(idDest, v));
             graph.addVertex(v);
         }
-        graph.addEdge(idOrig,idDest,weight);
+        auto orig = vertices.find(idOrig)->second;
+        auto dest = vertices.find(idDest)->second;
+        graph.addEdge(orig,dest,weight);
     }
 }
 
@@ -168,6 +172,7 @@ void Controller::readFullyConGraph(const std::string& edges) {
         iss.ignore(1);
         iss >> weight;
 
+
         if(vertices.find(idOrig)==vertices.end()){
             auto v = new Vertex(idOrig);
             vertices.insert(std::make_pair(idOrig,v));
@@ -178,7 +183,9 @@ void Controller::readFullyConGraph(const std::string& edges) {
             vertices.insert(std::make_pair(idDest,v));
             graph.addVertex(v);
         }
-        graph.addEdge(idOrig,idDest,weight);
+        auto orig = vertices.find(idOrig)->second;
+        auto dest = vertices.find(idDest)->second;
+        graph.addEdge(orig,dest,weight);
     }
 }
 

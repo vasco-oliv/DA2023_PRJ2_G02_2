@@ -103,12 +103,27 @@ void Graph::clear() {
 }
 
 Edge *Graph::getEdge(Vertex *v1, Vertex *v2) const {
-    for(Edge* e: v1->getAdj()){
-        if(e->getDest() == v2){
-            return e;
+    if(v1 == nullptr || v2 == nullptr) return nullptr;
+    if(v1->getAdj().size() <= v2->getAdj().size()){
+        for(Edge* e: v1->getAdj()){
+            if(e->getDest() == v2){
+                return e;
+            }
+        }
+    }
+    else{
+        for(Edge* e: v2->getAdj()){
+            if(e->getDest() == v1){
+                return e;
+            }
         }
     }
     return nullptr;
+}
+
+void Graph::addEdge(Vertex *v1, Vertex *v2, double weight) {
+    v1->addEdge(v2, weight);
+    v2->addEdge(v1, weight);
 }
 
 void Graph::setFullyConnected(bool isFullyConnected) {
