@@ -12,12 +12,12 @@ Vertex::Vertex(unsigned int id, double latitude, double longitude) {
 
 }
 
-bool Vertex::addEdge(Vertex*& dest, double weight) {
+bool Vertex::addEdge(Vertex* dest, double weight) {
     /*for(auto &edge : adj){
         if(edge->getDest() == dest) return false;
     }*/
 
-    adj.push_back(new Edge(new Vertex(this -> id, this -> longitude, this -> latitude), dest, weight));
+    adj.push_back(new Edge(this, dest, weight));
     return true;
 }
 

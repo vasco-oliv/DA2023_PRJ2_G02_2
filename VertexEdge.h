@@ -37,7 +37,7 @@ public:
     /// @param weight The weight of the edge to add
     /// @return True if the edge was added, false otherwise
     /// @note Time Complexity: O(E), where E is the number of edges in the graph
-    bool addEdge(Vertex*& dest, double weight);
+    bool addEdge(Vertex* dest, double weight);
 
     /// @brief Removes the edge from this vertex to the specified destination vertex.
     /// @param dest The destination vertex of the edge to remove

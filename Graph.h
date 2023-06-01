@@ -41,7 +41,7 @@ public:
     /// @param vertex The vertex to add
     /// @return True if the vertex was added, false otherwise
     /// @note Time Complexity: O(V), where V is the number of vertices in the graph
-    bool addVertex(Vertex* vertex);
+    void addVertex(Vertex* vertex);
 
     /// @brief Removes a vertex from the graph, given its id.
     /// @param id The id of the vertex to remove
@@ -55,7 +55,7 @@ public:
     /// @param weight The weight of the edge to add
     /// @return True if the edge was added, false otherwise
     /// @note Time Complexity: O(V), where V is the number of vertices in the graph
-    bool addEdge(unsigned int idOrig, unsigned int idDest, double weight);
+    void addEdge(unsigned int idOrig, unsigned int idDest, double weight);
 
     /// @brief Gets the distance between two vertices, given their ids.
     /// @param idOrig The id of the origin vertex

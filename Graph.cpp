@@ -26,10 +26,8 @@ bool Graph::addVertex(unsigned int id, double latitude, double longitude) {
     return true;
 }
 
-bool Graph::addVertex(Vertex* vertex) {
-    if(findVertex(vertex->getId()) != nullptr) return false;
+void Graph::addVertex(Vertex* vertex) {
     vertexSet.push_back(vertex);
-    return true;
 }
 
 /*
@@ -41,13 +39,14 @@ bool Graph::removeVertex(unsigned int id) {
     return true;
 } */
 
-bool Graph::addEdge(unsigned int idOrig, unsigned int idDest, double weight) {
+void Graph::addEdge(unsigned int idOrig, unsigned int idDest, double weight) {
     auto orig = findVertex(idOrig);
     auto dest = findVertex(idDest);
 
-    if(orig == nullptr || dest == nullptr) return false;
+    if(orig == nullptr || dest == nullptr) return;
 
-    return ((*orig).addEdge(dest, weight) && (*dest).addEdge(orig, weight));
+    orig->addEdge(dest, weight);
+    dest->addEdge(orig, weight);
 }
 
 double Graph::getDist(unsigned int idOrig, unsigned int idDest) const {

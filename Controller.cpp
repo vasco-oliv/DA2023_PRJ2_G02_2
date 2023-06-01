@@ -441,9 +441,9 @@ void Controller::primMST() {
         vertex->setVisited(false);
         vertex->sons.clear();
     }
-    auto current = graph.getVertexSet()[0];
-    current->setVisited(true);
-    std::priority_queue<Edge*, std::vector<Edge*>, EdgeComparator> pq(current -> getAdj().begin(), current -> getAdj().end());
+    auto root = graph.getVertexSet()[0];
+    root->setVisited(true);
+    std::priority_queue<Edge*, std::vector<Edge*>, EdgeComparator> pq(root -> getAdj().begin(), root -> getAdj().end());
 
     while(!pq.empty()){
         auto edge = pq.top();
@@ -451,16 +451,15 @@ void Controller::primMST() {
         Vertex* dest = edge->getDest();
         if (!dest->isVisited()) {
             dest->setVisited(true);
-            current->sons.push_back(dest);
-            
-            current = dest;
+            edge->getOrig()->sons.push_back(dest);
+
             for(auto n2: graph.getVertexSet()){
                 if(n2->isVisited())continue;
-                Edge *e=graph.getEdge(current,n2);
+                Edge *e=graph.getEdge(dest,n2);
                 if (e == nullptr) {
                     if(graph.hasCoords){
-                        double w = graph.calculateDist(current->getLatitude(),current->getLongitude(),n2->getLatitude(),n2->getLongitude());
-                        e = new Edge(current, n2, w);
+                        double w = graph.calculateDist(dest->getLatitude(),dest->getLongitude(),n2->getLatitude(),n2->getLongitude());
+                        e = new Edge(dest, n2, w);
                         }
                     else {
                         continue;
