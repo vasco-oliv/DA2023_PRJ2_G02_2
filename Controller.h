@@ -105,7 +105,7 @@ private:
     void greedyMakePerfect(std::vector<Vertex*>& oddDegrees);
     void makePerfect(std::vector<Vertex*>& oddDegrees);
     void makePerfectAux(std::vector<std::pair<Vertex*, Vertex*>> path, std::vector<Vertex *> &oddDegrees, double& distance, double& bestDistance, std::vector<std::pair<Vertex*, Vertex*>>& bestPairs);
-    std::vector<Vertex*> eulerianPath();
+    void eulerianPath(std::vector<Vertex*> &path, Vertex* current);
     static void removeDuplicates(std::vector<Vertex*>& path);
 
 public:
