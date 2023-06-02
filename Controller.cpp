@@ -682,7 +682,8 @@ void Controller::nearestNeighborGreedy(std::vector<Vertex*> &path, double &dista
         }
     }
     path.push_back(graph.getVertexSet()[0]);
-    distance += graph.getDist(path[path.size()-2]->getId(),path[path.size()-1]->getId());
+
+    distance += distances[path[path.size()-2]->getId()][path[path.size()-1]->getId()];
 }
 
 void Controller::godsAlgorithm() {
@@ -723,7 +724,8 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
             for (int j = i + 1; j < pathSize - 1; ++j) {
                 std::vector<Vertex*> newPath = bestPath;
                 reverseSubpath(newPath, i + 1, j);
-                double newDistance = calculateDistance(newPath);
+                //double newDistance = calculateDistance(newPath);
+                double newDistance = (bestDistance+std::numeric_limits<float>::epsilon()) - distances[bestPath[i + 1]->getId()][bestPath[i]->getId()] - distances[bestPath[j + 1]->getId()][bestPath[j]->getId()] + distances[newPath[i + 1]->getId()][newPath[i]->getId()] + distances[newPath[j + 1]->getId()][newPath[j]->getId()];
                 if (newDistance < bestDistance) {
                     bestPath = newPath;
                     bestDistance = newDistance;
@@ -763,7 +765,7 @@ void Controller::christofides() {
         }
     }
     makePerfect(oddDegreeVertices);
-    path=eulerianPath();
+    eulerianPath(path, graph.getVertexSet()[0]);
     removeDuplicates(path);
     path.push_back(path[0]);
     std::cout << "Path Size: " << path.size() << "\n";
@@ -826,7 +828,7 @@ void Controller::greedyMakePerfect(std::vector<Vertex *> &oddDegrees) {
 
             for(auto v2: oddDegrees){
                 if(v2->isVisited())continue;
-                double dist=graph.getDist(v->getId(),v2->getId());
+                double dist=distances[v->getId()][v2->getId()];
                 if(dist < minDist){
                     minDist=dist;
                     closest=v2;
@@ -839,29 +841,18 @@ void Controller::greedyMakePerfect(std::vector<Vertex *> &oddDegrees) {
     }
 }
 
-std::vector<Vertex *> Controller::eulerianPath() {
-    std::vector<Vertex*> path;
-    std::stack<Vertex*> stack;
-    Vertex* current=graph.getVertexSet()[0];
-    path.push_back(current);
-    while(!stack.empty() || current->chrisAdj.size()>0){
-        if(current->chrisAdj.size()==0){
-            path.push_back(current);
-            current=stack.top();
-            stack.pop();
-        }
-        else{
-            auto nv=current->chrisAdj.back()->getDest();
-            current->chrisAdj.pop_back();
-            auto valueToDelete = graph.getEdge(nv, current);
-            nv->chrisAdj.erase(std::remove(nv->chrisAdj.begin(), nv->chrisAdj.end(), valueToDelete), nv->chrisAdj.end());
-            stack.push(current);
-            current=nv;
-        }
+void Controller::eulerianPath(std::vector<Vertex*>&path, Vertex* curr) {
+    if(curr== nullptr)return;
+    for(auto edge: curr->chrisAdj){
+        auto dest= edge->getDest();
+        path.push_back(curr);
+        auto aux= std::find(dest->chrisAdj.begin(),dest->chrisAdj.end(),graph.getEdge(dest,curr));
+        if(aux == dest->chrisAdj.end())continue;
+        dest->chrisAdj.erase(aux);
+        eulerianPath(path,dest);
     }
-    path.push_back(current);
-    return path;
 }
+
 
 void Controller::removeDuplicates(std::vector<Vertex *> &path) {
     std::vector<Vertex*> newPath;
@@ -886,9 +877,9 @@ void Controller::makePerfect(std::vector<Vertex *> &oddDegrees) {
         if(v->isVisited())continue;
         pairs.push_back(std::make_pair(curr,v));
         v->setVisited(true);
-        distance+=graph.getDist(curr->getId(),v->getId());
+        distance+=distances[curr->getId()][v->getId()];
         makePerfectAux(pairs,oddDegrees,distance,bestDistance,bestPairs);
-        distance-=graph.getDist(curr->getId(),v->getId());
+        distance-=distances[curr->getId()][v->getId()];
         v->setVisited(false);
     }
     for(auto v: bestPairs){
@@ -915,9 +906,9 @@ void Controller::makePerfectAux(std::vector<std::pair<Vertex*, Vertex*>> path, s
         if(v->isVisited())continue;
         path.push_back(std::make_pair(curr,v));
         v->setVisited(true);
-        distance+=graph.getDist(path.back().first->getId(),path.back().second->getId());
+        distance+=distances[path.back().first->getId()][path.back().second->getId()];
         makePerfectAux(path,oddDegrees,distance,bestDistance,bestPairs);
-        distance-=graph.getDist(path.back().first->getId(),path.back().second->getId());
+        distance-=distances[path.back().first->getId()][path.back().second->getId()];
         v->setVisited(false);
         path.pop_back();
     }
