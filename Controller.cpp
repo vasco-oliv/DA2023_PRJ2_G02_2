@@ -696,8 +696,8 @@ void Controller::chainedLK() {
     }
     double distance = 0;
     nearestNeighborGreedy(path, distance);
-    if (distance >= 1000) distance /= 1000;
-    std::cout << "Distance with Nearest Neighbor approach: " << distance << " kilometers.\n";
+    if (distance >= 1000) std::cout << "Distance with Nearest Neighbor approach: " << distance / 1000 << " kilometers.\n";
+    else std::cout << "Distance with Nearest Neighbor approach: " << distance << " kilometers.\n";
     std::cout << "Time taken to calculate: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds\n";
 
     clock_t start1 = clock();
@@ -725,7 +725,7 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
                 std::vector<Vertex*> newPath = bestPath;
                 reverseSubpath(newPath, i + 1, j);
                 //double newDistance = calculateDistance(newPath);
-                double newDistance = (bestDistance + std::numeric_limits<float>::epsilon()) - distances[bestPath[i + 1]->getId()][bestPath[i]->getId()] - distances[bestPath[j + 1]->getId()][bestPath[j]->getId()] + distances[newPath[i + 1]->getId()][newPath[i]->getId()] + distances[newPath[j + 1]->getId()][newPath[j]->getId()];
+                double newDistance = bestDistance + std::numeric_limits<float>::epsilon() - distances[bestPath[i + 1]->getId()][bestPath[i]->getId()] - distances[bestPath[j + 1]->getId()][bestPath[j]->getId()] + distances[newPath[i + 1]->getId()][newPath[i]->getId()] + distances[newPath[j + 1]->getId()][newPath[j]->getId()];
                 if (newDistance < bestDistance) {
                     bestPath = newPath;
                     bestDistance = newDistance;
