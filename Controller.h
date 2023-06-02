@@ -103,6 +103,8 @@ private:
     void christofides();
     void primsChristofides();
     void greedyMakePerfect(std::vector<Vertex*>& oddDegrees);
+    void makePerfect(std::vector<Vertex*>& oddDegrees);
+    void makePerfectAux(std::vector<std::pair<Vertex*, Vertex*>> path, std::vector<Vertex *> &oddDegrees, double& distance, double& bestDistance, std::vector<std::pair<Vertex*, Vertex*>>& bestPairs);
     std::vector<Vertex*> eulerianPath();
     static void removeDuplicates(std::vector<Vertex*>& path);
 

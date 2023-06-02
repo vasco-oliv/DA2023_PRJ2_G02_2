@@ -670,7 +670,7 @@ void Controller::christofides() {
             oddDegreeVertices.push_back(vertex);
         }
     }
-    greedyMakePerfect(oddDegreeVertices);
+    makePerfect(oddDegreeVertices);
     path=eulerianPath();
     removeDuplicates(path);
     path.push_back(path[0]);
@@ -779,4 +779,54 @@ void Controller::removeDuplicates(std::vector<Vertex *> &path) {
         }
     }
     path=newPath;
+}
+
+void Controller::makePerfect(std::vector<Vertex *> &oddDegrees) {
+    for(auto v: oddDegrees){
+        v->setVisited(false);
+    }
+    std::vector<std::pair<Vertex*, Vertex*>> pairs, bestPairs;
+    double distance=0;
+    double bestDistance=std::numeric_limits<double>::max();
+    auto curr=oddDegrees[0];
+    curr->setVisited(true);
+    for(auto v: oddDegrees){
+        if(v->isVisited())continue;
+        pairs.push_back(std::make_pair(curr,v));
+        v->setVisited(true);
+        distance+=graph.getDist(curr->getId(),v->getId());
+        makePerfectAux(pairs,oddDegrees,distance,bestDistance,bestPairs);
+        distance-=graph.getDist(curr->getId(),v->getId());
+        v->setVisited(false);
+    }
+    for(auto v: bestPairs){
+        v.first->chrisAdj.push_back(graph.getEdge(v.first,v.second));
+        v.second->chrisAdj.push_back(graph.getEdge(v.second,v.first));
+    }
+}
+
+void Controller::makePerfectAux(std::vector<std::pair<Vertex*, Vertex*>> path, std::vector<Vertex *> &oddDegrees, double& distance, double& bestDistance, std::vector<std::pair<Vertex*, Vertex*>>& bestPairs){
+    if(path.size()==oddDegrees.size()/2){
+        if(distance<bestDistance){
+            bestDistance=distance;
+            bestPairs=path;
+        }
+        return;
+    }
+    Vertex* curr;
+    for(auto v: oddDegrees){
+        if(!v->isVisited())curr=v;
+    }
+    if(curr== nullptr)return;
+    curr->setVisited(true);
+    for(auto v: oddDegrees){
+        if(v->isVisited())continue;
+        path.push_back(std::make_pair(curr,v));
+        v->setVisited(true);
+        distance+=graph.getDist(path.back().first->getId(),path.back().second->getId());
+        makePerfectAux(path,oddDegrees,distance,bestDistance,bestPairs);
+        distance-=graph.getDist(path.back().first->getId(),path.back().second->getId());
+        v->setVisited(false);
+        path.pop_back();
+    }
 }
