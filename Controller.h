@@ -98,6 +98,11 @@ private:
     /// If no path is found, it displays an error message.
     /// @note Time Complexity: O(V+E), where V is the number of vertices in the graph and E is the number of edges in the graph
     void nearestNeighborGreedy(std::vector<Vertex*>& path, double& distance);
+
+    /// @brief Eecutes the chained Lin Kernighan algorithm to solve the TSP problem.
+    /// This function finds the best path and its distance and displays the results.
+    /// If no path is found, it displays an error message.
+    /// @note Time Complexity: O(V^2), where V is the number of vertices in the graph
     void chainedLK();
 
     void christofides();
