@@ -95,27 +95,6 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
     }
 }
 
-std::vector<std::vector<double>> Controller::createDistanceMatrix() {
-    const std::vector<Vertex*>& vertexSet = graph.getVertexSet();
-    auto numVertices = vertexSet.size();
-
-    std::vector<std::vector<double>> distanceMatrix(numVertices, std::vector<double>(numVertices, 0.0));
-
-    for (int i = 0; i < numVertices; ++i) {
-        for (int j = i + 1; j < numVertices; ++j) {
-            unsigned int id1 = vertexSet[i]->getId();
-            unsigned int id2 = vertexSet[j]->getId();
-
-            double distance = graph.getDist(id1, id2);
-
-            distanceMatrix[i][j] = distance;
-            distanceMatrix[j][i] = distance;
-        }
-    }
-
-    return distanceMatrix;
-}
-
 void Controller::readToyGraph(const std::string& edges) {
     std::ifstream ifs(edges);
 
@@ -130,6 +109,9 @@ void Controller::readToyGraph(const std::string& edges) {
     int idOrig, idDest;
     double weight;
 
+    int edgeCounter = 0;
+    int vertexCounter = 0;
+
     while(std::getline(ifs,line)){
         std::istringstream iss(line);
         iss >> idOrig;
@@ -142,15 +124,23 @@ void Controller::readToyGraph(const std::string& edges) {
             auto v = new Vertex(idOrig);
             vertices.insert(std::make_pair(idOrig, v));
             graph.addVertex(v);
+            vertexCounter++;
         }
         if(vertices.find(idDest) == vertices.end()){
             auto v = new Vertex(idDest);
             vertices.insert(std::make_pair(idDest, v));
             graph.addVertex(v);
+            vertexCounter++;
         }
         auto orig = vertices.find(idOrig)->second;
         auto dest = vertices.find(idDest)->second;
-        graph.addEdge(orig,dest,weight);
+        graph.addEdge(orig,dest, weight);
+        edgeCounter++;
+    }
+    ifs.close();
+    if (edgeCounter == vertexCounter * (vertexCounter - 1) / 2) {
+        graph.setFullyConnected(true);
+        distances = createDistanceMatrix();
     }
 }
 
@@ -166,6 +156,9 @@ void Controller::readFullyConGraph(const std::string& edges) {
     int idOrig, idDest;
     double weight;
 
+    int edgeCounter = 0;
+    int vertexCounter = 0;
+
     while(std::getline(ifs,line)){
         std::istringstream iss(line);
         iss >> idOrig;
@@ -179,15 +172,23 @@ void Controller::readFullyConGraph(const std::string& edges) {
             auto v = new Vertex(idOrig);
             vertices.insert(std::make_pair(idOrig,v));
             graph.addVertex(v);
+            vertexCounter++;
         }
         if(vertices.find(idDest)==vertices.end()){
             auto v = new Vertex(idDest);
             vertices.insert(std::make_pair(idDest,v));
             graph.addVertex(v);
+            vertexCounter++;
         }
         auto orig = vertices.find(idOrig)->second;
         auto dest = vertices.find(idDest)->second;
         graph.addEdge(orig,dest,weight);
+        edgeCounter++;
+    }
+    ifs.close();
+    if (edgeCounter == vertexCounter * (vertexCounter - 1) / 2) {
+        graph.setFullyConnected(true);
+        distances = createDistanceMatrix();
     }
 }
 
@@ -299,7 +300,7 @@ void Controller::startMenu() {
         case 3:
             clearScreen();
             std::cout << "\nLoading Data...\n";
-            readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_25.csv");
+            readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_800.csv");
             mainMenu();
             break;
         case 4:
@@ -779,4 +780,25 @@ void Controller::removeDuplicates(std::vector<Vertex *> &path) {
         }
     }
     path=newPath;
+}
+
+std::vector<std::vector<double>> Controller::createDistanceMatrix() {
+    const std::vector<Vertex*>& vertexSet = graph.getVertexSet();
+    auto numVertices = vertexSet.size();
+
+    std::vector<std::vector<double>> distanceMatrix(numVertices, std::vector<double>(numVertices, 0.0));
+
+    for (int i = 0; i < numVertices; ++i) {
+        for (int j = i + 1; j < numVertices; ++j) {
+            unsigned int id1 = vertexSet[i]->getId();
+            unsigned int id2 = vertexSet[j]->getId();
+
+            double distance = graph.getDist(id1, id2);
+
+            distanceMatrix[i][j] = distance;
+            distanceMatrix[j][i] = distance;
+        }
+    }
+
+    return distanceMatrix;
 }
