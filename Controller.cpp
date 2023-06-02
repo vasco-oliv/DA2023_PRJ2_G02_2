@@ -6,7 +6,6 @@
 #include <queue>
 #include <stack>
 #include <algorithm>
-
 #include "Controller.h"
 
 void Controller::clearScreen() {
@@ -696,14 +695,15 @@ void Controller::godsAlgorithm() {
     }
     double distance = 0;
     nearestNeighborGreedy(path, distance);
-    std::cout << "Path Size: " << path.size() << "\n";
-    std::cout << "Greedy: " << distance << "\n";
-    std::cout << "Time: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds\n";
+    if (distance >= 1000) distance /= 1000;
+    std::cout << "Distance with Nearest Neighbor approach: " << distance << " kilometers.\n";
+    std::cout << "Time taken to calculate: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds\n";
+
     clock_t start1 = clock();
     linKernighan(path, distance);
-    std::cout << "Path Size: " << path.size() << "\n";
-    std::cout << "Lin-Kernighan: " << distance << "\n";
-    std::cout << "Time: " << (double)(clock()-start1)/CLOCKS_PER_SEC << " seconds\n";
+    if (distance >= 1000) distance /= 1000;
+    std::cout << "Distance after applying the Chained Lin-Kernighan algorithm: " << distance << " kilometers.\n";
+    std::cout << "Time taken to calculate: " << (double)(clock()-start1)/CLOCKS_PER_SEC << " seconds\n";
     std::cout << "(Press any key to continue)\n";
     std::string aux;
     std::cin >> aux;
@@ -715,17 +715,16 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
     double bestDistance = distance;
     bool improved = true;
     int iteration = 0;
-    int pathSize = bestPath.size();
+    auto pathSize = bestPath.size();
 
     while (improved && iteration < MAX_ITERATIONS) {
         improved = false;
         for (int i = 0; i < pathSize - 2; ++i) {
-            for (int j = i + 2; j < pathSize - 1; ++j) {
+            for (int j = i + 1; j < pathSize - 1; ++j) {
                 std::vector<Vertex*> newPath = bestPath;
                 reverseSubpath(newPath, i + 1, j);
                 double newDistance = calculateDistance(newPath);
                 if (newDistance < bestDistance) {
-                    std::cout << "Improved from " << bestDistance << " to " << newDistance << "\n";
                     bestPath = newPath;
                     bestDistance = newDistance;
                     improved = true;
@@ -734,7 +733,6 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
         }
         iteration++;
     }
-    std::cout << "Number of iterations: " << iteration << "\n";
     path = bestPath;
     distance = bestDistance;
 }
