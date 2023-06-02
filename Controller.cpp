@@ -24,6 +24,7 @@ void Controller::dataReset() {
     vertices.clear();
     graph.clear();
     graph = Graph();
+    distances.clear();
 }
 
 void Controller::readRealWorldGraph(const std::string& nodes, const std::string& edges) {
@@ -95,27 +96,6 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
     }
 }
 
-std::vector<std::vector<double>> Controller::createDistanceMatrix() {
-    const std::vector<Vertex*>& vertexSet = graph.getVertexSet();
-    auto numVertices = vertexSet.size();
-
-    std::vector<std::vector<double>> distanceMatrix(numVertices, std::vector<double>(numVertices, 0.0));
-
-    for (int i = 0; i < numVertices; ++i) {
-        for (int j = i + 1; j < numVertices; ++j) {
-            unsigned int id1 = vertexSet[i]->getId();
-            unsigned int id2 = vertexSet[j]->getId();
-
-            double distance = graph.getDist(id1, id2);
-
-            distanceMatrix[i][j] = distance;
-            distanceMatrix[j][i] = distance;
-        }
-    }
-
-    return distanceMatrix;
-}
-
 void Controller::readToyGraph(const std::string& edges) {
     std::ifstream ifs(edges);
 
@@ -130,6 +110,9 @@ void Controller::readToyGraph(const std::string& edges) {
     int idOrig, idDest;
     double weight;
 
+    int edgeCounter = 0;
+    int vertexCounter = 0;
+
     while(std::getline(ifs,line)){
         std::istringstream iss(line);
         iss >> idOrig;
@@ -142,15 +125,23 @@ void Controller::readToyGraph(const std::string& edges) {
             auto v = new Vertex(idOrig);
             vertices.insert(std::make_pair(idOrig, v));
             graph.addVertex(v);
+            vertexCounter++;
         }
         if(vertices.find(idDest) == vertices.end()){
             auto v = new Vertex(idDest);
             vertices.insert(std::make_pair(idDest, v));
             graph.addVertex(v);
+            vertexCounter++;
         }
         auto orig = vertices.find(idOrig)->second;
         auto dest = vertices.find(idDest)->second;
-        graph.addEdge(orig,dest,weight);
+        graph.addEdge(orig,dest, weight);
+        edgeCounter++;
+    }
+    ifs.close();
+    if (edgeCounter == vertexCounter * (vertexCounter - 1) / 2) {
+        graph.setFullyConnected(true);
+        distances = createDistanceMatrix();
     }
 }
 
@@ -166,6 +157,9 @@ void Controller::readFullyConGraph(const std::string& edges) {
     int idOrig, idDest;
     double weight;
 
+    int edgeCounter = 0;
+    int vertexCounter = 0;
+
     while(std::getline(ifs,line)){
         std::istringstream iss(line);
         iss >> idOrig;
@@ -179,15 +173,23 @@ void Controller::readFullyConGraph(const std::string& edges) {
             auto v = new Vertex(idOrig);
             vertices.insert(std::make_pair(idOrig,v));
             graph.addVertex(v);
+            vertexCounter++;
         }
         if(vertices.find(idDest)==vertices.end()){
             auto v = new Vertex(idDest);
             vertices.insert(std::make_pair(idDest,v));
             graph.addVertex(v);
+            vertexCounter++;
         }
         auto orig = vertices.find(idOrig)->second;
         auto dest = vertices.find(idDest)->second;
         graph.addEdge(orig,dest,weight);
+        edgeCounter++;
+    }
+    ifs.close();
+    if (edgeCounter == vertexCounter * (vertexCounter - 1) / 2) {
+        graph.setFullyConnected(true);
+        distances = createDistanceMatrix();
     }
 }
 
@@ -207,7 +209,7 @@ void Controller::startMenu() {
     std::cout << "0. Exit\n";
     std::cout << "Option: ";
 
-    int option, option2;
+    int option, option2, option3;
     clock_t begin;
     std::string aux;
     std::cin >> option;
@@ -298,9 +300,106 @@ void Controller::startMenu() {
             break;
         case 3:
             clearScreen();
-            std::cout << "\nLoading Data...\n";
-            readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_25.csv");
-            mainMenu();
+            std::cout << "/t**Start Menu**\n\n";
+            std::cout << "Select a Fully Connected Graph:\n";
+            std::cout << "1. With 25 nodes\n";
+            std::cout << "2. With 50 nodes\n";
+            std::cout << "3. With 75 nodes\n";
+            std::cout << "4. With 100 nodes\n";
+            std::cout << "5. With 200 nodes\n";
+            std::cout << "6. With 300 nodes\n";
+            std::cout << "7. With 400 nodes\n";
+            std::cout << "8. With 500 nodes\n";
+            std::cout << "9. With 600 nodes\n";
+            std::cout << "10. With 700 nodes\n";
+            std::cout << "11. With 800 nodes\n";
+            std::cout << "12. With 900 nodes\n";
+            std::cout << "0. Go Back\n";
+            std::cout << "Option: ";
+            std::cin >> option3;
+            switch (option3) {
+                case 1:
+                    clearScreen();
+                    std::cout << "\nLoading Data...\n";
+                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_25.csv");
+                    mainMenu();
+                    break;
+                case 2:
+                    clearScreen();
+                    std::cout << "\nLoading Data...\n";
+                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_50.csv");
+                    mainMenu();
+                    break;
+                case 3:
+                    clearScreen();
+                    std::cout << "\nLoading Data...\n";
+                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_75.csv");
+                    mainMenu();
+                    break;
+                case 4:
+                    clearScreen();
+                    std::cout << "\nLoading Data...\n";
+                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_100.csv");
+                    mainMenu();
+                    break;
+                case 5:
+                    clearScreen();
+                    std::cout << "\nLoading Data...\n";
+                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_200.csv");
+                    mainMenu();
+                    break;
+                case 6:
+                    clearScreen();
+                    std::cout << "\nLoading Data...\n";
+                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_300.csv");
+                    mainMenu();
+                    break;
+                case 7:
+                    clearScreen();
+                    std::cout << "\nLoading Data...\n";
+                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_400.csv");
+                    mainMenu();
+                    break;
+                case 8:
+                    clearScreen();
+                    std::cout << "\nLoading Data...\n";
+                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_500.csv");
+                    mainMenu();
+                    break;
+                case 9:
+                    clearScreen();
+                    std::cout << "\nLoading Data...\n";
+                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_600.csv");
+                    mainMenu();
+                    break;
+                case 10:
+                    clearScreen();
+                    std::cout << "\nLoading Data...\n";
+                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_700.csv");
+                    mainMenu();
+                    break;
+                case 11:
+                    clearScreen();
+                    std::cout << "\nLoading Data...\n";
+                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_800.csv");
+                    mainMenu();
+                    break;
+                case 12:
+                    clearScreen();
+                    std::cout << "\nLoading Data...\n";
+                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_900.csv");
+                    mainMenu();
+                    break;
+                case 0:
+                    startMenu();
+                    break;
+                default:
+                    std::cout << "ERROR: Invalid option\n";
+                    std::cout << "(Press any key to continue)";
+                    std::cin >> aux;
+                    startMenu();
+                    break;
+            }
             break;
         case 4:
             break;
@@ -352,9 +451,9 @@ void Controller::mainMenu() {
             christofides();
             break;
         case 5:
-        dataReset();
-        startMenu();
-        break;
+            dataReset();
+            startMenu();
+            break;
         case 0:
             break;
         default:
@@ -829,4 +928,25 @@ void Controller::makePerfectAux(std::vector<std::pair<Vertex*, Vertex*>> path, s
         v->setVisited(false);
         path.pop_back();
     }
+}
+
+std::vector<std::vector<double>> Controller::createDistanceMatrix() {
+    const std::vector<Vertex*>& vertexSet = graph.getVertexSet();
+    auto numVertices = vertexSet.size();
+
+    std::vector<std::vector<double>> distanceMatrix(numVertices, std::vector<double>(numVertices, 0.0));
+
+    for (int i = 0; i < numVertices; ++i) {
+        for (int j = i + 1; j < numVertices; ++j) {
+            unsigned int id1 = vertexSet[i]->getId();
+            unsigned int id2 = vertexSet[j]->getId();
+
+            double distance = graph.getDist(id1, id2);
+
+            distanceMatrix[i][j] = distance;
+            distanceMatrix[j][i] = distance;
+        }
+    }
+
+    return distanceMatrix;
 }
