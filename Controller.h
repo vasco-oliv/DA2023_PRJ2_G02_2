@@ -98,7 +98,7 @@ private:
     /// If no path is found, it displays an error message.
     /// @note Time Complexity: O(V+E), where V is the number of vertices in the graph and E is the number of edges in the graph
     void nearestNeighborGreedy(std::vector<Vertex*>& path, double& distance);
-    void godsAlgorithm();
+    void chainedLK();
 
     void christofides();
     void primsChristofides();

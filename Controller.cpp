@@ -446,7 +446,7 @@ void Controller::mainMenu() {
         case 3:
             clearScreen();
             std::cout << "Calculating best solution using Lin Kernighan's Algorithm...\n";
-            godsAlgorithm();
+            chainedLK();
             break;
         case 4:
             clearScreen();
@@ -485,7 +485,7 @@ void Controller::backtrackingAux(Vertex* &current, std::vector<Vertex*>& path, d
                 if(distance < bestDistance){
                     bestDistance = distance;
                     bestPath = path;
-                    std::cout << path[1]->getId() << " " << bestDistance << std::endl;
+                    //std::cout << path[1]->getId() << " " << bestDistance << std::endl;
                 }
 
                 distance -= edge->getWeight();
@@ -687,7 +687,7 @@ void Controller::nearestNeighborGreedy(std::vector<Vertex*> &path, double &dista
     distance += distances[path[path.size()-2]->getId()][path[path.size()-1]->getId()];
 }
 
-void Controller::godsAlgorithm() {
+void Controller::chainedLK() {
     clearScreen();
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
     clock_t start = clock();
@@ -725,7 +725,7 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
                 std::vector<Vertex*> newPath = bestPath;
                 reverseSubpath(newPath, i + 1, j);
                 //double newDistance = calculateDistance(newPath);
-                double newDistance = (bestDistance+std::numeric_limits<float>::epsilon()) - distances[bestPath[i + 1]->getId()][bestPath[i]->getId()] - distances[bestPath[j + 1]->getId()][bestPath[j]->getId()] + distances[newPath[i + 1]->getId()][newPath[i]->getId()] + distances[newPath[j + 1]->getId()][newPath[j]->getId()];
+                double newDistance = (bestDistance + std::numeric_limits<float>::epsilon()) - distances[bestPath[i + 1]->getId()][bestPath[i]->getId()] - distances[bestPath[j + 1]->getId()][bestPath[j]->getId()] + distances[newPath[i + 1]->getId()][newPath[i]->getId()] + distances[newPath[j + 1]->getId()][newPath[j]->getId()];
                 if (newDistance < bestDistance) {
                     std::cout << "Improved from " << bestDistance << " to " << newDistance << "\n";
                     bestPath = newPath;
