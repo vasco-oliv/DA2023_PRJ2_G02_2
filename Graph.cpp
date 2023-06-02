@@ -30,15 +30,6 @@ void Graph::addVertex(Vertex* vertex) {
     vertexSet.push_back(vertex);
 }
 
-/*
-bool Graph::removeVertex(unsigned int id) {
-    auto v= findVertex(id);
-    if(v == vertexSet.end()) return false;
-
-    vertexSet.erase(v);
-    return true;
-} */
-
 void Graph::addEdge(unsigned int idOrig, unsigned int idDest, double weight) {
     auto orig = findVertex(idOrig);
     auto dest = findVertex(idDest);
@@ -95,12 +86,9 @@ double Graph::calculateDist(double lat1, double long1, double lat2, double long2
 }
 
 void Graph::clear() {
-    for (auto &v : vertexSet) {
-        v->clear();
-        delete v;
-    }
     vertexSet.clear();
 }
+
 
 Edge *Graph::getEdge(Vertex *v1, Vertex *v2) const {
     if(v1 == nullptr || v2 == nullptr) return nullptr;

@@ -2,7 +2,6 @@
 #ifndef DA2023_PRJ2_G02_2_VERTEXEDGE_H
 #define DA2023_PRJ2_G02_2_VERTEXEDGE_H
 
-#include <memory>
 #include <vector>
 
 class Edge;
@@ -130,6 +129,8 @@ public:
     /// @return The weight of this edge
     /// @note Time Complexity: O(1)
     double getWeight() const;
+
+    void clear();
 };
 
 struct EdgeComparator {

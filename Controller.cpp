@@ -13,7 +13,6 @@ void Controller::clearScreen() {
     #ifdef _WIN32
         std::system("cls");
     #else
-        // Assume POSIX
         std::system("clear");
     #endif
 }
@@ -21,6 +20,10 @@ void Controller::clearScreen() {
 void Controller::dataReset() {
     clearScreen();
     std::cout << "Clearing data...\n";
+    for (auto & vertice : vertices) {
+        vertice.second -> clear();
+        delete vertice.second;
+    }
     vertices.clear();
     graph.clear();
     graph = Graph();
@@ -90,10 +93,10 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
     }
     ifsE.close();
     graph.setHasCoords(true);
-    if (edgeCounter == vertexCounter * (vertexCounter - 1) / 2) {
+    if (edgeCounter == vertexCounter * (vertexCounter - 1) / 2)
         graph.setFullyConnected(true);
-        distances = createDistanceMatrix();
-    }
+
+    distances = createDistanceMatrix();
 }
 
 void Controller::readToyGraph(const std::string& edges) {
@@ -139,10 +142,10 @@ void Controller::readToyGraph(const std::string& edges) {
         edgeCounter++;
     }
     ifs.close();
-    if (edgeCounter == vertexCounter * (vertexCounter - 1) / 2) {
+    if (edgeCounter == vertexCounter * (vertexCounter - 1) / 2)
         graph.setFullyConnected(true);
-        distances = createDistanceMatrix();
-    }
+
+    distances = createDistanceMatrix();
 }
 
 void Controller::readFullyConGraph(const std::string& edges) {
@@ -187,10 +190,10 @@ void Controller::readFullyConGraph(const std::string& edges) {
         edgeCounter++;
     }
     ifs.close();
-    if (edgeCounter == vertexCounter * (vertexCounter - 1) / 2) {
+    if (edgeCounter == vertexCounter * (vertexCounter - 1) / 2)
         graph.setFullyConnected(true);
-        distances = createDistanceMatrix();
-    }
+
+    distances = createDistanceMatrix();
 }
 
 void Controller::run() {
@@ -473,7 +476,8 @@ void Controller::backtrackingAux(Vertex* &current, std::vector<Vertex*>& path, d
     path.push_back(current);
 
     if (path.size() == graph.getVertexSet().size()) {
-        for(const auto& edge : current->getAdj()){
+        auto adj = current->getAdj();
+        for(const auto& edge : adj){
             if (edge->getDest() == graph.getVertexSet()[0]) {
                 distance += edge->getWeight();
                 path.push_back(graph.getVertexSet()[0]);
@@ -521,8 +525,9 @@ void Controller::backtracking() {
     clock_t start = clock();
     std::vector<Vertex*> path, bestPath;
     double distance = 0, bestDistance = std::numeric_limits<double>::max();
+    auto vertexSet = graph.getVertexSet();
 
-    for (const auto& vertex : graph.getVertexSet()) {
+    for (const auto& vertex : vertexSet) {
         vertex->setVisited(false);
     }
 
@@ -557,22 +562,11 @@ void Controller::backtracking() {
 
 double Controller::calculateDistance(std::vector<Vertex*> &path) {
     double distance=0;
-    if (!graph.fullyConnected()) {
-        for(int i = 0; i < path.size()-1; i++){
-            double w = graph.getDist(path[i]->getId(),path[i+1]->getId());
-            if(w == -1){
-                if(!graph.usesCoords()) return -1;
-                else {
-                    w = graph.calculateDist(path[i]->getLatitude(),path[i]->getLongitude(),path[i+1]->getLatitude(),path[i+1]->getLongitude());
-                }
-            }
-            distance += w;
-        }
-    }
-    else {
-        for(int i = 0; i < path.size()-1; i++) {
-            distance += distances[path[i]->getId()][path[i+1]->getId()];
-        }
+    int pathSize = path.size()-1;
+    for(int i = 0; i < pathSize ; i++) {
+        int id1 = path[i]->getId();
+        int id2 = path[i + 1]->getId();
+        distance += distances[id1][id2];
     }
     return distance;
 }
@@ -721,14 +715,15 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
     double bestDistance = distance;
     bool improved = true;
     int iteration = 0;
+    int pathSize = bestPath.size();
+
     while (improved && iteration < MAX_ITERATIONS) {
         improved = false;
-        for (int i = 0; i < bestPath.size() - 2; ++i) {
-            for (int j = i + 2; j < bestPath.size() - 1; ++j) {
+        for (int i = 0; i < pathSize - 2; ++i) {
+            for (int j = i + 2; j < pathSize - 1; ++j) {
                 std::vector<Vertex*> newPath = bestPath;
-                double newDistance = bestDistance;
                 reverseSubpath(newPath, i + 1, j);
-                newDistance = calculateDistance(newPath);
+                double newDistance = calculateDistance(newPath);
                 if (newDistance < bestDistance) {
                     std::cout << "Improved from " << bestDistance << " to " << newDistance << "\n";
                     bestPath = newPath;
@@ -936,8 +931,8 @@ std::vector<std::vector<double>> Controller::createDistanceMatrix() {
 
     std::vector<std::vector<double>> distanceMatrix(numVertices, std::vector<double>(numVertices, 0.0));
 
-    for (int i = 0; i < numVertices; ++i) {
-        for (int j = i + 1; j < numVertices; ++j) {
+    for (int i = 0; i < numVertices; i++) {
+        for (int j = i + 1; j < numVertices; j++) {
             unsigned int id1 = vertexSet[i]->getId();
             unsigned int id2 = vertexSet[j]->getId();
 

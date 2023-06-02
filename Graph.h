@@ -2,7 +2,6 @@
 #define DA2023_PRJ2_G02_2_GRAPH_H
 
 #include <vector>
-#include <memory>
 #include "VertexEdge.h"
 
 class Graph {
