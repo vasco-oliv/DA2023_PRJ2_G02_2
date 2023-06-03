@@ -33,7 +33,7 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
     std::ifstream ifsN(nodes);
 
     if(!ifsN.is_open()){
-        std::cout << "ERROR: File not found\n";
+        std::cout << "ERROR: File not found.\n";
         exit(1);
     }
 
@@ -64,7 +64,7 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
 
     std::ifstream ifsE(edges);
     if(!ifsE.is_open()){
-        std::cout << "ERROR: File not found\n";
+        std::cout << "ERROR: File not found.\n";
         exit(1);
     }
 
@@ -102,7 +102,7 @@ void Controller::readToyGraph(const std::string& edges) {
     std::ifstream ifs(edges);
 
     if(!ifs.is_open()){
-        std::cout << "ERROR: File not found\n";
+        std::cout << "ERROR: File not found.\n";
         exit(1);
     }
 
@@ -151,7 +151,7 @@ void Controller::readFullyConGraph(const std::string& edges) {
     std::ifstream ifs(edges);
 
     if(!ifs.is_open()){
-        std::cout << "ERROR: File not found\n";
+        std::cout << "ERROR: File not found.\n";
         exit(1);
     }
 
@@ -244,16 +244,13 @@ void Controller::startMenu() {
                     begin = clock();
                     std::cout << "\nLoading Data...\n";
                     readRealWorldGraph("../Project2Graphs/Real-World-Graphs/graph3/nodes.csv","../Project2Graphs/Real-World-Graphs/graph3/edges.csv");
-                    std::cout << "Time elapsed: " << double(clock() - begin) / CLOCKS_PER_SEC << " seconds\n";
-                    std::cout << "(Press any key to continue)";
-                    std::cin >> aux;
                     mainMenu();
                     break;
                 case 0:
                     startMenu();
                     break;
                 default:
-                    std::cout << "ERROR: Invalid option\n";
+                    std::cout << "ERROR: Invalid option.\n";
                     std::cout << "(Press any key to continue)";
                     std::cin >> aux;
                     startMenu();
@@ -293,7 +290,7 @@ void Controller::startMenu() {
                     startMenu();
                     break;
                 default:
-                    std::cout << "ERROR: Invalid option\n";
+                    std::cout << "ERROR: Invalid option.\n";
                     std::cout << "(Press any key to continue)";
                     std::cin >> aux;
                     startMenu();
@@ -396,7 +393,7 @@ void Controller::startMenu() {
                     startMenu();
                     break;
                 default:
-                    std::cout << "ERROR: Invalid option\n";
+                    std::cout << "ERROR: Invalid option.\n";
                     std::cout << "(Press any key to continue)";
                     std::cin >> aux;
                     startMenu();
@@ -404,12 +401,12 @@ void Controller::startMenu() {
             }
             break;
         case 4:
+            // TODO: Implement
             break;
         case 0:
-            std::cout << "Exit\n";
             break;
         default:
-            std::cout << "ERROR: Invalid option\n";
+            std::cout << "ERROR: Invalid option.\n";
             break;
     }
 }
@@ -444,7 +441,7 @@ void Controller::mainMenu() {
             break;
         case 3:
             clearScreen();
-            std::cout << "Calculating best solution using Lin Kernighan's Algorithm...\n";
+            std::cout << "Calculating best solution using Chained Lin Kernighan's Algorithm...\n";
             chainedLK();
             break;
         case 4:
@@ -459,7 +456,7 @@ void Controller::mainMenu() {
         case 0:
             break;
         default:
-            std::cout << "ERROR: Invalid option\n";
+            std::cout << "ERROR: Invalid option.\n";
             std::cout << "(Press any key to continue)";
             std::cin >> aux;
             mainMenu();
@@ -484,7 +481,6 @@ void Controller::backtrackingAux(Vertex* &current, std::vector<Vertex*>& path, d
                 if(distance < bestDistance){
                     bestDistance = distance;
                     bestPath = path;
-                    //std::cout << path[1]->getId() << " " << bestDistance << std::endl;
                 }
 
                 distance -= edge->getWeight();
@@ -538,7 +534,7 @@ void Controller::backtracking() {
 
     if(bestPath.size() != (graph.getVertexSet().size()+1)){
         std::cout << "No path found!\n";
-        std::cout << "Time: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds\n";
+        std::cout << "Time taken to calculate: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds.\n";
         std::cout << "(Press any key to continue)\n";
         std::string aux;
         std::cin >> aux;
@@ -552,7 +548,7 @@ void Controller::backtracking() {
     }
 
     std::cout << "\nBest Distance: " << bestDistance << "\n";
-    std::cout << "Time: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds\n";
+    std::cout << "Time taken to calculate: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds.\n";
     std::cout << "(Press any key to continue)\n";
     std::string aux;
     std::cin >> aux;
@@ -634,7 +630,7 @@ void Controller::triangular() {
 
     if(path.size() != (graph.getVertexSet().size() + 1)){
         std::cout << "No path found!\n";
-        std::cout << "Time: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds\n";
+        std::cout << "Time taken to calculate: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds.\n";
         std::cout << "(Press any key to continue)\n";
         std::string aux;
         std::cin >> aux;
@@ -642,16 +638,10 @@ void Controller::triangular() {
         return;
     }
 
+    double distance = calculateDistance(path);
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
-    /*std::cout << "Best Path: ";
-    std::cout << path[0]->getId();
-
-    for (int i = 1; i < path.size(); ++i) {
-        std::cout << " -> " << path[i]->getId();
-    }*/
-    std::cout << "Path size: " << path.size() << "\n";
     std::cout << "\nBest Distance: " << calculateDistance(path) << "\n";
-    std::cout << "Time: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds\n";
+    std::cout << "Time taken to calculate: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds.\n";
     std::cout << "(Press any key to continue)\n";
     std::string aux;
     std::cin >> aux;
@@ -697,14 +687,14 @@ void Controller::chainedLK() {
     double distance = 0;
     nearestNeighborGreedy(path, distance);
     if (distance >= 1000) std::cout << "Distance with Nearest Neighbor approach: " << distance / 1000 << " kilometers.\n";
-    else std::cout << "Distance with Nearest Neighbor approach: " << distance << " kilometers.\n";
-    std::cout << "Time taken to calculate: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds\n";
+    else std::cout << "Distance with Nearest Neighbor approach: " << distance << " meters.\n";
+    std::cout << "Time taken to calculate: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds.\n";
 
     clock_t start1 = clock();
     linKernighan(path, distance);
-    if (distance >= 1000) distance /= 1000;
-    std::cout << "Distance after applying the Chained Lin-Kernighan algorithm: " << distance << " kilometers.\n";
-    std::cout << "Time taken to calculate: " << (double)(clock()-start1)/CLOCKS_PER_SEC << " seconds\n";
+    if (distance >= 1000) std::cout << "Distance after applying the Chained Lin-Kernighan algorithm: " << distance / 1000 << " kilometers.\n";
+    else std::cout << "Distance after applying the Chained Lin-Kernighan algorithm: " << distance << " meters.\n";
+    std::cout << "Time taken to calculate: " << (double)(clock()-start1)/CLOCKS_PER_SEC << " seconds.\n";
     std::cout << "(Press any key to continue)\n";
     std::string aux;
     std::cin >> aux;
@@ -724,7 +714,6 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
             for (int j = i + 1; j < pathSize - 1; ++j) {
                 std::vector<Vertex*> newPath = bestPath;
                 reverseSubpath(newPath, i + 1, j);
-                //double newDistance = calculateDistance(newPath);
                 double newDistance = bestDistance + std::numeric_limits<float>::epsilon() - distances[bestPath[i + 1]->getId()][bestPath[i]->getId()] - distances[bestPath[j + 1]->getId()][bestPath[j]->getId()] + distances[newPath[i + 1]->getId()][newPath[i]->getId()] + distances[newPath[j + 1]->getId()][newPath[j]->getId()];
                 if (newDistance < bestDistance) {
                     bestPath = newPath;
@@ -755,7 +744,7 @@ void Controller::christofides() {
     for(auto vertex: graph.getVertexSet()){
         if(vertex->chrisAdj.size()==0){
             std::cout << "No path found!\n";
-            std::cout << "Time: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds\n";
+            std::cout << "Time taken to calculate: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds.\n";
             std::cout << "(Press any key to continue)\n";
             std::string aux;
             std::cin >> aux;
@@ -768,14 +757,13 @@ void Controller::christofides() {
     eulerianPath(path, graph.getVertexSet()[0]);
     removeDuplicates(path);
     path.push_back(path[0]);
-    std::cout << "Path Size: " << path.size() << "\n";
     std::cout << "Path:" << path[0]->getId();
     for (int i = 1; i < path.size(); ++i) {
         std::cout << " -> " << path[i]->getId();
     }
     std::cout << std::endl;
-    std::cout << "Distance: " << calculateDistance(path) << "\n";
-    std::cout << "Time: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds\n";
+    std::cout << "Distance using the Christofides algorithm: " << calculateDistance(path) << "\n";
+    std::cout << "Time taken to calculate: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds\n";
     std::cout << "(Press any key to continue)\n";
     std::string aux;
     std::cin >> aux;
