@@ -1,0 +1,110 @@
+\hypertarget{class_edge}{}\doxysection{Edge Class Reference}
+\label{class_edge}\index{Edge@{Edge}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_edge_adc4f1ede3cb3934a5efd92582bf8bfc7}{Edge}} (\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$orig, \mbox{\hyperlink{class_vertex}{Vertex}} $\ast$dest, double weight)
+\begin{DoxyCompactList}\small\item\em Creates an edge between the given origin and destination vertices with the specified weight. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ \mbox{\hyperlink{class_edge_a6e8b08e91c0694b40edff0432fb612eb}{get\+Orig}} () const
+\begin{DoxyCompactList}\small\item\em Gets the origin vertex of this edge. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ \mbox{\hyperlink{class_edge_a5cda44e9ba257b03963a1ac301371a59}{get\+Dest}} () const
+\begin{DoxyCompactList}\small\item\em Gets the destination vertex of this edge. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_edge_a1caaffca117bab3ff5b7387623a356f8}{get\+Weight}} () const
+\begin{DoxyCompactList}\small\item\em Gets the weight of this edge. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_edge_a4761da221cdace005fae41b125391569}\label{class_edge_a4761da221cdace005fae41b125391569}} 
+void {\bfseries clear} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_edge_a48f1521d20ead8492fd1d184656862f5}\label{class_edge_a48f1521d20ead8492fd1d184656862f5}} 
+\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ {\bfseries orig}
+\item 
+\mbox{\Hypertarget{class_edge_a50339c1a85710ca827d4e3865727ffd7}\label{class_edge_a50339c1a85710ca827d4e3865727ffd7}} 
+\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ {\bfseries dest}
+\item 
+\mbox{\Hypertarget{class_edge_a6d0148402e635354c03a151c77fcbdd8}\label{class_edge_a6d0148402e635354c03a151c77fcbdd8}} 
+double {\bfseries weight}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_edge_adc4f1ede3cb3934a5efd92582bf8bfc7}\label{class_edge_adc4f1ede3cb3934a5efd92582bf8bfc7}} 
+\index{Edge@{Edge}!Edge@{Edge}}
+\index{Edge@{Edge}!Edge@{Edge}}
+\doxysubsubsection{\texorpdfstring{Edge()}{Edge()}}
+{\footnotesize\ttfamily Edge\+::\+Edge (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$}]{orig,  }\item[{\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$}]{dest,  }\item[{double}]{weight }\end{DoxyParamCaption})}
+
+
+
+Creates an edge between the given origin and destination vertices with the specified weight. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em orig} & The origin vertex of the edge to create \\
+\hline
+{\em dest} & The destination vertex of the edge to create \\
+\hline
+{\em weight} & The weight of the edge to create \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(1) 
+\end{DoxyNote}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_edge_a5cda44e9ba257b03963a1ac301371a59}\label{class_edge_a5cda44e9ba257b03963a1ac301371a59}} 
+\index{Edge@{Edge}!getDest@{getDest}}
+\index{getDest@{getDest}!Edge@{Edge}}
+\doxysubsubsection{\texorpdfstring{getDest()}{getDest()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ Edge\+::get\+Dest (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the destination vertex of this edge. 
+
+\begin{DoxyReturn}{Returns}
+The destination vertex of this edge 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(1) 
+\end{DoxyNote}
+\mbox{\Hypertarget{class_edge_a6e8b08e91c0694b40edff0432fb612eb}\label{class_edge_a6e8b08e91c0694b40edff0432fb612eb}} 
+\index{Edge@{Edge}!getOrig@{getOrig}}
+\index{getOrig@{getOrig}!Edge@{Edge}}
+\doxysubsubsection{\texorpdfstring{getOrig()}{getOrig()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ Edge\+::get\+Orig (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the origin vertex of this edge. 
+
+\begin{DoxyReturn}{Returns}
+The origin vertex of this edge 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(1) 
+\end{DoxyNote}
+\mbox{\Hypertarget{class_edge_a1caaffca117bab3ff5b7387623a356f8}\label{class_edge_a1caaffca117bab3ff5b7387623a356f8}} 
+\index{Edge@{Edge}!getWeight@{getWeight}}
+\index{getWeight@{getWeight}!Edge@{Edge}}
+\doxysubsubsection{\texorpdfstring{getWeight()}{getWeight()}}
+{\footnotesize\ttfamily double Edge\+::get\+Weight (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the weight of this edge. 
+
+\begin{DoxyReturn}{Returns}
+The weight of this edge 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(1) 
+\end{DoxyNote}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/diana/\+Desktop/\+DA2023\+\_\+\+PRJ2\+\_\+\+G02\+\_\+2/\+Code/Vertex\+Edge.\+h\item 
+C\+:/\+Users/diana/\+Desktop/\+DA2023\+\_\+\+PRJ2\+\_\+\+G02\+\_\+2/\+Code/Vertex\+Edge.\+cpp\end{DoxyCompactItemize}
