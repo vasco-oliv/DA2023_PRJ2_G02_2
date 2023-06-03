@@ -1,0 +1,272 @@
+\hypertarget{class_graph}{}\doxysection{Graph Class Reference}
+\label{class_graph}\index{Graph@{Graph}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+const std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ $>$ \& \mbox{\hyperlink{class_graph_a16fe9ccb4e47775d546a7e2140ce2c7b}{get\+Vertex\+Set}} () const
+\begin{DoxyCompactList}\small\item\em Gets all the vertices in the graph. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ \mbox{\hyperlink{class_graph_a142f371a1fe397e44d409a54810560b8}{find\+Vertex}} (unsigned int id) const
+\begin{DoxyCompactList}\small\item\em Finds a vertex in the graph, given its id. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_graph_a83d1f5ae773ce2f85b4c07d19a737c91}{add\+Vertex}} (\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$vertex)
+\begin{DoxyCompactList}\small\item\em Adds a vertex to the graph. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_graph_aa22af147874490bf4a60bc8876f0bb11}{get\+Dist}} (unsigned int id\+Orig, unsigned int id\+Dest) const
+\begin{DoxyCompactList}\small\item\em Gets the distance between two vertices, given their ids. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_graph_ac6192a41101102ca8aa6acca607c84f3}{clear}} ()
+\begin{DoxyCompactList}\small\item\em Clears the graph by removing all vertices and their associated edges. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_graph_a603607816685de9764275ac16ea8be68}{set\+Fully\+Connected}} (bool is\+Fully\+Connected)
+\begin{DoxyCompactList}\small\item\em Sets the graph as fully connected. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_graph_a1f3bd9e1fc35b42e0b9cfeee724d6618}{set\+Has\+Coords}} (bool has\+Coords)
+\begin{DoxyCompactList}\small\item\em Sets the graph as having coordinates. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_graph_ae4515756518eb3db232353a9f12fc7d6}{uses\+Coords}} () const
+\begin{DoxyCompactList}\small\item\em Gets the graph\textquotesingle{}s fully connected property. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{class_graph_a1cdc60a00dd7f9fce707708f0d4bf644}{add\+Edge}} (\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$v1, \mbox{\hyperlink{class_vertex}{Vertex}} $\ast$v2, double weight)
+\begin{DoxyCompactList}\small\item\em Adds an edge to the graph, given two vertices and its weight. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{class_edge}{Edge}} $\ast$ \mbox{\hyperlink{class_graph_aa2a93ac9b63627b826766336af064047}{get\+Edge}} (\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$v1, \mbox{\hyperlink{class_vertex}{Vertex}} $\ast$v2)
+\begin{DoxyCompactList}\small\item\em Gets the distance between two vertices, given their ids. \end{DoxyCompactList}\item 
+static double \mbox{\hyperlink{class_graph_a54045d74166967fce1055b4478362424}{calculate\+Dist}} (double lat1, double long1, double lat2, double long2)
+\begin{DoxyCompactList}\small\item\em Calculates the distance between two geographical coordinates using the Haversine formula. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_graph_a6eec9bd738a8909119e5b2470ff5f264}\label{class_graph_a6eec9bd738a8909119e5b2470ff5f264}} 
+std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ $>$ {\bfseries vertex\+Set}
+\item 
+\mbox{\Hypertarget{class_graph_a9ae0a337c3b190b10aabd87e976a5af9}\label{class_graph_a9ae0a337c3b190b10aabd87e976a5af9}} 
+bool {\bfseries is\+Fully\+Connected} = false
+\item 
+\mbox{\Hypertarget{class_graph_af5520b8804a5b0797cf74343ccc29a97}\label{class_graph_af5520b8804a5b0797cf74343ccc29a97}} 
+bool {\bfseries has\+Coords} = false
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_graph_a1cdc60a00dd7f9fce707708f0d4bf644}\label{class_graph_a1cdc60a00dd7f9fce707708f0d4bf644}} 
+\index{Graph@{Graph}!addEdge@{addEdge}}
+\index{addEdge@{addEdge}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{addEdge()}{addEdge()}}
+{\footnotesize\ttfamily void Graph\+::add\+Edge (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$}]{v1,  }\item[{\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$}]{v2,  }\item[{double}]{weight }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Adds an edge to the graph, given two vertices and its weight. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v1} & The origin vertex of the edge to add \\
+\hline
+{\em v2} & The destination vertex of the edge to add \\
+\hline
+{\em weight} & The weight of the edge to add \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the edge was added, false otherwise 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(\+V), where V is the number of vertices in the graph 
+\end{DoxyNote}
+\mbox{\Hypertarget{class_graph_a83d1f5ae773ce2f85b4c07d19a737c91}\label{class_graph_a83d1f5ae773ce2f85b4c07d19a737c91}} 
+\index{Graph@{Graph}!addVertex@{addVertex}}
+\index{addVertex@{addVertex}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{addVertex()}{addVertex()}}
+{\footnotesize\ttfamily void Graph\+::add\+Vertex (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$}]{vertex }\end{DoxyParamCaption})}
+
+
+
+Adds a vertex to the graph. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vertex} & The vertex to add \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if the vertex was added, false otherwise 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(\+V), where V is the number of vertices in the graph 
+\end{DoxyNote}
+\mbox{\Hypertarget{class_graph_a54045d74166967fce1055b4478362424}\label{class_graph_a54045d74166967fce1055b4478362424}} 
+\index{Graph@{Graph}!calculateDist@{calculateDist}}
+\index{calculateDist@{calculateDist}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{calculateDist()}{calculateDist()}}
+{\footnotesize\ttfamily double Graph\+::calculate\+Dist (\begin{DoxyParamCaption}\item[{double}]{lat1,  }\item[{double}]{long1,  }\item[{double}]{lat2,  }\item[{double}]{long2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Calculates the distance between two geographical coordinates using the Haversine formula. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em lat1} & The latitude of the origin vertex \\
+\hline
+{\em long1} & The longitude of the origin vertex \\
+\hline
+{\em lat2} & The latitude of the destination vertex \\
+\hline
+{\em long2} & The longitude of the destination vertex \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The distance between the two vertices in kilometers 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(1) 
+\end{DoxyNote}
+\mbox{\Hypertarget{class_graph_ac6192a41101102ca8aa6acca607c84f3}\label{class_graph_ac6192a41101102ca8aa6acca607c84f3}} 
+\index{Graph@{Graph}!clear@{clear}}
+\index{clear@{clear}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily void Graph\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Clears the graph by removing all vertices and their associated edges. 
+
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(\+V), where V is the number of vertices in the graph 
+\end{DoxyNote}
+\mbox{\Hypertarget{class_graph_a142f371a1fe397e44d409a54810560b8}\label{class_graph_a142f371a1fe397e44d409a54810560b8}} 
+\index{Graph@{Graph}!findVertex@{findVertex}}
+\index{findVertex@{findVertex}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{findVertex()}{findVertex()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ Graph\+::find\+Vertex (\begin{DoxyParamCaption}\item[{unsigned int}]{id }\end{DoxyParamCaption}) const}
+
+
+
+Finds a vertex in the graph, given its id. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The id of the vertex to find \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+An iterator to the vertex if found, otherwise returns the end of the vertex set 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(\+V), where V is the number of vertices in the graph 
+\end{DoxyNote}
+\mbox{\Hypertarget{class_graph_aa22af147874490bf4a60bc8876f0bb11}\label{class_graph_aa22af147874490bf4a60bc8876f0bb11}} 
+\index{Graph@{Graph}!getDist@{getDist}}
+\index{getDist@{getDist}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{getDist()}{getDist()}}
+{\footnotesize\ttfamily double Graph\+::get\+Dist (\begin{DoxyParamCaption}\item[{unsigned int}]{id\+Orig,  }\item[{unsigned int}]{id\+Dest }\end{DoxyParamCaption}) const}
+
+
+
+Gets the distance between two vertices, given their ids. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id\+Orig} & The id of the origin vertex \\
+\hline
+{\em id\+Dest} & The id of the destination vertex \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The distance between the vertices if found, 0 if either the origin or destination vertex was not found, or -\/1 if the edge between the vertices does not exist. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(\+E), where E is the number of edges leaving the origin vertex 
+\end{DoxyNote}
+\mbox{\Hypertarget{class_graph_aa2a93ac9b63627b826766336af064047}\label{class_graph_aa2a93ac9b63627b826766336af064047}} 
+\index{Graph@{Graph}!getEdge@{getEdge}}
+\index{getEdge@{getEdge}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{getEdge()}{getEdge()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_edge}{Edge}} $\ast$ Graph\+::get\+Edge (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$}]{v1,  }\item[{\mbox{\hyperlink{class_vertex}{Vertex}} $\ast$}]{v2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Gets the distance between two vertices, given their ids. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id\+Orig} & The id of the origin vertex \\
+\hline
+{\em id\+Dest} & The id of the destination vertex \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The distance between the vertices if found, 0 if either the origin or destination vertex was not found, or -\/1 if the edge between the vertices does not exist. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(\+E), where E is the number of edges leaving the origin vertex 
+\end{DoxyNote}
+\mbox{\Hypertarget{class_graph_a16fe9ccb4e47775d546a7e2140ce2c7b}\label{class_graph_a16fe9ccb4e47775d546a7e2140ce2c7b}} 
+\index{Graph@{Graph}!getVertexSet@{getVertexSet}}
+\index{getVertexSet@{getVertexSet}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{getVertexSet()}{getVertexSet()}}
+{\footnotesize\ttfamily const std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} $\ast$ $>$ \& Graph\+::get\+Vertex\+Set (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets all the vertices in the graph. 
+
+\begin{DoxyReturn}{Returns}
+A vector with all the vertices in the graph 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(1) 
+\end{DoxyNote}
+\mbox{\Hypertarget{class_graph_a603607816685de9764275ac16ea8be68}\label{class_graph_a603607816685de9764275ac16ea8be68}} 
+\index{Graph@{Graph}!setFullyConnected@{setFullyConnected}}
+\index{setFullyConnected@{setFullyConnected}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{setFullyConnected()}{setFullyConnected()}}
+{\footnotesize\ttfamily void Graph\+::set\+Fully\+Connected (\begin{DoxyParamCaption}\item[{bool}]{is\+Fully\+Connected }\end{DoxyParamCaption})}
+
+
+
+Sets the graph as fully connected. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em is\+Fully\+Connected} & Value to set the graph\textquotesingle{}s fully connected property to \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(1) 
+\end{DoxyNote}
+\mbox{\Hypertarget{class_graph_a1f3bd9e1fc35b42e0b9cfeee724d6618}\label{class_graph_a1f3bd9e1fc35b42e0b9cfeee724d6618}} 
+\index{Graph@{Graph}!setHasCoords@{setHasCoords}}
+\index{setHasCoords@{setHasCoords}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{setHasCoords()}{setHasCoords()}}
+{\footnotesize\ttfamily void Graph\+::set\+Has\+Coords (\begin{DoxyParamCaption}\item[{bool}]{has\+Coords }\end{DoxyParamCaption})}
+
+
+
+Sets the graph as having coordinates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em has\+Coords} & Value to set the graph\textquotesingle{}s has\+Coords property to \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(1) 
+\end{DoxyNote}
+\mbox{\Hypertarget{class_graph_ae4515756518eb3db232353a9f12fc7d6}\label{class_graph_ae4515756518eb3db232353a9f12fc7d6}} 
+\index{Graph@{Graph}!usesCoords@{usesCoords}}
+\index{usesCoords@{usesCoords}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{usesCoords()}{usesCoords()}}
+{\footnotesize\ttfamily bool Graph\+::uses\+Coords (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Gets the graph\textquotesingle{}s fully connected property. 
+
+\begin{DoxyReturn}{Returns}
+True if the graph uses coordinates, false otherwise 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(1) 
+\end{DoxyNote}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/diana/\+Desktop/\+DA2023\+\_\+\+PRJ2\+\_\+\+G02\+\_\+2/\+Code/Graph.\+h\item 
+C\+:/\+Users/diana/\+Desktop/\+DA2023\+\_\+\+PRJ2\+\_\+\+G02\+\_\+2/\+Code/Graph.\+cpp\end{DoxyCompactItemize}
