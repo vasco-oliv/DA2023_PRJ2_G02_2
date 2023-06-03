@@ -1,4 +1,3 @@
-
 #ifndef DA2023_PRJ2_G02_2_VERTEXEDGE_H
 #define DA2023_PRJ2_G02_2_VERTEXEDGE_H
 
@@ -39,12 +38,6 @@ public:
     /// @note Time Complexity: O(E), where E is the number of edges in the graph
     bool addEdge(Vertex* dest, double weight);
 
-    /// @brief Removes the edge from this vertex to the specified destination vertex.
-    /// @param dest The destination vertex of the edge to remove
-    /// @return True if the edge was removed, false otherwise
-    /// @note Time Complexity: O(E), where E is the number of edges in the graph
-    bool removeEdge(Vertex*& dest);
-
     /// @brief Gets the id of this vertex.
     /// @return The id of this vertex
     /// @note Time Complexity: O(1)
@@ -60,16 +53,6 @@ public:
     /// @note Time Complexity: O(1)
     void setVisited(bool visited);
 
-    /// @brief Gets the distance of this vertex.
-    /// @return The distance of this vertex
-    /// @note Time Complexity: O(1)
-    int getDist() const;
-    
-    /// @brief Sets the distance of this vertex.
-    /// @param dist The value to set the distance to
-    /// @note Time Complexity: O(1)
-    void setDist(int dist);
-
     /// @brief Gets the latitude of this vertex.
     /// @return The latitude of this vertex
     /// @note Time Complexity: O(1)
@@ -79,16 +62,6 @@ public:
     /// @return The longitude of this vertex
     /// @note Time Complexity: O(1)
     double getLongitude() const;
-
-    /// @brief Sets the previous vertex of this vertex to the specified id.
-    /// @param previous The id of the updated previous vertex
-    /// @note Time Complexity: O(1)
-    void setPrevious(unsigned int previous);
-
-    /// @brief Gets the id of the previous vertex of this vertex.
-    /// @return The id of the previous vertex of this vertex
-    /// @note Time Complexity: O(1)
-    unsigned int getPrevious() const;
 
     /// @brief Gets the adjacent edges of the vertex.
     /// @return A vector with the adjacent edges of the vertex

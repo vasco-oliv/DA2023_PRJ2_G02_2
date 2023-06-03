@@ -28,6 +28,28 @@ void Controller::dataReset() {
     distances.clear();
 }
 
+
+std::vector<std::vector<double>> Controller::createDistanceMatrix() {
+    const std::vector<Vertex*>& vertexSet = graph.getVertexSet();
+    auto numVertices = vertexSet.size();
+
+    std::vector<std::vector<double>> distanceMatrix(numVertices, std::vector<double>(numVertices, 0.0));
+
+    for (int i = 0; i < numVertices; i++) {
+        for (int j = i + 1; j < numVertices; j++) {
+            unsigned int id1 = vertexSet[i]->getId();
+            unsigned int id2 = vertexSet[j]->getId();
+
+            double distance = graph.getDist(id1, id2);
+
+            distanceMatrix[i][j] = distance;
+            distanceMatrix[j][i] = distance;
+        }
+    }
+
+    return distanceMatrix;
+}
+
 void Controller::readRealWorldGraph(const std::string& nodes, const std::string& edges) {
     std::ifstream ifsN(nodes);
 
@@ -193,6 +215,7 @@ void Controller::readFullyConGraph(const std::string& edges) {
 
     distances = createDistanceMatrix();
 }
+
 
 void Controller::run() {
     startMenu();
@@ -418,8 +441,7 @@ void Controller::mainMenu() {
     std::cout << "1. Backtracking\n";
     std::cout << "2. Triangular Approximation Heuristic\n";
     std::cout << "3. Lin Kernighan Heuristic\n";
-    std::cout << "4. Christofides Algorithm\n";
-    std::cout << "5. Change Graph\n";
+    std::cout << "4. Change Graph\n";
     std::cout << "0. Exit\n";
     std::cout << "Option: ";
 
@@ -444,11 +466,6 @@ void Controller::mainMenu() {
             chainedLK();
             break;
         case 4:
-            clearScreen();
-            std::cout << "Calculating best solution using Christofides Algorithm...\n";
-            christofides();
-            break;
-        case 5:
             dataReset();
             startMenu();
             break;
@@ -463,6 +480,7 @@ void Controller::mainMenu() {
     }
 
 }
+
 
 void Controller::backtrackingAux(Vertex* &current, std::vector<Vertex*>& path, double& distance, double& bestDistance, std::vector<Vertex*>& bestPath) {
     if(distance >= bestDistance) return;
@@ -554,6 +572,7 @@ void Controller::backtracking() {
     mainMenu();
 }
 
+
 double Controller::calculateDistance(std::vector<Vertex*> &path) {
     double distance=0;
     int pathSize = path.size()-1;
@@ -626,7 +645,6 @@ void Controller::triangular() {
     clock_t end = clock();
     clearScreen();
 
-
     if(path.size() != (graph.getVertexSet().size() + 1)){
         std::cout << "No path found!\n";
         std::cout << "Time taken to calculate: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds.\n";
@@ -648,6 +666,7 @@ void Controller::triangular() {
     std::cin >> aux;
     mainMenu();
 }
+
 
 void Controller::nearestNeighborGreedy(std::vector<Vertex*> &path, double &distance) {
     Vertex* current = graph.getVertexSet()[0];
@@ -677,29 +696,12 @@ void Controller::nearestNeighborGreedy(std::vector<Vertex*> &path, double &dista
     distance += distances[path[path.size()-2]->getId()][path[path.size()-1]->getId()];
 }
 
-void Controller::chainedLK() {
-    clearScreen();
-    std::cout << "\t**Traveling Salesperson Problem**\n\n";
-    clock_t start = clock();
-    std::vector<Vertex*> path;
-    for (const auto& vertex : graph.getVertexSet()) {
-        vertex->setVisited(false);
+void Controller::reverseSubpath(std::vector<Vertex*>& path, int start, int end) {
+    while (start < end) {
+        std::swap(path[start], path[end]);
+        start++;
+        end--;
     }
-    double distance = 0;
-    nearestNeighborGreedy(path, distance);
-    if (distance >= 1000) std::cout << "Distance with Nearest Neighbor approach: " << distance / 1000 << " kilometers.\n";
-    else std::cout << "Distance with Nearest Neighbor approach: " << distance << " meters.\n";
-    std::cout << "Time taken to calculate: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds.\n";
-
-    clock_t start1 = clock();
-    linKernighan(path, distance);
-    if (distance >= 1000) std::cout << "Distance after applying the Chained Lin-Kernighan algorithm: " << distance / 1000 << " kilometers.\n";
-    else std::cout << "Distance after applying the Chained Lin-Kernighan algorithm: " << distance << " meters.\n";
-    std::cout << "Time taken to calculate: " << (double)(clock()-start1)/CLOCKS_PER_SEC << " seconds.\n";
-    std::cout << "(Press any key to continue)\n";
-    std::string aux;
-    std::cin >> aux;
-    mainMenu();
 }
 
 void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
@@ -716,6 +718,7 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
                 std::vector<Vertex*> newPath = bestPath;
                 reverseSubpath(newPath, i + 1, j);
                 double newDistance = bestDistance + std::numeric_limits<float>::epsilon() - distances[bestPath[i + 1]->getId()][bestPath[i]->getId()] - distances[bestPath[j + 1]->getId()][bestPath[j]->getId()] + distances[newPath[i + 1]->getId()][newPath[i]->getId()] + distances[newPath[j + 1]->getId()][newPath[j]->getId()];
+
                 if (newDistance < bestDistance) {
                     bestPath = newPath;
                     bestDistance = newDistance;
@@ -729,196 +732,35 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
     distance = bestDistance;
 }
 
-void Controller::reverseSubpath(std::vector<Vertex*>& path, int start, int end) {
-    while (start < end) {
-        std::swap(path[start], path[end]);
-        start++;
-        end--;
-    }
-}
+void Controller::chainedLK() {
+    clearScreen();
+    std::cout << "\t**Traveling Salesperson Problem**\n\n";
 
-void Controller::christofides() {
     clock_t start = clock();
     std::vector<Vertex*> path;
-    std::vector<Vertex*> oddDegreeVertices;
-    primsChristofides();
-    for(auto vertex: graph.getVertexSet()){
-        if(vertex->chrisAdj.size()==0){
-            std::cout << "No path found!\n";
-            std::cout << "Time taken to calculate: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds.\n";
-            std::cout << "(Press any key to continue)\n";
-            std::string aux;
-            std::cin >> aux;
-        }
-        if(vertex->chrisAdj.size()%2==1){
-            oddDegreeVertices.push_back(vertex);
-        }
+
+    for (const auto& vertex : graph.getVertexSet()) {
+        vertex->setVisited(false);
     }
-    makePerfect(oddDegreeVertices);
-    eulerianPath(path, graph.getVertexSet()[0]);
-    removeDuplicates(path);
-    path.push_back(path[0]);
-    std::cout << "Path:" << path[0]->getId();
-    for (int i = 1; i < path.size(); ++i) {
-        std::cout << " -> " << path[i]->getId();
-    }
-    std::cout << std::endl;
-    std::cout << "Distance using the Christofides algorithm: " << calculateDistance(path) << "\n";
-    std::cout << "Time taken to calculate: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds\n";
+
+    double distance = 0;
+    nearestNeighborGreedy(path, distance);
+
+    if (distance >= 1000) std::cout << "Distance with Nearest Neighbor approach: " << distance / 1000 << " kilometers.\n";
+    else std::cout << "Distance with Nearest Neighbor approach: " << distance << " meters.\n";
+    std::cout << "Time taken to calculate: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds.\n";
+
+    clock_t start1 = clock();
+    linKernighan(path, distance);
+
+    if (distance >= 1000) std::cout << "Distance after applying the Chained Lin-Kernighan algorithm: " << distance / 1000 << " kilometers.\n";
+    else std::cout << "Distance after applying the Chained Lin-Kernighan algorithm: " << distance << " meters.\n";
+
+    std::cout << "Time taken to calculate: " << (double)(clock()-start1)/CLOCKS_PER_SEC << " seconds.\n";
     std::cout << "(Press any key to continue)\n";
     std::string aux;
     std::cin >> aux;
+
     mainMenu();
 }
 
-void Controller::primsChristofides() {
-    for (const auto& vertex : graph.getVertexSet()) {
-        vertex->setVisited(false);
-        vertex->sons.clear();
-    }
-    auto root = graph.getVertexSet()[0];
-    root->setVisited(true);
-    std::priority_queue<Edge*, std::vector<Edge*>, EdgeComparator> pq(root -> getAdj().begin(), root -> getAdj().end());
-    while(!pq.empty()){
-        auto edge = pq.top();
-        pq.pop();
-        Vertex* dest = edge->getDest();
-        if (!dest->isVisited()) {
-            dest->setVisited(true);
-            edge->getOrig()->chrisAdj.push_back(edge);
-            dest->chrisAdj.push_back(graph.getEdge(dest,edge->getOrig()));
-            for(auto n2: graph.getVertexSet()){
-                if(n2->isVisited())continue;
-                Edge *e=graph.getEdge(dest,n2);
-                if (e == nullptr) {
-                    if(graph.usesCoords()){
-                        double w = graph.calculateDist(dest->getLatitude(),dest->getLongitude(),n2->getLatitude(),n2->getLongitude());
-                        e = new Edge(dest, n2, w);
-                    }
-                    else {
-                        continue;
-                    }
-                }
-                pq.push(e);
-            }
-        }
-    }
-}
-
-void Controller::greedyMakePerfect(std::vector<Vertex *> &oddDegrees) {
-    for(auto v: oddDegrees){
-        v->setVisited(false);
-    }
-    for(auto v: oddDegrees){
-        if(!v->isVisited()){
-            Vertex* closest= nullptr;
-            double minDist=std::numeric_limits<double>::max();
-            v->setVisited(true);
-
-            for(auto v2: oddDegrees){
-                if(v2->isVisited())continue;
-                double dist=distances[v->getId()][v2->getId()];
-                if(dist < minDist){
-                    minDist=dist;
-                    closest=v2;
-                }
-            }
-            closest->setVisited(true);
-            v->chrisAdj.push_back(graph.getEdge(v,closest));
-            closest->chrisAdj.push_back(graph.getEdge(closest,v));
-        }
-    }
-}
-
-void Controller::eulerianPath(std::vector<Vertex*>&path, Vertex* curr) {
-    if(curr== nullptr)return;
-    for(auto edge: curr->chrisAdj){
-        auto dest= edge->getDest();
-        path.push_back(curr);
-        auto aux= std::find(dest->chrisAdj.begin(),dest->chrisAdj.end(),graph.getEdge(dest,curr));
-        if(aux == dest->chrisAdj.end())continue;
-        dest->chrisAdj.erase(aux);
-        eulerianPath(path,dest);
-    }
-}
-
-void Controller::removeDuplicates(std::vector<Vertex *> &path) {
-    std::vector<Vertex*> newPath;
-    for(auto v: path){
-        if(std::find(newPath.begin(),newPath.end(),v)==newPath.end()){
-            newPath.push_back(v);
-        }
-    }
-    path=newPath;
-}
-
-void Controller::makePerfect(std::vector<Vertex *> &oddDegrees) {
-    for(auto v: oddDegrees){
-        v->setVisited(false);
-    }
-    std::vector<std::pair<Vertex*, Vertex*>> pairs, bestPairs;
-    double distance=0;
-    double bestDistance=std::numeric_limits<double>::max();
-    auto curr=oddDegrees[0];
-    curr->setVisited(true);
-    for(auto v: oddDegrees){
-        if(v->isVisited())continue;
-        pairs.push_back(std::make_pair(curr,v));
-        v->setVisited(true);
-        distance+=distances[curr->getId()][v->getId()];
-        makePerfectAux(pairs,oddDegrees,distance,bestDistance,bestPairs);
-        distance-=distances[curr->getId()][v->getId()];
-        v->setVisited(false);
-    }
-    for(auto v: bestPairs){
-        v.first->chrisAdj.push_back(graph.getEdge(v.first,v.second));
-        v.second->chrisAdj.push_back(graph.getEdge(v.second,v.first));
-    }
-}
-
-void Controller::makePerfectAux(std::vector<std::pair<Vertex*, Vertex*>> path, std::vector<Vertex *> &oddDegrees, double& distance, double& bestDistance, std::vector<std::pair<Vertex*, Vertex*>>& bestPairs){
-    if(path.size()==oddDegrees.size()/2){
-        if(distance<bestDistance){
-            bestDistance=distance;
-            bestPairs=path;
-        }
-        return;
-    }
-    Vertex* curr;
-    for(auto v: oddDegrees){
-        if(!v->isVisited())curr=v;
-    }
-    if(curr== nullptr)return;
-    curr->setVisited(true);
-    for(auto v: oddDegrees){
-        if(v->isVisited())continue;
-        path.push_back(std::make_pair(curr,v));
-        v->setVisited(true);
-        distance+=distances[path.back().first->getId()][path.back().second->getId()];
-        makePerfectAux(path,oddDegrees,distance,bestDistance,bestPairs);
-        distance-=distances[path.back().first->getId()][path.back().second->getId()];
-        v->setVisited(false);
-        path.pop_back();
-    }
-}
-
-std::vector<std::vector<double>> Controller::createDistanceMatrix() {
-    const std::vector<Vertex*>& vertexSet = graph.getVertexSet();
-    auto numVertices = vertexSet.size();
-
-    std::vector<std::vector<double>> distanceMatrix(numVertices, std::vector<double>(numVertices, 0.0));
-
-    for (int i = 0; i < numVertices; i++) {
-        for (int j = i + 1; j < numVertices; j++) {
-            unsigned int id1 = vertexSet[i]->getId();
-            unsigned int id2 = vertexSet[j]->getId();
-
-            double distance = graph.getDist(id1, id2);
-
-            distanceMatrix[i][j] = distance;
-            distanceMatrix[j][i] = distance;
-        }
-    }
-
-    return distanceMatrix;
-}

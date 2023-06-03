@@ -8,22 +8,11 @@ Vertex::Vertex(unsigned int id, double latitude, double longitude) {
     this->id=id;
     this->latitude=latitude;
     this->longitude=longitude;
-
 }
 
 bool Vertex::addEdge(Vertex* dest, double weight) {
     adj.push_back(new Edge(this, dest, weight));
     return true;
-}
-
-bool Vertex::removeEdge(Vertex*& dest) {
-    for(auto it = adj.begin(); it != adj.end(); it++){
-        if((*it)->getDest() == dest){
-            adj.erase(it);
-            return true;
-        }
-    }
-    return false;
 }
 
 unsigned int Vertex::getId() const {
@@ -38,28 +27,12 @@ void Vertex::setVisited(bool visited) {
     this->visited=visited;
 }
 
-int Vertex::getDist() const {
-    return dist;
-}
-
-void Vertex::setDist(int dist) {
-    this->dist=dist;
-}
-
 double Vertex::getLatitude() const {
     return latitude;
 }
 
 double Vertex::getLongitude() const {
     return longitude;
-}
-
-void Vertex::setPrevious(unsigned int previous) {
-    this->previous = previous;
-}
-
-unsigned int Vertex::getPrevious() const {
-    return previous;
 }
 
 const std::vector<Edge*>& Vertex::getAdj() const {
@@ -97,6 +70,3 @@ void Edge::clear() {
     orig = nullptr;
     dest = nullptr;
 }
-
-
-

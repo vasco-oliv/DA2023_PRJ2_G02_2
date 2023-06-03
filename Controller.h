@@ -22,14 +22,16 @@ private:
     void dataReset();
 
 
+    /// @brief Creates a matrix with the distances between each pair of vertices.
+    /// @return The matrix with the distances between each pair of vertices
+    /// @note Time Complexity: O(V^2), where V is the number of vertices in the graph
+    std::vector<std::vector<double>> createDistanceMatrix();
+
     /// @brief Reads the real word graphs' CSV files and populates the graph.
     /// @param nodes The name of the CSV file with the nodes
     /// @param edges The name of the CSV file with the edges
     /// @note Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the graph
     void readRealWorldGraph(const std::string& nodes, const std::string& edges);
-
-
-    void linKernighan(std::vector<Vertex*>& path, double& distance);
 
     /// @brief Reads the toy graph's CSV file and populates the graph.
     /// @param edges The name of the CSV file with the edges
@@ -83,35 +85,37 @@ private:
     /// @note Time Complexity: O(E * log(V)), where V is the number of vertices and E is the number of edges in the graph
     void primMST();
 
-    std::vector<std::vector<double>> createDistanceMatrix();
-
-    void reverseSubpath(std::vector<Vertex*>& path, int start, int end);
-
-    /// @brief Executes the triangular aproximation heuristic to solve the TSP problem.
+    /// @brief Executes the triangular approximation heuristic to solve the TSP problem.
     /// This function finds the best path and its distance and displays the results.
     /// If no path is found, it displays an error message.
     /// @note Time Complexity: O(V + E * log(V)), where V is the number of vertices and E is the number of edges in the graph
     void triangular();
 
+
     /// @brief Executes the nearest neighbor greedy algorithm to solve the TSP problem.
     /// This function finds the best path and its distance and displays the results.
     /// If no path is found, it displays an error message.
-    /// @note Time Complexity: O(V+E), where V is the number of vertices in the graph and E is the number of edges in the graph
+    /// @note Time Complexity: O(V + E), where V is the number of vertices in the graph and E is the number of edges in the graph
     void nearestNeighborGreedy(std::vector<Vertex*>& path, double& distance);
 
-    /// @brief Eecutes the chained Lin Kernighan algorithm to solve the TSP problem.
+    /// @brief Reverses a subpath of a given path.
+    /// @param path The path to reverse the subpath of
+    /// @param start The starting index of the subpath
+    /// @param end The ending index of the subpath
+    /// @note Time Complexity: O(n), where n is the number of vertices in the subpath
+    void reverseSubpath(std::vector<Vertex*>& path, int start, int end);
+
+    /// @brief The Lin Kernighan algorithm to solve the TSP problem.
+    /// @param path The path to improve
+    /// @param distance The distance of the path to improve
+    /// @note Time Complexity: O(V + V^2) for each iteration, where V is the number of vertices in the graph
+    void linKernighan(std::vector<Vertex*>& path, double& distance);
+
+    /// @brief Executes the chained Lin Kernighan algorithm to solve the TSP problem.
     /// This function finds the best path and its distance and displays the results.
     /// If no path is found, it displays an error message.
     /// @note Time Complexity: O(V^2), where V is the number of vertices in the graph
     void chainedLK();
-
-    void christofides();
-    void primsChristofides();
-    void greedyMakePerfect(std::vector<Vertex*>& oddDegrees);
-    void makePerfect(std::vector<Vertex*>& oddDegrees);
-    void makePerfectAux(std::vector<std::pair<Vertex*, Vertex*>> path, std::vector<Vertex *> &oddDegrees, double& distance, double& bestDistance, std::vector<std::pair<Vertex*, Vertex*>>& bestPairs);
-    void eulerianPath(std::vector<Vertex*> &path, Vertex* current);
-    static void removeDuplicates(std::vector<Vertex*>& path);
 
 public:
     /// @brief Runs the program's start menu.
