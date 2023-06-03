@@ -702,14 +702,6 @@ void Controller::nearestNeighborGreedy(std::vector<Vertex*> &path, double &dista
     distance += distances[path[path.size()-2]->getId()][path[path.size()-1]->getId()];
 }
 
-void Controller::reverseSubpath(std::vector<Vertex*>& path, int start, int end) {
-    while (start < end) {
-        std::swap(path[start], path[end]);
-        start++;
-        end--;
-    }
-}
-
 void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
     std::vector<Vertex*>& bestPath = path;
     double bestDistance = distance;
@@ -736,10 +728,17 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
     distance = bestDistance;
 }
 
+void Controller::reverseSubpath(std::vector<Vertex*>& path, int start, int end) {
+    while (start < end) {
+        std::swap(path[start], path[end]);
+        ++start;
+        --end;
+    }
+}
+
 void Controller::chainedLK() {
     clearScreen();
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
-
     clock_t start = clock();
     std::vector<Vertex*> path;
 

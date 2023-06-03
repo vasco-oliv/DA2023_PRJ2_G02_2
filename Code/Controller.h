@@ -4,6 +4,8 @@
 #include "Graph.h"
 #include <unordered_set>
 #include <unordered_map>
+
+
 class Controller {
 private:
     Graph graph;
@@ -17,7 +19,6 @@ private:
     /// @brief Resets the data by clearing the vertices and graph.
     /// @note Time Complexity: O(V+E), where V is the number of vertices and E is the number of edges in the graph
     void dataReset();
-
 
     /// @brief Creates a matrix with the distances between each pair of vertices.
     /// @return The matrix with the distances between each pair of vertices
@@ -40,13 +41,11 @@ private:
     /// @note Time Complexity: O(E), where E is the number of edges in the graph
     void readFullyConGraph(const std::string& edges);
 
-
     ///@brief Displays the start menu and allows the user to select the network graph to use (either a real world graph, a toy graph, an extra fully connected graph or another one of their choosing).
     void startMenu();
 
     ///@brief Displays the main menu of the program and allows the user to select which solution to the TSP should be executed (either using backtracking, the triangular aproximation heuristic or other heuristics).
     void mainMenu(); 
-
 
     /// @brief The backtracking algorithm to solve the TSP problem.
     /// @param current The current vertex being visited
@@ -62,7 +61,6 @@ private:
     /// If no path is found, it displays an error message.
     /// @note Time Complexity: O(V!), where V is the number of vertices in the graph
     void backtracking();
-
 
     /// @brief Calculates the total distance of a given path.
     /// @param path The path to calculate the distance of
@@ -87,7 +85,6 @@ private:
     /// If no path is found, it displays an error message.
     /// @note Time Complexity: O(V + E * log(V)), where V is the number of vertices and E is the number of edges in the graph
     void triangular();
-
 
     /// @brief Executes the nearest neighbor greedy algorithm to solve the TSP problem.
     /// This function finds the best path and its distance and displays the results.
