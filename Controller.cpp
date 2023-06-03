@@ -706,10 +706,9 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
     std::vector<Vertex*>& bestPath = path;
     double bestDistance = distance;
     bool improved = true;
-    int iteration = 0;
     auto pathSize = bestPath.size();
 
-    while (improved && iteration < MAX_ITERATIONS) {
+    while (improved) {
         improved = false;
         for (int i = 0; i < pathSize - 2; ++i) {
             for (int j = i + 1; j < pathSize - 1; ++j) {
@@ -723,7 +722,6 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
                 }
             }
         }
-        iteration++;
     }
     path = bestPath;
     distance = bestDistance;
@@ -732,8 +730,8 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
 void Controller::reverseSubpath(std::vector<Vertex*>& path, int start, int end) {
     while (start < end) {
         std::swap(path[start], path[end]);
-        start++;
-        end--;
+        ++start;
+        --end;
     }
 }
 
