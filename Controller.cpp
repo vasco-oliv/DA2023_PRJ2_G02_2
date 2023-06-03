@@ -547,7 +547,7 @@ void Controller::backtracking() {
         std::cout << " -> " << bestPath[i]->getId();
     }
 
-    std::cout << "\nBest Distance: " << bestDistance << "\n";
+    std::cout << "\nBest Distance calculated using the Backtracking algorithm: " << bestDistance << "\n";
     std::cout << "Time taken to calculate: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds.\n";
     std::cout << "(Press any key to continue)\n";
     std::string aux;
@@ -631,6 +631,7 @@ void Controller::triangular() {
     if(path.size() != (graph.getVertexSet().size() + 1)){
         std::cout << "No path found!\n";
         std::cout << "Time taken to calculate: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds.\n";
+
         std::cout << "(Press any key to continue)\n";
         std::string aux;
         std::cin >> aux;
@@ -640,7 +641,8 @@ void Controller::triangular() {
 
     double distance = calculateDistance(path);
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
-    std::cout << "\nBest Distance: " << calculateDistance(path) << "\n";
+    if (distance >= 1000) std::cout << "\nBest Distance calculated using the Triangular Approximation Heuristic: " << distance / 1000 << " kilometers.\n";
+    else std::cout << "\nBest Distance calculated using the Triangular Approximation Heuristic: " << distance << " meters.\n";
     std::cout << "Time taken to calculate: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds.\n";
     std::cout << "(Press any key to continue)\n";
     std::string aux;
@@ -840,7 +842,6 @@ void Controller::eulerianPath(std::vector<Vertex*>&path, Vertex* curr) {
         eulerianPath(path,dest);
     }
 }
-
 
 void Controller::removeDuplicates(std::vector<Vertex *> &path) {
     std::vector<Vertex*> newPath;
