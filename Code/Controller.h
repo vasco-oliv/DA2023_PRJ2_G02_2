@@ -4,9 +4,6 @@
 #include "Graph.h"
 #include <unordered_set>
 #include <unordered_map>
-
-#define MAX_ITERATIONS 100
-
 class Controller {
 private:
     Graph graph;

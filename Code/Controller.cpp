@@ -28,7 +28,6 @@ void Controller::dataReset() {
     distances.clear();
 }
 
-
 std::vector<std::vector<double>> Controller::createDistanceMatrix() {
     const std::vector<Vertex*>& vertexSet = graph.getVertexSet();
     auto numVertices = vertexSet.size();
@@ -216,7 +215,6 @@ void Controller::readFullyConGraph(const std::string& edges) {
     distances = createDistanceMatrix();
 }
 
-
 void Controller::run() {
     startMenu();
 }
@@ -237,6 +235,7 @@ void Controller::startMenu() {
     clock_t begin;
     std::string aux;
     std::cin >> option;
+    std::string filename;
     switch (option) {
         case 1:
             clearScreen();
@@ -252,20 +251,20 @@ void Controller::startMenu() {
                 case 1:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readRealWorldGraph("../Project2Graphs/Real-World-Graphs/graph1/nodes.csv","../Project2Graphs/Real-World-Graphs/graph1/edges.csv");
+                    readRealWorldGraph("../../Project2Graphs/Real-World-Graphs/graph1/nodes.csv","../Project2Graphs/Real-World-Graphs/graph1/edges.csv");
                     mainMenu();
                     break;
                 case 2:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readRealWorldGraph("../Project2Graphs/Real-World-Graphs/graph2/nodes.csv","../Project2Graphs/Real-World-Graphs/graph2/edges.csv");
+                    readRealWorldGraph("../../Project2Graphs/Real-World-Graphs/graph2/nodes.csv","../Project2Graphs/Real-World-Graphs/graph2/edges.csv");
                     mainMenu();
                     break;
                 case 3:
                     clearScreen();
                     begin = clock();
                     std::cout << "\nLoading Data...\n";
-                    readRealWorldGraph("../Project2Graphs/Real-World-Graphs/graph3/nodes.csv","../Project2Graphs/Real-World-Graphs/graph3/edges.csv");
+                    readRealWorldGraph("../../Project2Graphs/Real-World-Graphs/graph3/nodes.csv","../Project2Graphs/Real-World-Graphs/graph3/edges.csv");
                     mainMenu();
                     break;
                 case 0:
@@ -293,19 +292,19 @@ void Controller::startMenu() {
                 case 1:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readToyGraph("../Project2Graphs/Toy-Graphs/shipping.csv");
+                    readToyGraph("../../Project2Graphs/Toy-Graphs/shipping.csv");
                     mainMenu();
                     break;
                 case 2:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readToyGraph("../Project2Graphs/Toy-Graphs/stadiums.csv");
+                    readToyGraph("../../Project2Graphs/Toy-Graphs/stadiums.csv");
                     mainMenu();
                     break;
                 case 3:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readToyGraph("../Project2Graphs/Toy-Graphs/tourism.csv");
+                    readToyGraph("../../Project2Graphs/Toy-Graphs/tourism.csv");
                     mainMenu();
                     break;
                 case 0:
@@ -342,73 +341,73 @@ void Controller::startMenu() {
                 case 1:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_25.csv");
+                    readFullyConGraph("../../Project2Graphs/Extra_Fully_Connected_Graphs/edges_25.csv");
                     mainMenu();
                     break;
                 case 2:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_50.csv");
+                    readFullyConGraph("../../Project2Graphs/Extra_Fully_Connected_Graphs/edges_50.csv");
                     mainMenu();
                     break;
                 case 3:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_75.csv");
+                    readFullyConGraph("../../Project2Graphs/Extra_Fully_Connected_Graphs/edges_75.csv");
                     mainMenu();
                     break;
                 case 4:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_100.csv");
+                    readFullyConGraph("../../Project2Graphs/Extra_Fully_Connected_Graphs/edges_100.csv");
                     mainMenu();
                     break;
                 case 5:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_200.csv");
+                    readFullyConGraph("../../Project2Graphs/Extra_Fully_Connected_Graphs/edges_200.csv");
                     mainMenu();
                     break;
                 case 6:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_300.csv");
+                    readFullyConGraph("../../Project2Graphs/Extra_Fully_Connected_Graphs/edges_300.csv");
                     mainMenu();
                     break;
                 case 7:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_400.csv");
+                    readFullyConGraph("../../Project2Graphs/Extra_Fully_Connected_Graphs/edges_400.csv");
                     mainMenu();
                     break;
                 case 8:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_500.csv");
+                    readFullyConGraph("../../Project2Graphs/Extra_Fully_Connected_Graphs/edges_500.csv");
                     mainMenu();
                     break;
                 case 9:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_600.csv");
+                    readFullyConGraph("../../Project2Graphs/Extra_Fully_Connected_Graphs/edges_600.csv");
                     mainMenu();
                     break;
                 case 10:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_700.csv");
+                    readFullyConGraph("../../Project2Graphs/Extra_Fully_Connected_Graphs/edges_700.csv");
                     mainMenu();
                     break;
                 case 11:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_800.csv");
+                    readFullyConGraph("../../Project2Graphs/Extra_Fully_Connected_Graphs/edges_800.csv");
                     mainMenu();
                     break;
                 case 12:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readFullyConGraph("../Project2Graphs/Extra_Fully_Connected_Graphs/edges_900.csv");
+                    readFullyConGraph("../../Project2Graphs/Extra_Fully_Connected_Graphs/edges_900.csv");
                     mainMenu();
                     break;
                 case 0:
@@ -423,7 +422,17 @@ void Controller::startMenu() {
             }
             break;
         case 4:
-            // TODO: Implement
+            clearScreen();
+            std::cout << "/t**Start Menu**\n\n";
+            std::cout << "What is the path to the file containing the graph you want to use?\n";
+            std::cout << "(Note that the file should be in the folder Project2Graphs)\n";
+            std::cout << "Filename: ";
+            std::cin >> filename;
+            clearScreen();
+            std::cout << "\nLoading Data...\n";
+            filename = "../../Project2Graphs/" + filename;
+            readToyGraph(filename);
+            mainMenu();
             break;
         case 0:
             break;
@@ -480,7 +489,6 @@ void Controller::mainMenu() {
     }
 
 }
-
 
 void Controller::backtrackingAux(Vertex* &current, std::vector<Vertex*>& path, double& distance, double& bestDistance, std::vector<Vertex*>& bestPath) {
     if(distance >= bestDistance) return;
@@ -571,7 +579,6 @@ void Controller::backtracking() {
     std::cin >> aux;
     mainMenu();
 }
-
 
 double Controller::calculateDistance(std::vector<Vertex*> &path) {
     double distance=0;
@@ -667,7 +674,6 @@ void Controller::triangular() {
     mainMenu();
 }
 
-
 void Controller::nearestNeighborGreedy(std::vector<Vertex*> &path, double &distance) {
     Vertex* current = graph.getVertexSet()[0];
     current->setVisited(true);
@@ -708,10 +714,9 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
     std::vector<Vertex*>& bestPath = path;
     double bestDistance = distance;
     bool improved = true;
-    int iteration = 0;
     auto pathSize = bestPath.size();
 
-    while (improved && iteration < MAX_ITERATIONS) {
+    while (improved) {
         improved = false;
         for (int i = 0; i < pathSize - 2; ++i) {
             for (int j = i + 1; j < pathSize - 1; ++j) {
@@ -726,7 +731,6 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
                 }
             }
         }
-        iteration++;
     }
     path = bestPath;
     distance = bestDistance;
