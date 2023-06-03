@@ -4,7 +4,6 @@
 #include <sstream>
 #include <limits>
 #include <queue>
-#include <stack>
 #include <algorithm>
 #include "Controller.h"
 
@@ -251,7 +250,7 @@ void Controller::startMenu() {
                     break;
                 default:
                     std::cout << "ERROR: Invalid option.\n";
-                    std::cout << "(Press any key to continue)";
+                    std::cout << "(Press any key to continue)\n";
                     std::cin >> aux;
                     startMenu();
                     break;
@@ -291,7 +290,7 @@ void Controller::startMenu() {
                     break;
                 default:
                     std::cout << "ERROR: Invalid option.\n";
-                    std::cout << "(Press any key to continue)";
+                    std::cout << "(Press any key to continue)\n";
                     std::cin >> aux;
                     startMenu();
                     break;
@@ -394,7 +393,7 @@ void Controller::startMenu() {
                     break;
                 default:
                     std::cout << "ERROR: Invalid option.\n";
-                    std::cout << "(Press any key to continue)";
+                    std::cout << "(Press any key to continue)\n";
                     std::cin >> aux;
                     startMenu();
                     break;
@@ -457,7 +456,7 @@ void Controller::mainMenu() {
             break;
         default:
             std::cout << "ERROR: Invalid option.\n";
-            std::cout << "(Press any key to continue)";
+            std::cout << "(Press any key to continue)\n";
             std::cin >> aux;
             mainMenu();
             break;
