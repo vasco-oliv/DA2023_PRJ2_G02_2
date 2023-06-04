@@ -67,7 +67,7 @@ double Graph::calculateDist(double lat1, double long1, double lat2, double long2
 
     double a = pow(sin(dLat / 2), 2) + pow(sin(dLon / 2), 2) * cos(lat1) * cos(lat2);
     double rad = 6371000;
-    double c = 2 * asin(sqrt(a));
+    double c = 2 * atan2(sqrt(a), sqrt(1-a));
     return rad * c;
 }
 

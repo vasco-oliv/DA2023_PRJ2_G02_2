@@ -47,6 +47,31 @@ void Vertex::clear() {
     adj.clear();
 }
 
+void Vertex::setDist(double dist) {
+    this->dist = dist;
+}
+
+double Vertex::getDist() const {
+    return dist;
+}
+
+void Vertex::setPrevious(Vertex *previous) {
+    this->previous = previous;
+
+}
+
+Vertex *Vertex::getPrevious() const {
+    return previous;
+}
+
+void Vertex::clearMSTadj() {
+    for (auto edge : MSTadj) {
+        edge -> clear();
+        delete edge;
+    }
+    MSTadj.clear();
+}
+
 // **EDGE**
 
 Edge::Edge(Vertex* orig, Vertex* dest, double weight) {

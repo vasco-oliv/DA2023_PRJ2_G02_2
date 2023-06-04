@@ -118,12 +118,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>mainMenu</b> ()</td><
 <tr class="memitem:a05bbc345585fea0c5bafd9bef22c1716"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_controller.html#a05bbc345585fea0c5bafd9bef22c1716">backtracking</a> ()</td></tr>
 <tr class="memdesc:a05bbc345585fea0c5bafd9bef22c1716"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the backtracking algorithm to solve the TSP problem. This function finds the best path and its distance and displays the results. If no path is found, it displays an error message.  <br /></td></tr>
 <tr class="separator:a05bbc345585fea0c5bafd9bef22c1716"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a059fb90e891acb326418de8bcc02ae3f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_controller.html#a059fb90e891acb326418de8bcc02ae3f">calculateDistance</a> (std::vector&lt; <a class="el" href="class_vertex.html">Vertex</a> * &gt; &amp;path)</td></tr>
-<tr class="memdesc:a059fb90e891acb326418de8bcc02ae3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the total distance of a given path.  <br /></td></tr>
-<tr class="separator:a059fb90e891acb326418de8bcc02ae3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0306da575ce64dd29dc2c7e28248f66b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_controller.html#a0306da575ce64dd29dc2c7e28248f66b">preorder</a> (std::vector&lt; <a class="el" href="class_vertex.html">Vertex</a> * &gt; &amp;path, <a class="el" href="class_vertex.html">Vertex</a> *&amp;current)</td></tr>
-<tr class="memdesc:a0306da575ce64dd29dc2c7e28248f66b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a preorder traversal to generate a path based on degrees of vertices.  <br /></td></tr>
-<tr class="separator:a0306da575ce64dd29dc2c7e28248f66b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87779775e79b5f7b385acec37a894bdc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_controller.html#a87779775e79b5f7b385acec37a894bdc">preorder</a> (std::vector&lt; <a class="el" href="class_vertex.html">Vertex</a> * &gt; &amp;path, <a class="el" href="class_vertex.html">Vertex</a> *&amp;current)</td></tr>
+<tr class="memdesc:a87779775e79b5f7b385acec37a894bdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a preorder traversal to generate a path based on degrees of vertices.  <br /></td></tr>
+<tr class="separator:a87779775e79b5f7b385acec37a894bdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a480ccdb22e9b5d205a3c21ae9c11af0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_controller.html#a480ccdb22e9b5d205a3c21ae9c11af0a">primMST</a> ()</td></tr>
 <tr class="memdesc:a480ccdb22e9b5d205a3c21ae9c11af0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prim's algorithm to generate a minimum spanning tree and generate the degrees of each vertex.  <br /></td></tr>
 <tr class="separator:a480ccdb22e9b5d205a3c21ae9c11af0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -255,42 +252,6 @@ std::unordered_map&lt; unsigned int, <a class="el" href="class_vertex.html">Vert
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>Time Complexity: O((V - 1)!), where V is the number of vertices in the graph </dd></dl>
-
-</div>
-</div>
-<a id="a059fb90e891acb326418de8bcc02ae3f" name="a059fb90e891acb326418de8bcc02ae3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a059fb90e891acb326418de8bcc02ae3f">&#9670;&#160;</a></span>calculateDistance()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double Controller::calculateDistance </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="class_vertex.html">Vertex</a> * &gt; &amp;&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Calculates the total distance of a given path. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">path</td><td>The path to calculate the distance of </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The total distance of the path </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Time Complexity: O(V), where V is the number of vertices in the path </dd></dl>
 
 </div>
 </div>
@@ -464,8 +425,8 @@ std::unordered_map&lt; unsigned int, <a class="el" href="class_vertex.html">Vert
 
 </div>
 </div>
-<a id="a0306da575ce64dd29dc2c7e28248f66b" name="a0306da575ce64dd29dc2c7e28248f66b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0306da575ce64dd29dc2c7e28248f66b">&#9670;&#160;</a></span>preorder()</h2>
+<a id="a87779775e79b5f7b385acec37a894bdc" name="a87779775e79b5f7b385acec37a894bdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87779775e79b5f7b385acec37a894bdc">&#9670;&#160;</a></span>preorder()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -474,7 +435,7 @@ std::unordered_map&lt; unsigned int, <a class="el" href="class_vertex.html">Vert
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Controller::preorder </td>
+          <td class="memname">double Controller::preorder </td>
           <td>(</td>
           <td class="paramtype">std::vector&lt; <a class="el" href="class_vertex.html">Vertex</a> * &gt; &amp;&#160;</td>
           <td class="paramname"><em>path</em>, </td>
@@ -507,6 +468,7 @@ std::unordered_map&lt; unsigned int, <a class="el" href="class_vertex.html">Vert
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>The total distance of the path </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Time Complexity: O(V), where V is the number of vertices in the graph </dd></dl>
 
 </div>

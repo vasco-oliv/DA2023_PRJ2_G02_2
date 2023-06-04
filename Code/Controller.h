@@ -61,12 +61,6 @@ private:
     /// @note Time Complexity: O((V - 1)!), where V is the number of vertices in the graph
     void backtracking();
 
-    /// @brief Calculates the total distance of a given path.
-    /// @param path The path to calculate the distance of
-    /// @return The total distance of the path
-    /// @note Time Complexity: O(V), where V is the number of vertices in the path
-    double calculateDistance(std::vector<Vertex*>& path);
-
     /// @brief Performs a preorder traversal to generate a path based on degrees of vertices.
     /// @param path The generated path
     /// @param current The current vertex being visited

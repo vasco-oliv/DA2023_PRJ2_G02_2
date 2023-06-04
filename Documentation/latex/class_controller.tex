@@ -29,9 +29,7 @@ void \mbox{\hyperlink{class_controller_a40447442774ce8fcc50a30b1b3842d70}{backtr
 \begin{DoxyCompactList}\small\item\em The backtracking algorithm to solve the TSP problem. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_controller_a05bbc345585fea0c5bafd9bef22c1716}{backtracking}} ()
 \begin{DoxyCompactList}\small\item\em Executes the backtracking algorithm to solve the TSP problem. This function finds the best path and its distance and displays the results. If no path is found, it displays an error message. \end{DoxyCompactList}\item 
-double \mbox{\hyperlink{class_controller_a059fb90e891acb326418de8bcc02ae3f}{calculate\+Distance}} (std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&path)
-\begin{DoxyCompactList}\small\item\em Calculates the total distance of a given path. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{class_controller_a0306da575ce64dd29dc2c7e28248f66b}{preorder}} (std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&path, \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*}\&current)
+double \mbox{\hyperlink{class_controller_a87779775e79b5f7b385acec37a894bdc}{preorder}} (std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&path, \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*}\&current)
 \begin{DoxyCompactList}\small\item\em Performs a preorder traversal to generate a path based on degrees of vertices. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_controller_a480ccdb22e9b5d205a3c21ae9c11af0a}{prim\+MST}} ()
 \begin{DoxyCompactList}\small\item\em Prim\textquotesingle{}s algorithm to generate a minimum spanning tree and generate the degrees of each vertex. \end{DoxyCompactList}\item 
@@ -104,27 +102,6 @@ The backtracking algorithm to solve the TSP problem.
 \end{DoxyParams}
 \begin{DoxyNote}{Note}
 Time Complexity\+: O((V -\/ 1)!), where V is the number of vertices in the graph 
-\end{DoxyNote}
-\Hypertarget{class_controller_a059fb90e891acb326418de8bcc02ae3f}\label{class_controller_a059fb90e891acb326418de8bcc02ae3f} 
-\index{Controller@{Controller}!calculateDistance@{calculateDistance}}
-\index{calculateDistance@{calculateDistance}!Controller@{Controller}}
-\doxysubsubsection{\texorpdfstring{calculateDistance()}{calculateDistance()}}
-{\footnotesize\ttfamily double Controller\+::calculate\+Distance (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&}]{path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
-
-
-
-Calculates the total distance of a given path. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em path} & The path to calculate the distance of \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-The total distance of the path 
-\end{DoxyReturn}
-\begin{DoxyNote}{Note}
-Time Complexity\+: O(\+V), where V is the number of vertices in the path 
 \end{DoxyNote}
 \Hypertarget{class_controller_aeeca79d895583025d65900df5e84d3af}\label{class_controller_aeeca79d895583025d65900df5e84d3af} 
 \index{Controller@{Controller}!createDistanceMatrix@{createDistanceMatrix}}
@@ -201,11 +178,11 @@ Executes the nearest neighbor greedy algorithm to solve the TSP problem. This fu
 \begin{DoxyNote}{Note}
 Time Complexity\+: O(V + E), where V is the number of vertices in the graph and E is the number of edges in the graph 
 \end{DoxyNote}
-\Hypertarget{class_controller_a0306da575ce64dd29dc2c7e28248f66b}\label{class_controller_a0306da575ce64dd29dc2c7e28248f66b} 
+\Hypertarget{class_controller_a87779775e79b5f7b385acec37a894bdc}\label{class_controller_a87779775e79b5f7b385acec37a894bdc} 
 \index{Controller@{Controller}!preorder@{preorder}}
 \index{preorder@{preorder}!Controller@{Controller}}
 \doxysubsubsection{\texorpdfstring{preorder()}{preorder()}}
-{\footnotesize\ttfamily void Controller\+::preorder (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&}]{path,  }\item[{\mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*}\&}]{current }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily double Controller\+::preorder (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&}]{path,  }\item[{\mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*}\&}]{current }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 
 
@@ -220,6 +197,9 @@ Performs a preorder traversal to generate a path based on degrees of vertices.
 {\em degrees} & The degrees of each vertex \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The total distance of the path 
+\end{DoxyReturn}
 \begin{DoxyNote}{Note}
 Time Complexity\+: O(\+V), where V is the number of vertices in the graph 
 \end{DoxyNote}

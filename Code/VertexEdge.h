@@ -10,14 +10,15 @@ private:
     unsigned int id;
     std::vector<Edge*> adj;
     bool visited = false;
-    int dist = 0;
+    double dist = 0;
     double latitude;
     double longitude;
-    unsigned int previous;
+    Vertex* previous;
 
 public:
+    int queueIndex;
     std::vector<Vertex*> sons;
-    std::vector<Edge*> chrisAdj;
+    std::vector<Vertex*> MSTadj;
 
     /// @brief Creates a vertex with the given id.
     /// @param id The id of the vertex to create
@@ -48,6 +49,22 @@ public:
     /// @param visited The value to set the visited flag to
     void setVisited(bool visited);
 
+    /// @brief Sets the distance of this vertex.
+    /// @param dist The distance to set
+    void setDist(double dist);
+
+    /// @brief Gets the distance of this vertex.
+    /// @return The distance of this vertex
+    double getDist() const;
+
+    /// @brief Sets the previous vertex of this vertex.
+    /// @param previous The previous vertex to set
+    void setPrevious(Vertex* previous);
+
+    /// @brief Gets the previous vertex of this vertex.
+    /// @return The previous vertex of this vertex
+    Vertex* getPrevious() const;
+
     /// @brief Gets the latitude of this vertex.
     /// @return The latitude of this vertex
     double getLatitude() const;
@@ -63,6 +80,10 @@ public:
     /// @brief Deletes all the adjacent edges of the vertex.
     /// @note Time Complexity: O(E), where E is the number of edges in the adjacency vector
     void clear();
+
+    /// @brief Deletes all the adjacent edges of the vertex in the MST (used in the primMST function in the Controller).
+    /// @note Time Complexity: O(E), where E is the number of edges in the MST adjacency vector
+    void clearMSTadj();
 };
 
 class Edge {

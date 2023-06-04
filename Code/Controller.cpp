@@ -6,7 +6,11 @@
 #include <queue>
 #include <algorithm>
 #include <stack>
+#include <set>
+#include "MutablePriorityQueue.h"
 #include "Controller.h"
+
+#define INF std::numeric_limits<double>::max()
 
 void Controller::clearScreen() {
     #ifdef _WIN32
@@ -535,6 +539,7 @@ void Controller::backtrackingAux(Vertex* &current, std::vector<Vertex*>& path, d
                 if(distance < bestDistance){
                     bestDistance = distance;
                     bestPath = path;
+                    std::cout << "New best distance: " << bestDistance << "\n";
                 }
 
                 distance -= edge->getWeight();
@@ -615,17 +620,23 @@ double Controller::calculateDistance(std::vector<Vertex*> &path) {
     for(int i = 0; i < pathSize ; i++) {
         int id1 = path[i]->getId();
         int id2 = path[i + 1]->getId();
+        if (distances[id1][id2] == -1.0) {
+            distances[id1][id2] = Graph::calculateDist(path[i]->getLatitude(), path[i]->getLongitude(), path[i + 1]->getLatitude(), path[i + 1]->getLongitude());
+            distances[id2][id1] = distances[id1][id2];
+        }
         distance += distances[id1][id2];
     }
     return distance;
 }
 
-
 double Controller::preorder(std::vector<Vertex*>& path, Vertex*& root) {
-    double distance=0;
+    for (auto& vertex : graph.getVertexSet()) {
+        vertex->setVisited(false);
+    }
+    double distance = 0;
+    int i = 0;
     std::stack<Vertex*> stack;
     stack.push(root);
-    int i = 0;
 
     while (!stack.empty()) {
         Vertex* current = stack.top();
@@ -635,15 +646,15 @@ double Controller::preorder(std::vector<Vertex*>& path, Vertex*& root) {
 
         if (i >= 1) {
             double w = distances[path[i-1]->getId()][path[i]->getId()];
-            if (w == -1.0) {
+            if (w == -1) {
                 w = Graph::calculateDist(path[i-1]->getLatitude(), path[i-1]->getLongitude(), path[i]->getLatitude(), path[i]->getLongitude());
                 distances[path[i-1]->getId()][path[i]->getId()] = w;
                 distances[path[i]->getId()][path[i-1]->getId()] = w;
             }
-            distance+=w;
+            distance += w;
         }
 
-        for (auto it = current->sons.rbegin(); it != current->sons.rend(); ++it) {
+        for (auto it = current->MSTadj.rbegin(); it != current->MSTadj.rend(); ++it) {
             Vertex* v = *it;
             if (!v->isVisited()) {
                 stack.push(v);
@@ -652,51 +663,58 @@ double Controller::preorder(std::vector<Vertex*>& path, Vertex*& root) {
         i++;
     }
     path.push_back(root);
-    distance += distances[path[path.size()-2]->getId()][path[path.size()-1]->getId()];
+    distance += distances[path[i-1]->getId()][path[0]->getId()];
     return distance;
 }
 
 void Controller::primMST() {
-    for (const auto& vertex : graph.getVertexSet()) {
-        vertex->setVisited(false);
-        vertex->sons.clear();
+    auto vertexSet = graph.getVertexSet();
+    Vertex* root = vertexSet[0];
+    for (Vertex* v : vertexSet){
+        v->setVisited(false);
+        v->setDist(INF);
+        v->clearMSTadj();
     }
-    auto root = graph.getVertexSet()[0];
-    root->setVisited(true);
-    std::priority_queue<Edge*, std::vector<Edge*>, EdgeComparator> pq(root -> getAdj().begin(), root -> getAdj().end());
+    root->setDist(0);
 
-    while(!pq.empty()){
-        auto edge = pq.top();
-        pq.pop();
-        Vertex* dest = edge->getDest();
-        if (!dest->isVisited()) {
-            dest->setVisited(true);
-            edge->getOrig()->sons.push_back(dest);
+    auto compare = [](const Vertex& a, const Vertex& b) {
+        return a.getDist() < b.getDist();
+    };
 
-            for(auto n2: graph.getVertexSet()){
-                if(n2->isVisited())continue;
-                Edge *e = Graph::getEdge(dest,n2);
-                if (e == nullptr) {
-                    if(graph.usesCoords()){
-                        double w = Graph::calculateDist(dest->getLatitude(),dest->getLongitude(),n2->getLatitude(),n2->getLongitude());
-                        distances[dest->getId()][n2->getId()] = w;
-                        distances[n2->getId()][dest->getId()] = w;
-                        e = new Edge(dest, n2, w);
-                        }
-                    else {
-                        continue;
-                    }
+    MutablePriorityQueue<Vertex, decltype(compare)> p(compare);
+    for (Vertex* v : vertexSet){
+        p.insert(v);
+    }
+    while (!p.empty()){
+        Vertex* v = p.extractMin();
+        Vertex* prev = v -> getPrevious();
+        if (prev != nullptr)
+            prev -> MSTadj.push_back(v);
+        v -> setVisited(true);
+        for (Vertex* d : vertexSet){
+            if (d -> isVisited()) continue;
+            double dist = distances[v -> getId()][d -> getId()];
+            if (dist == -1.0){
+                if (graph.usesCoords()){
+                    dist = Graph::calculateDist(v -> getLatitude(), v -> getLongitude(), d -> getLatitude(), d -> getLongitude());
+                    distances[v -> getId()][d -> getId()] = dist;
+                    distances[d -> getId()][v -> getId()] = dist;
                 }
-                pq.push(e);
+                else continue;
+            }
+            if (dist < d -> getDist()){
+                d -> setDist(dist);
+                d -> setPrevious(v);
+                p.decreaseKey(d);
             }
         }
     }
 }
 
+
 void Controller::triangular() {
     clock_t start = clock();
     std::vector<Vertex *> path;
-
     primMST();
 
     for (const auto& vertex : graph.getVertexSet()) {
@@ -704,12 +722,10 @@ void Controller::triangular() {
     }
 
     double distance = preorder(path, const_cast<Vertex *&>(graph.getVertexSet()[0]));
-    clock_t end = clock();
     clearScreen();
-
     if(path.size() != (vertices.size() + 1)){
         std::cout << "No path was found using the Triangular Approximation heuristic!\n";
-        std::cout << "Time taken to calculate: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds.\n";
+        std::cout << "Time taken to calculate: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds.\n";
         std::cout << "(Press any key to continue)\n";
         std::string aux;
         std::cin >> aux;
@@ -720,7 +736,7 @@ void Controller::triangular() {
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
     if (distance >= 1000) std::cout << "\nMinimum distance calculated using the Triangular Approximation heuristic: " << distance / 1000 << " kilometers.\n";
     else std::cout << "\nMinimum distance calculated using the Triangular Approximation heuristic: " << distance << " meters.\n";
-    std::cout << "Time taken to calculate: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds.\n";
+    std::cout << "Time taken to calculate: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds.\n";
     std::cout << "(Press any key to continue)\n";
     std::string aux;
     std::cin >> aux;
