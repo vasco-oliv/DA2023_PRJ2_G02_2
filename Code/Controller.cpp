@@ -5,6 +5,7 @@
 #include <limits>
 #include <queue>
 #include <algorithm>
+#include <stack>
 #include "Controller.h"
 
 void Controller::clearScreen() {
@@ -620,7 +621,8 @@ double Controller::calculateDistance(std::vector<Vertex*> &path) {
 }
 
 
-void Controller::preorder(std::vector<Vertex*>& path, Vertex*& root) {
+double Controller::preorder(std::vector<Vertex*>& path, Vertex*& root) {
+    double distance=0;
     std::stack<Vertex*> stack;
     stack.push(root);
     int i = 0;
@@ -638,6 +640,7 @@ void Controller::preorder(std::vector<Vertex*>& path, Vertex*& root) {
                 distances[path[i-1]->getId()][path[i]->getId()] = w;
                 distances[path[i]->getId()][path[i-1]->getId()] = w;
             }
+            distance+=w;
         }
 
         for (auto it = current->sons.rbegin(); it != current->sons.rend(); ++it) {
@@ -648,6 +651,9 @@ void Controller::preorder(std::vector<Vertex*>& path, Vertex*& root) {
         }
         i++;
     }
+    path.push_back(root);
+    distance += distances[path[path.size()-2]->getId()][path[path.size()-1]->getId()];
+    return distance;
 }
 
 void Controller::primMST() {
@@ -697,8 +703,7 @@ void Controller::triangular() {
         vertex->setVisited(false);
     }
 
-    preorder(path, const_cast<Vertex *&>(graph.getVertexSet()[0]));
-    path.push_back(graph.getVertexSet()[0]);
+    double distance = preorder(path, const_cast<Vertex *&>(graph.getVertexSet()[0]));
     clock_t end = clock();
     clearScreen();
 
@@ -712,7 +717,6 @@ void Controller::triangular() {
         return;
     }
 
-    double distance = calculateDistance(path);
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
     if (distance >= 1000) std::cout << "\nMinimum distance calculated using the Triangular Approximation heuristic: " << distance / 1000 << " kilometers.\n";
     else std::cout << "\nMinimum distance calculated using the Triangular Approximation heuristic: " << distance << " meters.\n";

@@ -71,8 +71,9 @@ private:
     /// @param path The generated path
     /// @param current The current vertex being visited
     /// @param degrees The degrees of each vertex
+    /// @return The total distance of the path
     /// @note Time Complexity: O(V), where V is the number of vertices in the graph
-    void preorder(std::vector<Vertex*>& path, Vertex* &current);
+    double preorder(std::vector<Vertex*>& path, Vertex* &current);
     
     /// @brief Prim's algorithm to generate a minimum spanning tree and generate the degrees of each vertex.
     /// @return The degrees of each vertex
