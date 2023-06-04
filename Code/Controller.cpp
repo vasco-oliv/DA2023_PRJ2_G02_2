@@ -32,7 +32,7 @@ std::vector<std::vector<double>> Controller::createDistanceMatrix() {
     const std::vector<Vertex*>& vertexSet = graph.getVertexSet();
     auto numVertices = vertexSet.size();
 
-    std::vector<std::vector<double>> distanceMatrix(numVertices, std::vector<double>(numVertices, 0.0));
+    std::vector<std::vector<double>> distanceMatrix(numVertices, std::vector<double>(numVertices, -1.0));
 
     for (int i = 0; i < numVertices; i++) {
         for (int j = i + 1; j < numVertices; j++) {
@@ -60,7 +60,6 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
     std::string line;
     int id;
     double lat,lon;
-    int vertexCounter = 0;
 
     std::getline(ifsN, line);
 
@@ -76,7 +75,6 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
             auto v = new Vertex(id,lat,lon);
             vertices.insert(std::make_pair(id,v));
             graph.addVertex(v);
-            vertexCounter++;
         }
 
     }
@@ -94,6 +92,8 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
     double weight;
     int edgeCounter = 0;
 
+    distances = std::vector<std::vector<double>>(vertices.size(), std::vector<double>(vertices.size(), -1.0));
+
     while(std::getline(ifsE, line)){
         std::istringstream iss(line);
         iss >> idOrig;
@@ -102,20 +102,23 @@ void Controller::readRealWorldGraph(const std::string& nodes, const std::string&
         iss.ignore(1);
         iss >> weight;
 
-        if(vertices.find(idOrig)==vertices.end() || vertices.find(idDest)==vertices.end()){
+        if(vertices.find(idOrig) == vertices.end() || vertices.find(idDest) == vertices.end()){
             continue;
         }
         auto orig = vertices.find(idOrig)->second;
         auto dest = vertices.find(idDest)->second;
         graph.addEdge(orig,dest,weight);
+        distances[idOrig][idDest] = weight;
+        distances[idDest][idOrig] = weight;
         edgeCounter++;
     }
     ifsE.close();
     graph.setHasCoords(true);
+
+    auto vertexCounter = vertices.size();
     if (edgeCounter == vertexCounter * (vertexCounter - 1) / 2)
         graph.setFullyConnected(true);
 
-    distances = createDistanceMatrix();
 }
 
 void Controller::readToyGraph(const std::string& edges) {
@@ -616,14 +619,34 @@ double Controller::calculateDistance(std::vector<Vertex*> &path) {
     return distance;
 }
 
-void Controller::preorder(std::vector<Vertex*>& path, Vertex*& current) {
-    path.push_back(current);
-    current->setVisited(true);
 
-    for(auto v: current->sons){
-        if(!v->isVisited()){
-            preorder(path, v);
+void Controller::preorder(std::vector<Vertex*>& path, Vertex*& root) {
+    std::stack<Vertex*> stack;
+    stack.push(root);
+    int i = 0;
+
+    while (!stack.empty()) {
+        Vertex* current = stack.top();
+        stack.pop();
+        path.push_back(current);
+        current->setVisited(true);
+
+        if (i >= 1) {
+            double w = distances[path[i-1]->getId()][path[i]->getId()];
+            if (w == -1.0) {
+                w = Graph::calculateDist(path[i-1]->getLatitude(), path[i-1]->getLongitude(), path[i]->getLatitude(), path[i]->getLongitude());
+                distances[path[i-1]->getId()][path[i]->getId()] = w;
+                distances[path[i]->getId()][path[i-1]->getId()] = w;
+            }
         }
+
+        for (auto it = current->sons.rbegin(); it != current->sons.rend(); ++it) {
+            Vertex* v = *it;
+            if (!v->isVisited()) {
+                stack.push(v);
+            }
+        }
+        i++;
     }
 }
 
@@ -646,10 +669,12 @@ void Controller::primMST() {
 
             for(auto n2: graph.getVertexSet()){
                 if(n2->isVisited())continue;
-                Edge *e=graph.getEdge(dest,n2);
+                Edge *e = Graph::getEdge(dest,n2);
                 if (e == nullptr) {
                     if(graph.usesCoords()){
-                        double w = graph.calculateDist(dest->getLatitude(),dest->getLongitude(),n2->getLatitude(),n2->getLongitude());
+                        double w = Graph::calculateDist(dest->getLatitude(),dest->getLongitude(),n2->getLatitude(),n2->getLongitude());
+                        distances[dest->getId()][n2->getId()] = w;
+                        distances[n2->getId()][dest->getId()] = w;
                         e = new Edge(dest, n2, w);
                         }
                     else {
