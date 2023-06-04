@@ -461,6 +461,25 @@ void Controller::mainMenu() {
     switch (option) {
         case 1:
             clearScreen();
+            if (vertices.size() >= 15) {
+                std::cout << "Backtracking is only recommended for graphs with 15 nodes or less.\n";
+                std::cout << "For graphs bigger than that, the program will take too long to finish.\n";
+                std::cout << "Your graph has " << vertices.size() << " nodes.\n";
+                std::cout << "Are you sure you want to continue? (y/n) ";
+                std::cin >> aux;
+                if (aux == "n") {
+                    mainMenu();
+                    break;
+                }
+                if (aux != "y") {
+                    std::cout << "ERROR: Invalid option.\n";
+                    std::cout << "(Press any key to continue)\n";
+                    std::cin >> aux;
+                    mainMenu();
+                    break;
+                }
+            }
+            clearScreen();
             std::cout << "Calculating best solution using Backtracking...\n";
             backtracking();
             break;
@@ -471,6 +490,13 @@ void Controller::mainMenu() {
             break;
         case 3:
             clearScreen();
+            if (!graph.isFullyConnected()) {
+                std::cout << "Lin-Kernighan's algorithm can only be used on fully connected graphs.\n";
+                std::cout << "(Press any key to continue)\n";
+                std::cin >> aux;
+                mainMenu();
+                break;
+            }
             std::cout << "Calculating best solution using Lin-Kernighan's algorithm...\n";
             LK();
             break;
