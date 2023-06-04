@@ -448,9 +448,9 @@ void Controller::mainMenu() {
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
     std::cout << "How would you like to calculate the best solution to the TSP in the graph you selected?\n";
     std::cout << "1. Backtracking\n";
-    std::cout << "2. Triangular Approximation Heuristic\n";
-    std::cout << "3. Lin Kernighan Heuristic\n";
-    std::cout << "4. Change Graph\n";
+    std::cout << "2. Triangular Approximation heuristic\n";
+    std::cout << "3. Lin-Kernighan algorithm\n";
+    std::cout << "4. Change graph\n";
     std::cout << "0. Exit\n";
     std::cout << "Option: ";
 
@@ -466,13 +466,13 @@ void Controller::mainMenu() {
             break;
         case 2:
             clearScreen();
-            std::cout << "Calculating best solution using a Triangular Approximation Heuristic...\n";
+            std::cout << "Calculating best solution using a Triangular Approximation heuristic...\n";
             triangular();
             break;
         case 3:
             clearScreen();
-            std::cout << "Calculating best solution using Chained Lin Kernighan's Algorithm...\n";
-            chainedLK();
+            std::cout << "Calculating best solution using Lin-Kernighan's algorithm...\n";
+            LK();
             break;
         case 4:
             dataReset();
@@ -487,7 +487,6 @@ void Controller::mainMenu() {
             mainMenu();
             break;
     }
-
 }
 
 void Controller::backtrackingAux(Vertex* &current, std::vector<Vertex*>& path, double& distance, double& bestDistance, std::vector<Vertex*>& bestPath) {
@@ -727,6 +726,7 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
                 }
             }
         }
+
     }
     path = bestPath;
     distance = bestDistance;
@@ -740,7 +740,7 @@ void Controller::reverseSubpath(std::vector<Vertex*>& path, int start, int end) 
     }
 }
 
-void Controller::chainedLK() {
+void Controller::LK() {
     clearScreen();
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
     clock_t start = clock();
@@ -769,8 +769,8 @@ void Controller::chainedLK() {
     clock_t start1 = clock();
     linKernighan(path, distance);
 
-    if (distance >= 1000) std::cout << "Distance after applying the Chained Lin-Kernighan algorithm: " << distance / 1000 << " kilometers.\n";
-    else std::cout << "Distance after applying the Chained Lin-Kernighan algorithm: " << distance << " meters.\n";
+    if (distance >= 1000) std::cout << "Distance after applying the Lin-Kernighan algorithm: " << distance / 1000 << " kilometers.\n";
+    else std::cout << "Distance after applying the Lin-Kernighan algorithm: " << distance << " meters.\n";
 
     std::cout << "Time taken to calculate: " << (double)(clock()-start1)/CLOCKS_PER_SEC << " seconds.\n";
     std::cout << "(Press any key to continue)\n";

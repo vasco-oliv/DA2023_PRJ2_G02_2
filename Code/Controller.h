@@ -108,7 +108,7 @@ private:
     /// This function finds the best path and its distance and displays the results.
     /// If no path is found, it displays an error message.
     /// @note Time Complexity: O(V^3), where V is the number of vertices in the graph
-    void chainedLK();
+    void LK();
 
 public:
     /// @brief Runs the program's start menu.
