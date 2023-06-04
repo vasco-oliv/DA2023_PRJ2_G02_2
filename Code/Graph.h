@@ -12,12 +12,11 @@ private:
 public:
     /// @brief Gets all the vertices in the graph.
     /// @return A vector with all the vertices in the graph
-    /// @note Time Complexity: O(1)
     const std::vector<Vertex *> & getVertexSet() const;
 
     /// @brief Finds a vertex in the graph, given its id.
     /// @param id The id of the vertex to find
-    /// @return An iterator to the vertex if found, otherwise returns the end of the vertex set
+    /// @return A point to the vertex if found, otherwise returns nullptr
     /// @note Time Complexity: O(V), where V is the number of vertices in the graph
     Vertex* findVertex(unsigned int id) const;
 
@@ -36,16 +35,16 @@ public:
     void addEdge(Vertex* v1, Vertex* v2, double weight);
     
     /// @brief Gets the distance between two vertices, given their ids.
-    /// @param idOrig The id of the origin vertex
-    /// @param idDest The id of the destination vertex
-    /// @return The distance between the vertices if found, 0 if either the origin or destination vertex was not found, or -1 if the edge between the vertices does not exist.
+    /// @param v1 Origin vertex
+    /// @param v2 Destination vertex
+    /// @return The edge between the vertices if found, otherwise returns nullptr
     /// @note Time Complexity: O(E), where E is the number of edges leaving the origin vertex
     static Edge* getEdge(Vertex* v1, Vertex* v2) ;
 
     /// @brief Gets the distance between two vertices, given their ids.
     /// @param idOrig The id of the origin vertex
     /// @param idDest The id of the destination vertex
-    /// @return The distance between the vertices if found, 0 if either the origin or destination vertex was not found, or -1 if the edge between the vertices does not exist.
+    /// @return The distance between the vertices if found or -1 if the edge between the vertices does not exist.
     /// @note Time Complexity: O(E), where E is the number of edges leaving the origin vertex
     double getDist(unsigned int idOrig, unsigned int idDest) const;
 

@@ -41,6 +41,7 @@ const std::vector<Edge*>& Vertex::getAdj() const {
 
 void Vertex::clear() {
     for (auto edge : adj) {
+        edge -> clear();
         delete edge;
     }
     adj.clear();
