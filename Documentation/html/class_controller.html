@@ -139,9 +139,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>mainMenu</b> ()</td><
 <tr class="memitem:aca66403a6d7a56fd6682e35fd1aca940"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_controller.html#aca66403a6d7a56fd6682e35fd1aca940">linKernighan</a> (std::vector&lt; <a class="el" href="class_vertex.html">Vertex</a> * &gt; &amp;path, double &amp;distance)</td></tr>
 <tr class="memdesc:aca66403a6d7a56fd6682e35fd1aca940"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Lin Kernighan algorithm to solve the TSP problem.  <br /></td></tr>
 <tr class="separator:aca66403a6d7a56fd6682e35fd1aca940"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a681fb6728a2337801feeba6f41ccb5be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_controller.html#a681fb6728a2337801feeba6f41ccb5be">chainedLK</a> ()</td></tr>
-<tr class="memdesc:a681fb6728a2337801feeba6f41ccb5be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the chained Lin Kernighan algorithm to solve the TSP problem. This function finds the best path and its distance and displays the results. If no path is found, it displays an error message.  <br /></td></tr>
-<tr class="separator:a681fb6728a2337801feeba6f41ccb5be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56567dd3acf2871bb9e60b3ba01893f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_controller.html#a56567dd3acf2871bb9e60b3ba01893f6">LK</a> ()</td></tr>
+<tr class="memdesc:a56567dd3acf2871bb9e60b3ba01893f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the chained Lin Kernighan algorithm to solve the TSP problem. This function finds the best path and its distance and displays the results. If no path is found, it displays an error message.  <br /></td></tr>
+<tr class="separator:a56567dd3acf2871bb9e60b3ba01893f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
@@ -294,34 +294,6 @@ std::unordered_map&lt; unsigned int, <a class="el" href="class_vertex.html">Vert
 
 </div>
 </div>
-<a id="a681fb6728a2337801feeba6f41ccb5be" name="a681fb6728a2337801feeba6f41ccb5be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a681fb6728a2337801feeba6f41ccb5be">&#9670;&#160;</a></span>chainedLK()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Controller::chainedLK </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Executes the chained Lin Kernighan algorithm to solve the TSP problem. This function finds the best path and its distance and displays the results. If no path is found, it displays an error message. </p>
-<dl class="section note"><dt>Note</dt><dd>Time Complexity: O(V^3), where V is the number of vertices in the graph </dd></dl>
-
-</div>
-</div>
 <a id="aeeca79d895583025d65900df5e84d3af" name="aeeca79d895583025d65900df5e84d3af"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeeca79d895583025d65900df5e84d3af">&#9670;&#160;</a></span>createDistanceMatrix()</h2>
 
@@ -375,7 +347,7 @@ std::unordered_map&lt; unsigned int, <a class="el" href="class_vertex.html">Vert
 </div><div class="memdoc">
 
 <p>Resets the data by clearing the vertices and graph. </p>
-<dl class="section note"><dt>Note</dt><dd>Time Complexity: O(V+E), where V is the number of vertices and E is the number of edges in the graph </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Time Complexity: O(V + E), where V is the number of vertices and E is the number of edges in the graph </dd></dl>
 
 </div>
 </div>
@@ -421,6 +393,34 @@ std::unordered_map&lt; unsigned int, <a class="el" href="class_vertex.html">Vert
   </table>
   </dd>
 </dl>
+<dl class="section note"><dt>Note</dt><dd>Time Complexity: O(V^3), where V is the number of vertices in the graph </dd></dl>
+
+</div>
+</div>
+<a id="a56567dd3acf2871bb9e60b3ba01893f6" name="a56567dd3acf2871bb9e60b3ba01893f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56567dd3acf2871bb9e60b3ba01893f6">&#9670;&#160;</a></span>LK()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Controller::LK </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Executes the chained Lin Kernighan algorithm to solve the TSP problem. This function finds the best path and its distance and displays the results. If no path is found, it displays an error message. </p>
 <dl class="section note"><dt>Note</dt><dd>Time Complexity: O(V^3), where V is the number of vertices in the graph </dd></dl>
 
 </div>

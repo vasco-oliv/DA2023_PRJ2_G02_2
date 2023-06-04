@@ -312,7 +312,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasCoords</b> = false
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>An iterator to the vertex if found, otherwise returns the end of the vertex set </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A point to the vertex if found, otherwise returns nullptr </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Time Complexity: O(V), where V is the number of vertices in the graph </dd></dl>
 
 </div>
@@ -351,7 +351,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasCoords</b> = false
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The distance between the vertices if found, 0 if either the origin or destination vertex was not found, or -1 if the edge between the vertices does not exist. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The distance between the vertices if found or -1 if the edge between the vertices does not exist. </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Time Complexity: O(E), where E is the number of edges leaving the origin vertex </dd></dl>
 
 </div>
@@ -393,12 +393,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasCoords</b> = false
 <p>Gets the distance between two vertices, given their ids. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">idOrig</td><td>The id of the origin vertex </td></tr>
-    <tr><td class="paramname">idDest</td><td>The id of the destination vertex </td></tr>
+    <tr><td class="paramname">v1</td><td>Origin vertex </td></tr>
+    <tr><td class="paramname">v2</td><td>Destination vertex </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The distance between the vertices if found, 0 if either the origin or destination vertex was not found, or -1 if the edge between the vertices does not exist. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The edge between the vertices if found, otherwise returns nullptr </dd></dl>
 <dl class="section note"><dt>Note</dt><dd>Time Complexity: O(E), where E is the number of edges leaving the origin vertex </dd></dl>
 
 </div>
@@ -420,7 +420,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>hasCoords</b> = false
 
 <p>Gets all the vertices in the graph. </p>
 <dl class="section return"><dt>Returns</dt><dd>A vector with all the vertices in the graph </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>Time Complexity: O(1) </dd></dl>
 
 </div>
 </div>

@@ -43,7 +43,7 @@ void \mbox{\hyperlink{class_controller_a93ac100823d7e47ea4c6e671223b30dc}{revers
 \begin{DoxyCompactList}\small\item\em Reverses a subpath of a given path. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_controller_aca66403a6d7a56fd6682e35fd1aca940}{lin\+Kernighan}} (std\+::vector$<$ \mbox{\hyperlink{class_vertex}{Vertex}} \texorpdfstring{$\ast$}{*} $>$ \&path, double \&distance)
 \begin{DoxyCompactList}\small\item\em The Lin Kernighan algorithm to solve the TSP problem. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{class_controller_a681fb6728a2337801feeba6f41ccb5be}{chained\+LK}} ()
+void \mbox{\hyperlink{class_controller_a56567dd3acf2871bb9e60b3ba01893f6}{LK}} ()
 \begin{DoxyCompactList}\small\item\em Executes the chained Lin Kernighan algorithm to solve the TSP problem. This function finds the best path and its distance and displays the results. If no path is found, it displays an error message. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsubsection*{Static Private Member Functions}
 \begin{DoxyCompactItemize}
@@ -126,19 +126,6 @@ The total distance of the path
 \begin{DoxyNote}{Note}
 Time Complexity\+: O(\+V), where V is the number of vertices in the path 
 \end{DoxyNote}
-\Hypertarget{class_controller_a681fb6728a2337801feeba6f41ccb5be}\label{class_controller_a681fb6728a2337801feeba6f41ccb5be} 
-\index{Controller@{Controller}!chainedLK@{chainedLK}}
-\index{chainedLK@{chainedLK}!Controller@{Controller}}
-\doxysubsubsection{\texorpdfstring{chainedLK()}{chainedLK()}}
-{\footnotesize\ttfamily void Controller\+::chained\+LK (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
-
-
-
-Executes the chained Lin Kernighan algorithm to solve the TSP problem. This function finds the best path and its distance and displays the results. If no path is found, it displays an error message. 
-
-\begin{DoxyNote}{Note}
-Time Complexity\+: O(\+V\texorpdfstring{$^\wedge$}{\string^}3), where V is the number of vertices in the graph 
-\end{DoxyNote}
 \Hypertarget{class_controller_aeeca79d895583025d65900df5e84d3af}\label{class_controller_aeeca79d895583025d65900df5e84d3af} 
 \index{Controller@{Controller}!createDistanceMatrix@{createDistanceMatrix}}
 \index{createDistanceMatrix@{createDistanceMatrix}!Controller@{Controller}}
@@ -166,7 +153,7 @@ Time Complexity\+: O(\+V\texorpdfstring{$^\wedge$}{\string^}2), where V is the n
 Resets the data by clearing the vertices and graph. 
 
 \begin{DoxyNote}{Note}
-Time Complexity\+: O(V+E), where V is the number of vertices and E is the number of edges in the graph 
+Time Complexity\+: O(V + E), where V is the number of vertices and E is the number of edges in the graph 
 \end{DoxyNote}
 \Hypertarget{class_controller_aca66403a6d7a56fd6682e35fd1aca940}\label{class_controller_aca66403a6d7a56fd6682e35fd1aca940} 
 \index{Controller@{Controller}!linKernighan@{linKernighan}}
@@ -185,6 +172,19 @@ The Lin Kernighan algorithm to solve the TSP problem.
 {\em distance} & The distance of the path to improve \\
 \hline
 \end{DoxyParams}
+\begin{DoxyNote}{Note}
+Time Complexity\+: O(\+V\texorpdfstring{$^\wedge$}{\string^}3), where V is the number of vertices in the graph 
+\end{DoxyNote}
+\Hypertarget{class_controller_a56567dd3acf2871bb9e60b3ba01893f6}\label{class_controller_a56567dd3acf2871bb9e60b3ba01893f6} 
+\index{Controller@{Controller}!LK@{LK}}
+\index{LK@{LK}!Controller@{Controller}}
+\doxysubsubsection{\texorpdfstring{LK()}{LK()}}
+{\footnotesize\ttfamily void Controller\+::\+LK (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Executes the chained Lin Kernighan algorithm to solve the TSP problem. This function finds the best path and its distance and displays the results. If no path is found, it displays an error message. 
+
 \begin{DoxyNote}{Note}
 Time Complexity\+: O(\+V\texorpdfstring{$^\wedge$}{\string^}3), where V is the number of vertices in the graph 
 \end{DoxyNote}

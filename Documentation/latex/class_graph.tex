@@ -147,7 +147,7 @@ Finds a vertex in the graph, given its id.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-An iterator to the vertex if found, otherwise returns the end of the vertex set 
+A point to the vertex if found, otherwise returns nullptr 
 \end{DoxyReturn}
 \begin{DoxyNote}{Note}
 Time Complexity\+: O(\+V), where V is the number of vertices in the graph 
@@ -170,7 +170,7 @@ Gets the distance between two vertices, given their ids.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-The distance between the vertices if found, 0 if either the origin or destination vertex was not found, or -\/1 if the edge between the vertices does not exist. 
+The distance between the vertices if found or -\/1 if the edge between the vertices does not exist. 
 \end{DoxyReturn}
 \begin{DoxyNote}{Note}
 Time Complexity\+: O(\+E), where E is the number of edges leaving the origin vertex 
@@ -187,13 +187,13 @@ Gets the distance between two vertices, given their ids.
 
 
 \begin{DoxyParams}{Parameters}
-{\em id\+Orig} & The id of the origin vertex \\
+{\em v1} & Origin vertex \\
 \hline
-{\em id\+Dest} & The id of the destination vertex \\
+{\em v2} & Destination vertex \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-The distance between the vertices if found, 0 if either the origin or destination vertex was not found, or -\/1 if the edge between the vertices does not exist. 
+The edge between the vertices if found, otherwise returns nullptr 
 \end{DoxyReturn}
 \begin{DoxyNote}{Note}
 Time Complexity\+: O(\+E), where E is the number of edges leaving the origin vertex 
@@ -211,9 +211,6 @@ Gets all the vertices in the graph.
 \begin{DoxyReturn}{Returns}
 A vector with all the vertices in the graph 
 \end{DoxyReturn}
-\begin{DoxyNote}{Note}
-Time Complexity\+: O(1) 
-\end{DoxyNote}
 \Hypertarget{class_graph_a3ce8fd0b62e400ee9dc27fab25f43837}\label{class_graph_a3ce8fd0b62e400ee9dc27fab25f43837} 
 \index{Graph@{Graph}!isFullyConnected@{isFullyConnected}}
 \index{isFullyConnected@{isFullyConnected}!Graph@{Graph}}
