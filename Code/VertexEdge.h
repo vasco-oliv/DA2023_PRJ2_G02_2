@@ -21,14 +21,12 @@ public:
 
     /// @brief Creates a vertex with the given id.
     /// @param id The id of the vertex to create
-    /// @note Time Complexity: O(1)
     explicit Vertex(unsigned int id);
 
     /// @brief Creates a vertex with the given id, latitude and longitude.
     /// @param id The id of the vertex to create
     /// @param latitude The latitude of the vertex to create
     /// @param longitude The longitude of the vertex to create
-    /// @note Time Complexity: O(1)
     Vertex(unsigned int id, double latitude, double longitude);
 
     /// @brief Adds an edge from this vertex to the specified destination vertex with the given weight.
@@ -40,69 +38,60 @@ public:
 
     /// @brief Gets the id of this vertex.
     /// @return The id of this vertex
-    /// @note Time Complexity: O(1)
     unsigned int getId() const;
 
     /// @brief Gets the value of the visited flag of this vertex.
     /// @return The value of the visited flag of this vertex
-    /// @note Time Complexity: O(1)
     bool isVisited() const;
 
     /// @brief Sets the visited flag of this vertex.
     /// @param visited The value to set the visited flag to
-    /// @note Time Complexity: O(1)
     void setVisited(bool visited);
 
     /// @brief Gets the latitude of this vertex.
     /// @return The latitude of this vertex
-    /// @note Time Complexity: O(1)
     double getLatitude() const;
 
     /// @brief Gets the longitude of this vertex.
     /// @return The longitude of this vertex
-    /// @note Time Complexity: O(1)
     double getLongitude() const;
 
     /// @brief Gets the adjacent edges of the vertex.
     /// @return A vector with the adjacent edges of the vertex
-    /// @note Time Complexity: O(1)
     const std::vector<Edge*>& getAdj() const;
 
     /// @brief Deletes all the adjacent edges of the vertex.
-    /// @note Time Complexity: O(1)
+    /// @note Time Complexity: O(E), where E is the number of edges in the adjacency vector
     void clear();
 };
 
-class Edge{
+class Edge {
 private:
     Vertex* orig;
     Vertex* dest;
     double weight;
 
 public:
-
     /// @brief Creates an edge between the given origin and destination vertices with the specified weight.
     /// @param orig The origin vertex of the edge to create
     /// @param dest The destination vertex of the edge to create
     /// @param weight The weight of the edge to create
-    /// @note Time Complexity: O(1)
     Edge(Vertex* orig, Vertex* dest, double weight);
 
     /// @brief Gets the origin vertex of this edge.
     /// @return The origin vertex of this edge
-    /// @note Time Complexity: O(1)
     Vertex* getOrig() const;
 
     /// @brief Gets the destination vertex of this edge.
     /// @return The destination vertex of this edge
-    /// @note Time Complexity: O(1)
     Vertex* getDest() const;
 
     /// @brief Gets the weight of this edge.
     /// @return The weight of this edge
-    /// @note Time Complexity: O(1)
     double getWeight() const;
 
+    /// @brief Deletes the edge.
+    /// @note Time Complexity: O(1)
     void clear();
 };
 

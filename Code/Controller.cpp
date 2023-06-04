@@ -251,20 +251,20 @@ void Controller::startMenu() {
                 case 1:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readRealWorldGraph("../../Project2Graphs/Real-World-Graphs/graph1/nodes.csv","../Project2Graphs/Real-World-Graphs/graph1/edges.csv");
+                    readRealWorldGraph("../../Project2Graphs/Real-World-Graphs/graph1/nodes.csv","../../Project2Graphs/Real-World-Graphs/graph1/edges.csv");
                     mainMenu();
                     break;
                 case 2:
                     clearScreen();
                     std::cout << "\nLoading Data...\n";
-                    readRealWorldGraph("../../Project2Graphs/Real-World-Graphs/graph2/nodes.csv","../Project2Graphs/Real-World-Graphs/graph2/edges.csv");
+                    readRealWorldGraph("../../Project2Graphs/Real-World-Graphs/graph2/nodes.csv","../../Project2Graphs/Real-World-Graphs/graph2/edges.csv");
                     mainMenu();
                     break;
                 case 3:
                     clearScreen();
                     begin = clock();
                     std::cout << "\nLoading Data...\n";
-                    readRealWorldGraph("../../Project2Graphs/Real-World-Graphs/graph3/nodes.csv","../Project2Graphs/Real-World-Graphs/graph3/edges.csv");
+                    readRealWorldGraph("../../Project2Graphs/Real-World-Graphs/graph3/nodes.csv","../../Project2Graphs/Real-World-Graphs/graph3/edges.csv");
                     mainMenu();
                     break;
                 case 0:
@@ -557,22 +557,22 @@ void Controller::backtracking() {
     clearScreen();
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
 
-    if(bestPath.size() != (graph.getVertexSet().size()+1)){
-        std::cout << "No path found!\n";
+    if(bestPath.size() != (vertices.size() + 1)){
+        std::cout << "No path was found using the Backtracking approach!\n";
         std::cout << "Time taken to calculate: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds.\n";
         std::cout << "(Press any key to continue)\n";
         std::string aux;
         std::cin >> aux;
         mainMenu();
     }
-    std::cout << "Best Path: ";
+    std::cout << "Calculated path: ";
     std::cout << bestPath[0]->getId();
 
     for (int i = 1; i < bestPath.size(); ++i) {
         std::cout << " -> " << bestPath[i]->getId();
     }
 
-    std::cout << "\nBest Distance calculated using the Backtracking algorithm: " << bestDistance << "\n";
+    std::cout << "\nMinimum distance calculated using the Backtracking approach: " << bestDistance << "\n";
     std::cout << "Time taken to calculate: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds.\n";
     std::cout << "(Press any key to continue)\n";
     std::string aux;
@@ -652,10 +652,9 @@ void Controller::triangular() {
     clock_t end = clock();
     clearScreen();
 
-    if(path.size() != (graph.getVertexSet().size() + 1)){
-        std::cout << "No path found!\n";
+    if(path.size() != (vertices.size() + 1)){
+        std::cout << "No path was found using the Triangular Approximation heuristic!\n";
         std::cout << "Time taken to calculate: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds.\n";
-
         std::cout << "(Press any key to continue)\n";
         std::string aux;
         std::cin >> aux;
@@ -665,8 +664,8 @@ void Controller::triangular() {
 
     double distance = calculateDistance(path);
     std::cout << "\t**Traveling Salesperson Problem**\n\n";
-    if (distance >= 1000) std::cout << "\nBest Distance calculated using the Triangular Approximation Heuristic: " << distance / 1000 << " kilometers.\n";
-    else std::cout << "\nBest Distance calculated using the Triangular Approximation Heuristic: " << distance << " meters.\n";
+    if (distance >= 1000) std::cout << "\nMinimum distance calculated using the Triangular Approximation heuristic: " << distance / 1000 << " kilometers.\n";
+    else std::cout << "\nMinimum distance calculated using the Triangular Approximation heuristic: " << distance << " meters.\n";
     std::cout << "Time taken to calculate: " << (double)(end-start)/CLOCKS_PER_SEC << " seconds.\n";
     std::cout << "(Press any key to continue)\n";
     std::string aux;
@@ -675,12 +674,16 @@ void Controller::triangular() {
 }
 
 void Controller::nearestNeighborGreedy(std::vector<Vertex*> &path, double &distance) {
-    Vertex* current = graph.getVertexSet()[0];
+    auto vertexSet = graph.getVertexSet();
+    auto vertexSetSize = vertexSet.size();
+    bool flag = true;
+    Vertex* current = vertexSet[0];
     current->setVisited(true);
     path.push_back(current);
 
-    while(path.size() < graph.getVertexSet().size()){
+    while(path.size() < vertexSetSize && flag) {
         std::priority_queue<Edge*, std::vector<Edge*>, EdgeComparator> pq(current -> getAdj().begin(), current -> getAdj().end());
+        flag = false;
         while(!pq.empty()){
             auto edge = pq.top();
             pq.pop();
@@ -693,6 +696,7 @@ void Controller::nearestNeighborGreedy(std::vector<Vertex*> &path, double &dista
                 dest->setVisited(true);
                 path.push_back(dest);
                 current = dest;
+                flag = true;
                 break;
             }
         }
@@ -714,7 +718,7 @@ void Controller::linKernighan(std::vector<Vertex*>& path, double& distance) {
             for (int j = i + 1; j < pathSize - 1; ++j) {
                 std::vector<Vertex*> newPath = bestPath;
                 reverseSubpath(newPath, i + 1, j);
-                double newDistance = bestDistance + std::numeric_limits<float>::epsilon() - distances[bestPath[i + 1]->getId()][bestPath[i]->getId()] - distances[bestPath[j + 1]->getId()][bestPath[j]->getId()] + distances[newPath[i + 1]->getId()][newPath[i]->getId()] + distances[newPath[j + 1]->getId()][newPath[j]->getId()];
+                double newDistance = bestDistance - distances[bestPath[i + 1]->getId()][bestPath[i]->getId()] - distances[bestPath[j + 1]->getId()][bestPath[j]->getId()] + distances[newPath[i + 1]->getId()][newPath[i]->getId()] + distances[newPath[j + 1]->getId()][newPath[j]->getId()];
 
                 if (newDistance < bestDistance) {
                     bestPath = newPath;
@@ -748,9 +752,18 @@ void Controller::chainedLK() {
 
     double distance = 0;
     nearestNeighborGreedy(path, distance);
+    if (path.size() != (vertices.size() + 1)) {
+        std::cout << "No path was found using the Nearest Neighbor approach!\n";
+        std::cout << "Time taken to calculate: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds.\n";
+        std::cout << "(Press any key to continue)\n";
+        std::string aux;
+        std::cin >> aux;
+        mainMenu();
+        return;
+    }
 
-    if (distance >= 1000) std::cout << "Distance with Nearest Neighbor approach: " << distance / 1000 << " kilometers.\n";
-    else std::cout << "Distance with Nearest Neighbor approach: " << distance << " meters.\n";
+    if (distance >= 1000) std::cout << "Distance calculated using the Nearest Neighbor approach: " << distance / 1000 << " kilometers.\n";
+    else std::cout << "Distance calculated using the Nearest Neighbor approach: " << distance << " meters.\n";
     std::cout << "Time taken to calculate: " << (double)(clock()-start)/CLOCKS_PER_SEC << " seconds.\n";
 
     clock_t start1 = clock();

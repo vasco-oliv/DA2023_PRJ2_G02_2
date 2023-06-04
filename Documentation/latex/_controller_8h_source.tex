@@ -1,68 +1,62 @@
-\hypertarget{_controller_8h_source}{}\doxysection{Controller.\+h}
-\label{_controller_8h_source}\index{C:/Users/diana/Desktop/DA2023\_PRJ2\_G02\_2/Code/Controller.h@{C:/Users/diana/Desktop/DA2023\_PRJ2\_G02\_2/Code/Controller.h}}
+\doxysection{Controller.\+h}
+\hypertarget{_controller_8h_source}{}\label{_controller_8h_source}\index{/Users/brunofernandes/Desktop/FEUP/2ANO/2S/DA/DA2023\_PRJ2\_G02\_2/Code/Controller.h@{/Users/brunofernandes/Desktop/FEUP/2ANO/2S/DA/DA2023\_PRJ2\_G02\_2/Code/Controller.h}}
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef DA2023\_PRJ2\_G02\_2\_CONTROLLER\_H}}
-\DoxyCodeLine{2 \textcolor{preprocessor}{\#define DA2023\_PRJ2\_G02\_2\_CONTROLLER\_H}}
-\DoxyCodeLine{3 }
-\DoxyCodeLine{4 \textcolor{preprocessor}{\#include "{}Graph.h"{}}}
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <unordered\_set>}}
-\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <unordered\_map>}}
-\DoxyCodeLine{7 }
-\DoxyCodeLine{8 \textcolor{preprocessor}{\#define MAX\_ITERATIONS 100}}
-\DoxyCodeLine{9 }
-\DoxyCodeLine{10 \textcolor{keyword}{class }\mbox{\hyperlink{class_controller}{Controller}} \{}
-\DoxyCodeLine{11 \textcolor{keyword}{private}:}
-\DoxyCodeLine{12     \mbox{\hyperlink{class_graph}{Graph}} graph;}
-\DoxyCodeLine{13     std::vector<std::vector<double> > distances;}
-\DoxyCodeLine{14     std::unordered\_map<unsigned int, Vertex*> vertices;}
-\DoxyCodeLine{15 }
-\DoxyCodeLine{18     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_a048cf51f7584b74c15befc9298e77759}{clearScreen}}();}
-\DoxyCodeLine{19 }
-\DoxyCodeLine{22     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_aa668b89f7ef7d2b647deecae3cd2b420}{dataReset}}();}
-\DoxyCodeLine{23 }
-\DoxyCodeLine{24 }
-\DoxyCodeLine{28     std::vector<std::vector<double>> \mbox{\hyperlink{class_controller_aeeca79d895583025d65900df5e84d3af}{createDistanceMatrix}}();}
-\DoxyCodeLine{29 }
-\DoxyCodeLine{34     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_abdd2e3b0f6a0eec0704e7a5f7859c159}{readRealWorldGraph}}(\textcolor{keyword}{const} std::string\& nodes, \textcolor{keyword}{const} std::string\& edges);}
-\DoxyCodeLine{35 }
-\DoxyCodeLine{39     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_a486e81d618d6a1050c521c829c8da46f}{readToyGraph}}(\textcolor{keyword}{const} std::string\& edges);}
-\DoxyCodeLine{40 }
-\DoxyCodeLine{44     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_af83c313fea1ddfae9c63e91363b75ec5}{readFullyConGraph}}(\textcolor{keyword}{const} std::string\& edges);}
-\DoxyCodeLine{45 }
-\DoxyCodeLine{46 }
-\DoxyCodeLine{48     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_ab929f0564e2970c093e6eb3466c276b1}{startMenu}}();}
-\DoxyCodeLine{49 }
-\DoxyCodeLine{51     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_a07ecd51cea1200ec1cbe53b105829e74}{mainMenu}}(); }
-\DoxyCodeLine{52 }
-\DoxyCodeLine{53 }
-\DoxyCodeLine{61     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_a40447442774ce8fcc50a30b1b3842d70}{backtrackingAux}}(\mbox{\hyperlink{class_vertex}{Vertex}}*\& current, std::vector<Vertex*>\& path, \textcolor{keywordtype}{double}\& distance, \textcolor{keywordtype}{double}\& bestDistance, std::vector<Vertex*>\& bestPath);}
-\DoxyCodeLine{62     }
-\DoxyCodeLine{67     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_a05bbc345585fea0c5bafd9bef22c1716}{backtracking}}();}
-\DoxyCodeLine{68 }
-\DoxyCodeLine{69 }
-\DoxyCodeLine{74     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_controller_a059fb90e891acb326418de8bcc02ae3f}{calculateDistance}}(std::vector<Vertex*>\& path);}
-\DoxyCodeLine{75 }
-\DoxyCodeLine{81     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_a0306da575ce64dd29dc2c7e28248f66b}{preorder}}(std::vector<Vertex*>\& path, \mbox{\hyperlink{class_vertex}{Vertex}}* \&current);}
-\DoxyCodeLine{82     }
-\DoxyCodeLine{86     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_a480ccdb22e9b5d205a3c21ae9c11af0a}{primMST}}();}
-\DoxyCodeLine{87 }
-\DoxyCodeLine{92     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_a8dd31f606bce438e5386cf4a3eca898e}{triangular}}();}
-\DoxyCodeLine{93 }
-\DoxyCodeLine{94 }
-\DoxyCodeLine{99     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_a9f05d539b37f0e6cd9bb1ae01229985d}{nearestNeighborGreedy}}(std::vector<Vertex*>\& path, \textcolor{keywordtype}{double}\& distance);}
-\DoxyCodeLine{100 }
-\DoxyCodeLine{106     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_a93ac100823d7e47ea4c6e671223b30dc}{reverseSubpath}}(std::vector<Vertex*>\& path, \textcolor{keywordtype}{int} start, \textcolor{keywordtype}{int} end);}
-\DoxyCodeLine{107 }
-\DoxyCodeLine{112     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_aca66403a6d7a56fd6682e35fd1aca940}{linKernighan}}(std::vector<Vertex*>\& path, \textcolor{keywordtype}{double}\& distance);}
-\DoxyCodeLine{113 }
-\DoxyCodeLine{118     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_a681fb6728a2337801feeba6f41ccb5be}{chainedLK}}();}
-\DoxyCodeLine{119 }
-\DoxyCodeLine{120 \textcolor{keyword}{public}:}
-\DoxyCodeLine{123     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_controller_a692f0f5dc600cdcb79786a31cf283ce1}{run}}();}
-\DoxyCodeLine{124 \};}
-\DoxyCodeLine{125 }
-\DoxyCodeLine{126 }
-\DoxyCodeLine{127 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//DA2023\_PRJ2\_G02\_2\_CONTROLLER\_H}}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ DA2023\_PRJ2\_G02\_2\_CONTROLLER\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ DA2023\_PRJ2\_G02\_2\_CONTROLLER\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}Graph.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <unordered\_set>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <unordered\_map>}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_controller}{Controller}}\ \{}
+\DoxyCodeLine{00010\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00011\ \ \ \ \ \mbox{\hyperlink{class_graph}{Graph}}\ graph;}
+\DoxyCodeLine{00012\ \ \ \ \ std::vector<std::vector<double>\ >\ distances;}
+\DoxyCodeLine{00013\ \ \ \ \ std::unordered\_map<unsigned\ int,\ Vertex*>\ vertices;}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_a048cf51f7584b74c15befc9298e77759}{clearScreen}}();}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_aa668b89f7ef7d2b647deecae3cd2b420}{dataReset}}();}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00025\ \ \ \ \ std::vector<std::vector<double>>\ \mbox{\hyperlink{class_controller_aeeca79d895583025d65900df5e84d3af}{createDistanceMatrix}}();}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_abdd2e3b0f6a0eec0704e7a5f7859c159}{readRealWorldGraph}}(\textcolor{keyword}{const}\ std::string\&\ nodes,\ \textcolor{keyword}{const}\ std::string\&\ edges);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_a486e81d618d6a1050c521c829c8da46f}{readToyGraph}}(\textcolor{keyword}{const}\ std::string\&\ edges);}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_af83c313fea1ddfae9c63e91363b75ec5}{readFullyConGraph}}(\textcolor{keyword}{const}\ std::string\&\ edges);}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_ab929f0564e2970c093e6eb3466c276b1}{startMenu}}();}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_a07ecd51cea1200ec1cbe53b105829e74}{mainMenu}}();\ }
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_a40447442774ce8fcc50a30b1b3842d70}{backtrackingAux}}(\mbox{\hyperlink{class_vertex}{Vertex}}*\&\ current,\ std::vector<Vertex*>\&\ path,\ \textcolor{keywordtype}{double}\&\ distance,\ \textcolor{keywordtype}{double}\&\ bestDistance,\ std::vector<Vertex*>\&\ bestPath);}
+\DoxyCodeLine{00057\ \ \ \ \ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_a05bbc345585fea0c5bafd9bef22c1716}{backtracking}}();}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_controller_a059fb90e891acb326418de8bcc02ae3f}{calculateDistance}}(std::vector<Vertex*>\&\ path);}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_a0306da575ce64dd29dc2c7e28248f66b}{preorder}}(std::vector<Vertex*>\&\ path,\ \mbox{\hyperlink{class_vertex}{Vertex}}*\ \&current);}
+\DoxyCodeLine{00076\ \ \ \ \ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_a480ccdb22e9b5d205a3c21ae9c11af0a}{primMST}}();}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_a8dd31f606bce438e5386cf4a3eca898e}{triangular}}();}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_a9f05d539b37f0e6cd9bb1ae01229985d}{nearestNeighborGreedy}}(std::vector<Vertex*>\&\ path,\ \textcolor{keywordtype}{double}\&\ distance);}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_a93ac100823d7e47ea4c6e671223b30dc}{reverseSubpath}}(std::vector<Vertex*>\&\ path,\ \textcolor{keywordtype}{int}\ start,\ \textcolor{keywordtype}{int}\ end);}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_aca66403a6d7a56fd6682e35fd1aca940}{linKernighan}}(std::vector<Vertex*>\&\ path,\ \textcolor{keywordtype}{double}\&\ distance);}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_a681fb6728a2337801feeba6f41ccb5be}{chainedLK}}();}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_controller_a692f0f5dc600cdcb79786a31cf283ce1}{run}}();}
+\DoxyCodeLine{00116\ \};}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//DA2023\_PRJ2\_G02\_2\_CONTROLLER\_H}}
 
 \end{DoxyCode}

@@ -7,7 +7,7 @@
 class Graph {
 private:
     std::vector<Vertex*> vertexSet;
-    bool isFullyConnected = false;
+    bool fullyConnected = false;
     bool hasCoords = false;
 public:
     /// @brief Gets all the vertices in the graph.
@@ -33,7 +33,7 @@ public:
     /// @param weight The weight of the edge to add
     /// @return True if the edge was added, false otherwise
     /// @note Time Complexity: O(V), where V is the number of vertices in the graph
-    static void addEdge(Vertex* v1, Vertex* v2, double weight);
+    void addEdge(Vertex* v1, Vertex* v2, double weight);
     
     /// @brief Gets the distance between two vertices, given their ids.
     /// @param idOrig The id of the origin vertex
@@ -64,18 +64,19 @@ public:
 
     /// @brief Sets the graph as fully connected.
     /// @param isFullyConnected Value to set the graph's fully connected property to
-    /// @note Time Complexity: O(1)
     void setFullyConnected(bool isFullyConnected);
 
     /// @brief Sets the graph as having coordinates.
     /// @param hasCoords Value to set the graph's hasCoords property to
-    /// @note Time Complexity: O(1)
     void setHasCoords(bool hasCoords);
 
-    /// @brief Gets the graph's fully connected property.
+    /// @brief Gets the graph's hasCoords property.
     /// @return True if the graph uses coordinates, false otherwise
-    /// @note Time Complexity: O(1)
     bool usesCoords() const;
+
+    /// @brief Gets the graph's fully connected property.
+    /// @return True if the graph is fully connected, false otherwise
+    bool isFullyConnected() const;
 };
 
 #endif //DA2023_PRJ2_G02_2_GRAPH_H

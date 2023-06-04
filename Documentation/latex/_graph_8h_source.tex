@@ -1,42 +1,44 @@
-\hypertarget{_graph_8h_source}{}\doxysection{Graph.\+h}
-\label{_graph_8h_source}\index{C:/Users/diana/Desktop/DA2023\_PRJ2\_G02\_2/Code/Graph.h@{C:/Users/diana/Desktop/DA2023\_PRJ2\_G02\_2/Code/Graph.h}}
+\doxysection{Graph.\+h}
+\hypertarget{_graph_8h_source}{}\label{_graph_8h_source}\index{/Users/brunofernandes/Desktop/FEUP/2ANO/2S/DA/DA2023\_PRJ2\_G02\_2/Code/Graph.h@{/Users/brunofernandes/Desktop/FEUP/2ANO/2S/DA/DA2023\_PRJ2\_G02\_2/Code/Graph.h}}
 
 \begin{DoxyCode}{0}
-\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef DA2023\_PRJ2\_G02\_2\_GRAPH\_H}}
-\DoxyCodeLine{2 \textcolor{preprocessor}{\#define DA2023\_PRJ2\_G02\_2\_GRAPH\_H}}
-\DoxyCodeLine{3 }
-\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <vector>}}
-\DoxyCodeLine{5 \textcolor{preprocessor}{\#include "{}VertexEdge.h"{}}}
-\DoxyCodeLine{6 }
-\DoxyCodeLine{7 \textcolor{keyword}{class }\mbox{\hyperlink{class_graph}{Graph}} \{}
-\DoxyCodeLine{8 \textcolor{keyword}{private}:}
-\DoxyCodeLine{9     std::vector<Vertex*> vertexSet;}
-\DoxyCodeLine{10     \textcolor{keywordtype}{bool} isFullyConnected = \textcolor{keyword}{false};}
-\DoxyCodeLine{11     \textcolor{keywordtype}{bool} hasCoords = \textcolor{keyword}{false};}
-\DoxyCodeLine{12 \textcolor{keyword}{public}:}
-\DoxyCodeLine{16     \textcolor{keyword}{const} std::vector<Vertex *> \& \mbox{\hyperlink{class_graph_a16fe9ccb4e47775d546a7e2140ce2c7b}{getVertexSet}}() \textcolor{keyword}{const};}
-\DoxyCodeLine{17 }
-\DoxyCodeLine{22     \mbox{\hyperlink{class_vertex}{Vertex}}* \mbox{\hyperlink{class_graph_a142f371a1fe397e44d409a54810560b8}{findVertex}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} \textcolor{keywordtype}{id}) \textcolor{keyword}{const};}
-\DoxyCodeLine{23 }
-\DoxyCodeLine{28     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_graph_a83d1f5ae773ce2f85b4c07d19a737c91}{addVertex}}(\mbox{\hyperlink{class_vertex}{Vertex}}* vertex);}
-\DoxyCodeLine{29 }
-\DoxyCodeLine{36     \textcolor{keyword}{static} \textcolor{keywordtype}{void} \mbox{\hyperlink{class_graph_a1cdc60a00dd7f9fce707708f0d4bf644}{addEdge}}(\mbox{\hyperlink{class_vertex}{Vertex}}* v1, \mbox{\hyperlink{class_vertex}{Vertex}}* v2, \textcolor{keywordtype}{double} weight);}
-\DoxyCodeLine{37     }
-\DoxyCodeLine{43     \textcolor{keyword}{static} \mbox{\hyperlink{class_edge}{Edge}}* \mbox{\hyperlink{class_graph_aa2a93ac9b63627b826766336af064047}{getEdge}}(\mbox{\hyperlink{class_vertex}{Vertex}}* v1, \mbox{\hyperlink{class_vertex}{Vertex}}* v2) ;}
-\DoxyCodeLine{44 }
-\DoxyCodeLine{50     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_graph_aa22af147874490bf4a60bc8876f0bb11}{getDist}}(\textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} idOrig, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} idDest) \textcolor{keyword}{const};}
-\DoxyCodeLine{51 }
-\DoxyCodeLine{59     \textcolor{keyword}{static} \textcolor{keywordtype}{double} \mbox{\hyperlink{class_graph_a54045d74166967fce1055b4478362424}{calculateDist}}(\textcolor{keywordtype}{double} lat1, \textcolor{keywordtype}{double} long1, \textcolor{keywordtype}{double} lat2, \textcolor{keywordtype}{double} long2) ;}
-\DoxyCodeLine{60 }
-\DoxyCodeLine{63     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_graph_ac6192a41101102ca8aa6acca607c84f3}{clear}}();}
-\DoxyCodeLine{64 }
-\DoxyCodeLine{68     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_graph_a603607816685de9764275ac16ea8be68}{setFullyConnected}}(\textcolor{keywordtype}{bool} isFullyConnected);}
-\DoxyCodeLine{69 }
-\DoxyCodeLine{73     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_graph_a1f3bd9e1fc35b42e0b9cfeee724d6618}{setHasCoords}}(\textcolor{keywordtype}{bool} hasCoords);}
-\DoxyCodeLine{74 }
-\DoxyCodeLine{78     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_graph_ae4515756518eb3db232353a9f12fc7d6}{usesCoords}}() \textcolor{keyword}{const};}
-\DoxyCodeLine{79 \};}
-\DoxyCodeLine{80 }
-\DoxyCodeLine{81 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//DA2023\_PRJ2\_G02\_2\_GRAPH\_H}}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ DA2023\_PRJ2\_G02\_2\_GRAPH\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ DA2023\_PRJ2\_G02\_2\_GRAPH\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}VertexEdge.h"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_graph}{Graph}}\ \{}
+\DoxyCodeLine{00008\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00009\ \ \ \ \ std::vector<Vertex*>\ vertexSet;}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keywordtype}{bool}\ fullyConnected\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keywordtype}{bool}\ hasCoords\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00012\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{const}\ std::vector<Vertex\ *>\ \&\ \mbox{\hyperlink{class_graph_a16fe9ccb4e47775d546a7e2140ce2c7b}{getVertexSet}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00022\ \ \ \ \ \mbox{\hyperlink{class_vertex}{Vertex}}*\ \mbox{\hyperlink{class_graph_a142f371a1fe397e44d409a54810560b8}{findVertex}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_graph_a83d1f5ae773ce2f85b4c07d19a737c91}{addVertex}}(\mbox{\hyperlink{class_vertex}{Vertex}}*\ vertex);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_graph_a1cdc60a00dd7f9fce707708f0d4bf644}{addEdge}}(\mbox{\hyperlink{class_vertex}{Vertex}}*\ v1,\ \mbox{\hyperlink{class_vertex}{Vertex}}*\ v2,\ \textcolor{keywordtype}{double}\ weight);}
+\DoxyCodeLine{00037\ \ \ \ \ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_edge}{Edge}}*\ \mbox{\hyperlink{class_graph_aa2a93ac9b63627b826766336af064047}{getEdge}}(\mbox{\hyperlink{class_vertex}{Vertex}}*\ v1,\ \mbox{\hyperlink{class_vertex}{Vertex}}*\ v2)\ ;}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_graph_aa22af147874490bf4a60bc8876f0bb11}{getDist}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ idOrig,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ idDest)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_graph_a54045d74166967fce1055b4478362424}{calculateDist}}(\textcolor{keywordtype}{double}\ lat1,\ \textcolor{keywordtype}{double}\ long1,\ \textcolor{keywordtype}{double}\ lat2,\ \textcolor{keywordtype}{double}\ long2)\ ;}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_graph_ac6192a41101102ca8aa6acca607c84f3}{clear}}();}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_graph_a603607816685de9764275ac16ea8be68}{setFullyConnected}}(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_graph_a3ce8fd0b62e400ee9dc27fab25f43837}{isFullyConnected}});}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_graph_a1f3bd9e1fc35b42e0b9cfeee724d6618}{setHasCoords}}(\textcolor{keywordtype}{bool}\ hasCoords);}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_graph_ae4515756518eb3db232353a9f12fc7d6}{usesCoords}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_graph_a3ce8fd0b62e400ee9dc27fab25f43837}{isFullyConnected}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00080\ \};}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//DA2023\_PRJ2\_G02\_2\_GRAPH\_H}}
 
 \end{DoxyCode}

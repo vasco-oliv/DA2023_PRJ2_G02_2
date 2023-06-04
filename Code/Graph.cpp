@@ -75,8 +75,8 @@ void Graph::clear() {
     vertexSet.clear();
 }
 
-void Graph::setFullyConnected(bool isFullyConnected) {
-    this->isFullyConnected = isFullyConnected;
+void Graph::setFullyConnected(bool fullyConnected) {
+    this->fullyConnected = fullyConnected;
 }
 
 void Graph::setHasCoords(bool hasCoords) {
@@ -85,4 +85,8 @@ void Graph::setHasCoords(bool hasCoords) {
 
 bool Graph::usesCoords() const {
     return hasCoords;
+}
+
+bool Graph::isFullyConnected() const {
+    return fullyConnected;
 }
