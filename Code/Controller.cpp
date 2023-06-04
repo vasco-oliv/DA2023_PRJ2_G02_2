@@ -5,6 +5,7 @@
 #include <limits>
 #include <queue>
 #include <algorithm>
+#include <stack>
 #include "Controller.h"
 
 void Controller::clearScreen() {

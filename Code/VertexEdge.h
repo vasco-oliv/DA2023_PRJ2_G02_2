@@ -100,7 +100,7 @@ struct EdgeComparator {
     /// @brief Overloaded function call operator that compares two edges.
     /// @param e1 The first edge to compare
     /// @param e2 The second edge to compare
-    /// @return True if the first edge is less than the second, false otherwise
+    /// @return True if the first edge's weight is less than the second, false otherwise
     bool operator()(Edge *e1, Edge *e2) const {
         if(e1->getWeight() == e2->getWeight()) return e1->getDest()->getId() > e2->getDest()->getId();
         return e1->getWeight() > e2->getWeight();
